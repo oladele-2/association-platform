@@ -1,0 +1,17 @@
+{
+  "name": "@association/shared",
+  "version": "0.0.1",
+  "private": true,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "node -e \"console.log('shared: no tests yet')\"",
+    "clean": "rimraf dist"
+  },
+  "devDependencies": {
+    "@association/typescript-config": "workspace:*",
+    "typescript": "^5.7.2"
+  }
+}

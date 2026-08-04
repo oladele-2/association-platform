@@ -1,0 +1,10 @@
+{
+  "name": "@association/web",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "build": "node -e \"console.log('web: stub — Astro app starts in Milestone 8')\"",
+    "test": "node -e \"console.log('web: no tests yet')\"",
+    "dev": "node -e \"console.log('web: stub')\""
+  }
+}

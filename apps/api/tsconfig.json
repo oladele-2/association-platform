@@ -1,0 +1,10 @@
+{
+  "extends": "@association/typescript-config/nestjs.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src",
+    "baseUrl": "."
+  },
+  "include": ["src/**/*"],
+  "exclude": ["src/**/*.spec.ts", "dist"]
+}

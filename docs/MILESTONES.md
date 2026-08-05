@@ -27,7 +27,7 @@ Each milestone must **compile**, **pass its tests**, include **documentation**, 
 | M0 | Approved | [M0-FOUNDATION.md](./milestones/M0-FOUNDATION.md) |
 | M1 | Approved (2026-08-05) | [M1-DATABASE-RUNTIME.md](./milestones/M1-DATABASE-RUNTIME.md) |
 | M2 | Approved (2026-08-05) | [M2-TENANCY-IDENTITY.md](./milestones/M2-TENANCY-IDENTITY.md) |
-| M3 | Complete — awaiting review | [M3-PLATFORM-ADMIN.md](./milestones/M3-PLATFORM-ADMIN.md) |
+| M3 | Approved (2026-08-05) | [M3-PLATFORM-ADMIN.md](./milestones/M3-PLATFORM-ADMIN.md) |
 | M3b | Complete — awaiting review | [M3B-RBAC.md](./milestones/M3B-RBAC.md) |
 | M4 | Complete — awaiting review | [M4-FILES.md](./milestones/M4-FILES.md) |
 | M5 | Complete — awaiting review | [M5-MEMBERS-INSTITUTIONS.md](./milestones/M5-MEMBERS-INSTITUTIONS.md) |

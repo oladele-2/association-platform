@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { createHash, timingSafeEqual } from 'node:crypto';
 import { DomainError } from '@association/shared-kernel';
 import { DEFAULT_PLAN_CODE, PLATFORM_ROLE_SUPER_ADMIN } from '../domain/feature-catalog';
 import {
@@ -22,6 +23,12 @@ export type BootstrapPlatformCommand = {
   password: string;
 };
 
+function secretsMatch(expected: string, provided: string): boolean {
+  const a = createHash('sha256').update(expected, 'utf8').digest();
+  const b = createHash('sha256').update(provided, 'utf8').digest();
+  return timingSafeEqual(a, b);
+}
+
 @Injectable()
 export class BootstrapPlatformUseCase {
   constructor(
@@ -35,7 +42,7 @@ export class BootstrapPlatformUseCase {
     if (!cmd.bootstrapSecret) {
       throw new DomainError('BOOTSTRAP_DISABLED', 'PLATFORM_BOOTSTRAP_SECRET is not configured');
     }
-    if (cmd.providedSecret !== cmd.bootstrapSecret) {
+    if (!secretsMatch(cmd.bootstrapSecret, cmd.providedSecret)) {
       throw new DomainError('BOOTSTRAP_FORBIDDEN', 'Invalid bootstrap secret');
     }
     if ((await this.users.count()) > 0) {

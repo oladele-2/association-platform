@@ -15,13 +15,15 @@ Security is a first-class requirement for a multi-tenant platform that holds mem
 
 ## Authentication
 
-- Access JWT (~15m): thin claims (`sub`, `org_id`, roles/permissions summary as needed)  
+- Access JWT (~15m): thin claims (`sub`, `org_id`, roles/permissions summary as needed); claim `typ=access`
+- Platform operator JWT: same `JWT_ACCESS_SECRET`, claim `typ=platform_access` — tenant and platform verifiers reject each other’s tokens
 - Refresh: opaque hashed tokens, family rotation, reuse detection → revoke family  
 - Portal: HttpOnly Secure SameSite refresh cookie  
 - Mobile (later): secure storage for refresh  
 - Password reset / email verify: single-use, short TTL  
+- Platform bootstrap: one-time `PLATFORM_BOOTSTRAP_SECRET` (omit after first operator; min 16 chars when set; timing-safe compare). Disabled operators are rejected on each request by `PlatformJwtGuard`
 
-See Identity milestone work and Functional Spec §7.
+See Identity / Platform Admin milestone work and Functional Spec §7.
 
 ## Authorization
 

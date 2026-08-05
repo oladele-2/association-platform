@@ -45,6 +45,9 @@ export function validateEnv(config: Record<string, unknown>): AppEnv {
   if (!jwtRefreshSecret || jwtRefreshSecret.length < 16) {
     throw new Error('JWT_REFRESH_SECRET must be at least 16 characters');
   }
+  if (bootstrapSecret !== undefined && bootstrapSecret.length < 16) {
+    throw new Error('PLATFORM_BOOTSTRAP_SECRET must be at least 16 characters when set');
+  }
 
   return {
     NODE_ENV: nodeEnv,

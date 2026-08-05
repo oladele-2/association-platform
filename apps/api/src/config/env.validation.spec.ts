@@ -32,4 +32,13 @@ describe('validateEnv', () => {
       }),
     ).toThrow(/JWT_ACCESS_SECRET/);
   });
+
+  it('rejects short PLATFORM_BOOTSTRAP_SECRET when set', () => {
+    expect(() =>
+      validateEnv({
+        ...base,
+        PLATFORM_BOOTSTRAP_SECRET: 'too-short',
+      }),
+    ).toThrow(/PLATFORM_BOOTSTRAP_SECRET/);
+  });
 });

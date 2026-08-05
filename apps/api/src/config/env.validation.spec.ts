@@ -57,7 +57,29 @@ describe('validateEnv', () => {
       validateEnv({
         ...base,
         NODE_ENV: 'production',
+        ALLOW_MOCK_PAYSTACK: 'true',
       }),
     ).toThrow(/ALLOW_MOCK_STORAGE/);
+  });
+
+  it('requires PAYSTACK_SECRET_KEY or ALLOW_MOCK_PAYSTACK in production', () => {
+    expect(() =>
+      validateEnv({
+        ...base,
+        NODE_ENV: 'production',
+        ALLOW_MOCK_STORAGE: 'true',
+      }),
+    ).toThrow(/ALLOW_MOCK_PAYSTACK/);
+  });
+
+  it('accepts production when Paystack and storage mocks are explicit', () => {
+    const env = validateEnv({
+      ...base,
+      NODE_ENV: 'production',
+      ALLOW_MOCK_STORAGE: 'true',
+      ALLOW_MOCK_PAYSTACK: 'true',
+    });
+    expect(env.PAYMENTS_DRIVER).toBe('mock');
+    expect(env.STORAGE_DRIVER).toBe('mock');
   });
 });

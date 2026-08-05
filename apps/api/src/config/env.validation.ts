@@ -21,6 +21,10 @@ export type AppEnv = {
   /** Explicit opt-in to mock ObjectStorage when R2 is unset (required in production without R2). */
   ALLOW_MOCK_STORAGE: boolean;
   STORAGE_DRIVER: 'mock' | 'r2';
+  PAYSTACK_SECRET_KEY: string | undefined;
+  /** Explicit opt-in to mock Paystack when secret is unset (required in production without Paystack). */
+  ALLOW_MOCK_PAYSTACK: boolean;
+  PAYMENTS_DRIVER: 'mock' | 'paystack';
 };
 
 export function validateEnv(config: Record<string, unknown>): AppEnv {
@@ -64,6 +68,16 @@ export function validateEnv(config: Record<string, unknown>): AppEnv {
     );
   }
 
+  const paystackSecretKey = optionalTrim(config.PAYSTACK_SECRET_KEY);
+  const allowMockPaystack =
+    String(config.ALLOW_MOCK_PAYSTACK ?? '')
+      .trim()
+      .toLowerCase() === 'true';
+  const paymentsDriver: 'mock' | 'paystack' = paystackSecretKey ? 'paystack' : 'mock';
+  if (nodeEnv === 'production' && paymentsDriver === 'mock' && !allowMockPaystack) {
+    throw new Error('Production requires PAYSTACK_SECRET_KEY or explicit ALLOW_MOCK_PAYSTACK=true');
+  }
+
   if (!Number.isFinite(port) || port <= 0) {
     throw new Error('PORT must be a positive number');
   }
@@ -101,6 +115,9 @@ export function validateEnv(config: Record<string, unknown>): AppEnv {
     R2_PUBLIC_BASE_URL: r2PublicBaseUrl,
     ALLOW_MOCK_STORAGE: allowMockStorage,
     STORAGE_DRIVER: storageDriver,
+    PAYSTACK_SECRET_KEY: paystackSecretKey,
+    ALLOW_MOCK_PAYSTACK: allowMockPaystack,
+    PAYMENTS_DRIVER: paymentsDriver,
   };
 }
 

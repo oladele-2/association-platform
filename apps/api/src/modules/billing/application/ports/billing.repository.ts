@@ -240,6 +240,16 @@ export interface BillingRepository {
     verifiedAt?: Date | null;
     rejectionReason?: string | null;
   }): Promise<PaymentView>;
+  /**
+   * Atomically CAS payment into `succeeded`, credit invoice allocations, issue receipt,
+   * and mark linked remittance allocated. Idempotent when already succeeded.
+   */
+  settleSucceededPayment(input: {
+    organizationId: string;
+    paymentId: string;
+    actorUserId?: string | null;
+    fromStatuses: PaymentStatus[];
+  }): Promise<{ payment: PaymentView; alreadySettled: boolean }>;
   updatePaystackWebhook(input: {
     paystackReference: string;
     rawWebhook?: unknown;

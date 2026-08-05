@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import {
   ActivateFeeScheduleUseCase,
   GenerateInvoicesUseCase,
+  HandlePaystackWebhookUseCase,
   VerifyPaymentUseCase,
 } from './billing.use-cases';
 import type { BillingRepository } from './ports/billing.repository';
@@ -40,7 +41,7 @@ describe('GenerateInvoicesUseCase', () => {
             institutionOwnership: null,
             minAge: null,
             maxAge: null,
-            isOptionalExempt: false,
+            isOptionalExempt: true,
             amountKobo: '5000000',
             priority: 100,
           },
@@ -83,26 +84,100 @@ describe('VerifyPaymentUseCase', () => {
         status: 'awaiting_verification',
         amountKobo: '5000',
       }),
-      listAllocations: vi.fn().mockResolvedValue([{ invoiceId: 'i1', amountKobo: 5000n }]),
-      findInvoice: vi.fn().mockResolvedValue({
-        id: 'i1',
-        amountDueKobo: '5000',
-        amountPaidKobo: '0',
-        paidAt: null,
+      settleSucceededPayment: vi.fn().mockResolvedValue({
+        payment: { id: 'p1', status: 'succeeded' },
+        alreadySettled: false,
       }),
-      updateInvoice: vi.fn().mockResolvedValue({ id: 'i1', status: 'paid' }),
-      updatePayment: vi.fn().mockResolvedValue({
-        id: 'p1',
-        status: 'succeeded',
-      }),
-      nextInvoiceSequence: vi.fn().mockResolvedValue(1),
-      createReceipt: vi.fn().mockResolvedValue({ id: 'r1' }),
-      findBulkRemittanceByPaymentId: vi.fn().mockResolvedValue(null),
     } as unknown as BillingRepository;
 
     const usecase = new VerifyPaymentUseCase(repo);
     const result = await usecase.execute('o1', 'p1', 'u1');
     expect(result.status).toBe('succeeded');
-    expect(repo.createReceipt).toHaveBeenCalled();
+    expect(repo.settleSucceededPayment).toHaveBeenCalledWith({
+      organizationId: 'o1',
+      paymentId: 'p1',
+      actorUserId: 'u1',
+      fromStatuses: ['awaiting_verification'],
+    });
+  });
+});
+
+describe('HandlePaystackWebhookUseCase', () => {
+  it('rejects amount mismatch', async () => {
+    const repo = {
+      findPaymentByPaystackReference: vi.fn().mockResolvedValue({
+        organizationId: 'o1',
+        payment: {
+          id: 'p1',
+          status: 'pending',
+          amountKobo: '5000',
+          currency: 'NGN',
+        },
+      }),
+      updatePaystackWebhook: vi.fn(),
+      settleSucceededPayment: vi.fn(),
+    } as unknown as BillingRepository;
+    const gateway = {
+      verifyWebhookSignature: vi.fn().mockReturnValue(true),
+      verifyTransaction: vi.fn().mockResolvedValue({
+        status: 'success',
+        amountKobo: 999n,
+        currency: 'NGN',
+        reference: 'ref1',
+        raw: {},
+      }),
+    };
+
+    const usecase = new HandlePaystackWebhookUseCase(repo, gateway as never);
+    await expect(
+      usecase.execute({
+        rawBody: '{}',
+        signature: 'mock',
+        event: { event: 'charge.success', data: { reference: 'ref1' } },
+      }),
+    ).rejects.toMatchObject({ code: 'AMOUNT_MISMATCH' });
+    expect(repo.settleSucceededPayment).not.toHaveBeenCalled();
+  });
+
+  it('settles when verified amount and currency match', async () => {
+    const repo = {
+      findPaymentByPaystackReference: vi.fn().mockResolvedValue({
+        organizationId: 'o1',
+        payment: {
+          id: 'p1',
+          status: 'pending',
+          amountKobo: '5000',
+          currency: 'NGN',
+        },
+      }),
+      updatePaystackWebhook: vi.fn(),
+      settleSucceededPayment: vi.fn().mockResolvedValue({
+        payment: { id: 'p1', status: 'succeeded' },
+        alreadySettled: false,
+      }),
+    } as unknown as BillingRepository;
+    const gateway = {
+      verifyWebhookSignature: vi.fn().mockReturnValue(true),
+      verifyTransaction: vi.fn().mockResolvedValue({
+        status: 'success',
+        amountKobo: 5000n,
+        currency: 'NGN',
+        reference: 'ref1',
+        raw: {},
+      }),
+    };
+
+    const usecase = new HandlePaystackWebhookUseCase(repo, gateway as never);
+    const result = await usecase.execute({
+      rawBody: '{}',
+      signature: 'mock',
+      event: { event: 'charge.success', data: { reference: 'ref1' } },
+    });
+    expect(result).toEqual({ ok: true });
+    expect(repo.settleSucceededPayment).toHaveBeenCalledWith({
+      organizationId: 'o1',
+      paymentId: 'p1',
+      fromStatuses: ['pending'],
+    });
   });
 });

@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { createHmac, timingSafeEqual } from 'node:crypto';
 import { DomainError } from '@association/shared-kernel';
+import type { AppEnv } from '../../../config/env.validation';
 import type {
   InitializePaymentResult,
   PaymentGateway,
@@ -8,18 +10,23 @@ import type {
 } from '../application/ports/billing.repository';
 
 /**
- * Paystack REST adapter. When PAYSTACK_SECRET_KEY is unset, runs in mock mode
- * (useful for local/dev tests without live credentials).
+ * Paystack REST adapter. When PAYMENTS_DRIVER is `mock` (no PAYSTACK_SECRET_KEY),
+ * runs in-process mock mode for local/dev. Production requires a secret or
+ * explicit ALLOW_MOCK_PAYSTACK=true (enforced in env.validation).
  */
 @Injectable()
 export class PaystackPaymentGateway implements PaymentGateway {
+  /** In-memory amounts for mock verify (reference → settlement data). */
+  private readonly mockTx = new Map<string, { amountKobo: bigint; currency: string }>();
+
+  constructor(private readonly config: ConfigService<AppEnv, true>) {}
+
   private get secret(): string | undefined {
-    const value = process.env.PAYSTACK_SECRET_KEY?.trim();
-    return value || undefined;
+    return this.config.get('PAYSTACK_SECRET_KEY', { infer: true });
   }
 
   private get mockMode(): boolean {
-    return !this.secret;
+    return this.config.get('PAYMENTS_DRIVER', { infer: true }) === 'mock';
   }
 
   async initialize(input: {
@@ -31,6 +38,10 @@ export class PaystackPaymentGateway implements PaymentGateway {
     metadata?: Record<string, unknown>;
   }): Promise<InitializePaymentResult> {
     if (this.mockMode) {
+      this.mockTx.set(input.reference, {
+        amountKobo: input.amountKobo,
+        currency: input.currency.toUpperCase(),
+      });
       return {
         authorizationUrl: `https://checkout.paystack.com/mock/${input.reference}`,
         accessCode: `mock_${input.reference.slice(0, 12)}`,
@@ -47,7 +58,7 @@ export class PaystackPaymentGateway implements PaymentGateway {
       },
       body: JSON.stringify({
         email: input.email,
-        amount: Number(input.amountKobo),
+        amount: toPaystackAmount(input.amountKobo),
         currency: input.currency,
         reference: input.reference,
         callback_url: input.callbackUrl || undefined,
@@ -79,7 +90,8 @@ export class PaystackPaymentGateway implements PaymentGateway {
 
   verifyWebhookSignature(rawBody: string, signature: string | undefined): boolean {
     if (this.mockMode) {
-      return signature === 'mock' || signature === undefined;
+      // Fail closed even in mock: callers must send `x-paystack-signature: mock`.
+      return signature === 'mock';
     }
     if (!signature || !this.secret) return false;
     const hash = createHmac('sha512', this.secret).update(rawBody).digest('hex');
@@ -94,12 +106,22 @@ export class PaystackPaymentGateway implements PaymentGateway {
 
   async verifyTransaction(reference: string): Promise<VerifyTransactionResult> {
     if (this.mockMode) {
+      const stored = this.mockTx.get(reference);
+      if (!stored) {
+        return {
+          status: 'pending',
+          amountKobo: 0n,
+          currency: 'NGN',
+          reference,
+          raw: { mock: true, reference, known: false },
+        };
+      }
       return {
         status: 'success',
-        amountKobo: 0n,
-        currency: 'NGN',
+        amountKobo: stored.amountKobo,
+        currency: stored.currency,
         reference,
-        raw: { mock: true, reference },
+        raw: { mock: true, reference, amountKobo: stored.amountKobo.toString() },
       };
     }
 
@@ -139,4 +161,12 @@ export class PaystackPaymentGateway implements PaymentGateway {
       raw,
     };
   }
+}
+
+/** Paystack JSON amount is an integer in minor units; stay within Number.MAX_SAFE_INTEGER. */
+function toPaystackAmount(amountKobo: bigint): number {
+  if (amountKobo < 0n || amountKobo > BigInt(Number.MAX_SAFE_INTEGER)) {
+    throw new DomainError('AMOUNT_OUT_OF_RANGE', 'Amount cannot be serialized safely for Paystack');
+  }
+  return Number(amountKobo);
 }

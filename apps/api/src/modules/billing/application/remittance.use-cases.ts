@@ -293,8 +293,14 @@ export class SubmitBulkRemittanceEvidenceUseCase {
       matched.map((l) => l.invoiceId!),
     );
     const computed = matched.reduce((sum, l) => sum + BigInt(l.amountKobo), 0n);
-    const amount = input.amountKobo ? parseKobo(input.amountKobo) : computed;
+    const amount = input.amountKobo !== undefined ? parseKobo(input.amountKobo) : computed;
     if (amount <= 0n) throw new DomainError('INVALID_MONEY', 'Amount must be greater than zero');
+    if (amount !== computed) {
+      throw new DomainError(
+        'AMOUNT_MISMATCH',
+        'Evidence amount must equal the sum of matched remittance lines',
+      );
+    }
 
     const reference = `brm_${randomUUID().replace(/-/g, '')}`;
     const payment = await this.repo.createPayment({

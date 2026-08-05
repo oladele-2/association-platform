@@ -56,7 +56,7 @@ describe('billing.rules', () => {
     expect(rule?.id).toBe('b');
   });
 
-  it('skips exempt members', () => {
+  it('skips optional-exempt rules for dues-exempt members', () => {
     expect(
       selectFeeRule(
         [
@@ -79,6 +79,30 @@ describe('billing.rules', () => {
         },
       ),
     ).toBeNull();
+  });
+
+  it('applies forced rules to dues-exempt members', () => {
+    const rule = selectFeeRule(
+      [
+        {
+          id: 'forced',
+          membershipTypeId: null,
+          institutionOwnership: null,
+          minAge: null,
+          maxAge: null,
+          isOptionalExempt: false,
+          amountKobo: 1_000n,
+          priority: 1,
+        },
+      ],
+      {
+        membershipTypeId: 'mt1',
+        institutionOwnership: null,
+        age: 72,
+        duesExempt: true,
+      },
+    );
+    expect(rule?.id).toBe('forced');
   });
 
   it('updates invoice balance status', () => {

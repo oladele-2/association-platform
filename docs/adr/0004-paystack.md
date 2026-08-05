@@ -38,5 +38,5 @@ Money is stored as **BIGINT kobo** + currency code — never floating point.
 
 ### Follow-ups
 
-- Milestone 7: billing bounded context, Paystack initialize + webhook, manual verify use cases
-- Document go-live checklist: webhook URL per env, secrets, test vs live keys per tenant config
+- Go-live checklist: webhook URL per env, `PAYSTACK_SECRET_KEY` (or explicit `ALLOW_MOCK_PAYSTACK` only for smoke hosts), test vs live keys
+- Atomic settle + amount/currency verify are enforced in Billing M6

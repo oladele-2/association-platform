@@ -118,17 +118,18 @@ export type FeeRuleCandidate = {
 };
 
 /**
- * Lowest priority number wins. Returns null when member is exempt and no forced rule applies,
- * or no rule matches.
+ * Lowest priority number wins.
+ * - When `duesExempt`, skip rules marked `isOptionalExempt` (waivable).
+ * - Forced rules (`isOptionalExempt: false`) still apply to exempt members.
+ * Returns null when nothing matches.
  */
 export function selectFeeRule(
   rules: FeeRuleCandidate[],
   member: FeeRuleMatchInput,
 ): FeeRuleCandidate | null {
-  if (member.duesExempt) return null;
-
   const matching = rules
     .filter((rule) => {
+      if (member.duesExempt && rule.isOptionalExempt) return false;
       if (rule.membershipTypeId && rule.membershipTypeId !== member.membershipTypeId) {
         return false;
       }

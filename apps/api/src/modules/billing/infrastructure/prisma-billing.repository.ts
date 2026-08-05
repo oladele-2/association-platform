@@ -10,6 +10,7 @@ import type {
   BulkRemittanceStatus,
   MatchStatus,
 } from '../domain/billing.rules';
+import { nextInvoiceBalance } from '../domain/billing.rules';
 import type {
   BillingRepository,
   BulkRemittanceView,
@@ -567,6 +568,100 @@ export class PrismaBillingRepository implements BillingRepository {
       });
       if (!row) throw new DomainError('PAYMENT_NOT_FOUND', 'Payment not found');
       return mapPayment(row);
+    });
+  }
+
+  async settleSucceededPayment(input: {
+    organizationId: string;
+    paymentId: string;
+    actorUserId?: string | null;
+    fromStatuses: PaymentStatus[];
+  }) {
+    return this.prisma.asTenant(input.organizationId, async (tx) => {
+      const now = new Date();
+      const cas = await tx.payment.updateMany({
+        where: {
+          id: input.paymentId,
+          organizationId: input.organizationId,
+          status: { in: input.fromStatuses },
+        },
+        data: {
+          status: 'succeeded',
+          paidAt: now,
+          verifiedAt: now,
+          verifiedByUserId: input.actorUserId ?? null,
+        },
+      });
+
+      const paymentRow = await tx.payment.findFirst({
+        where: { id: input.paymentId, organizationId: input.organizationId },
+      });
+      if (!paymentRow) throw new DomainError('PAYMENT_NOT_FOUND', 'Payment not found');
+
+      if (cas.count === 0) {
+        if (paymentRow.status === 'succeeded') {
+          return { payment: mapPayment(paymentRow), alreadySettled: true };
+        }
+        throw new DomainError(
+          'PAYMENT_NOT_SETTLEABLE',
+          'Payment cannot be settled from its current status',
+        );
+      }
+
+      const allocations = await tx.paymentAllocation.findMany({
+        where: { organizationId: input.organizationId, paymentId: input.paymentId },
+      });
+
+      for (const line of allocations) {
+        const invoice = await tx.invoice.findFirst({
+          where: { id: line.invoiceId, organizationId: input.organizationId },
+        });
+        if (!invoice) throw new DomainError('INVOICE_NOT_FOUND', 'Allocated invoice missing');
+        const next = nextInvoiceBalance(
+          invoice.amountDueKobo,
+          invoice.amountPaidKobo,
+          line.amountKobo,
+        );
+        await tx.invoice.updateMany({
+          where: { id: invoice.id, organizationId: input.organizationId },
+          data: {
+            amountPaidKobo: next.amountPaidKobo,
+            status: next.status,
+            paidAt: next.status === 'paid' ? now : invoice.paidAt,
+          },
+        });
+      }
+
+      const year = now.getUTCFullYear();
+      const prefix = `RCP-${year}-`;
+      const receiptCount = await tx.receipt.count({
+        where: { organizationId: input.organizationId, receiptNo: { startsWith: prefix } },
+      });
+      await tx.receipt.create({
+        data: {
+          organizationId: input.organizationId,
+          paymentId: paymentRow.id,
+          receiptNo: `${prefix}${String(receiptCount + 1).padStart(6, '0')}`,
+          issuedAt: now,
+          issuedByUserId: input.actorUserId ?? null,
+        },
+      });
+
+      const remittance = await tx.bulkRemittance.findFirst({
+        where: { organizationId: input.organizationId, paymentId: paymentRow.id },
+      });
+      if (remittance && remittance.status === 'submitted') {
+        await tx.bulkRemittance.updateMany({
+          where: { id: remittance.id, organizationId: input.organizationId },
+          data: { status: 'allocated' },
+        });
+      }
+
+      const refreshed = await tx.payment.findFirst({
+        where: { id: input.paymentId, organizationId: input.organizationId },
+      });
+      if (!refreshed) throw new DomainError('PAYMENT_NOT_FOUND', 'Payment not found');
+      return { payment: mapPayment(refreshed), alreadySettled: false };
     });
   }
 

@@ -9,7 +9,6 @@ import {
   assertInvoicePayable,
   assertPaymentAwaitingVerification,
   assertPaymentPending,
-  nextInvoiceBalance,
   normalizeFeeCode,
   parseKobo,
   selectFeeRule,
@@ -535,11 +534,13 @@ export class VerifyPaymentUseCase {
     const payment = await this.repo.findPayment(organizationId, paymentId);
     if (!payment) throw new DomainError('PAYMENT_NOT_FOUND', 'Payment not found');
     assertPaymentAwaitingVerification(payment.status);
-    return settleSucceededPayment(this.repo, {
+    const settled = await this.repo.settleSucceededPayment({
       organizationId,
       paymentId,
       actorUserId,
+      fromStatuses: ['awaiting_verification'],
     });
+    return settled.payment;
   }
 }
 
@@ -619,16 +620,22 @@ export class HandlePaystackWebhookUseCase {
       return { ok: true as const, failed: true as const };
     }
 
-    if (verified.amountKobo !== 0n && verified.amountKobo !== BigInt(found.payment.amountKobo)) {
+    if (verified.amountKobo !== BigInt(found.payment.amountKobo)) {
       throw new DomainError('AMOUNT_MISMATCH', 'Paystack amount does not match payment');
     }
+    if (verified.currency.toUpperCase() !== found.payment.currency.toUpperCase()) {
+      throw new DomainError('CURRENCY_MISMATCH', 'Paystack currency does not match payment');
+    }
 
-    await settleSucceededPayment(this.repo, {
+    const settled = await this.repo.settleSucceededPayment({
       organizationId: found.organizationId,
       paymentId: found.payment.id,
+      fromStatuses: ['pending'],
     });
 
-    return { ok: true as const };
+    return settled.alreadySettled
+      ? { ok: true as const, alreadyProcessed: true as const }
+      : { ok: true as const };
   }
 }
 
@@ -663,61 +670,6 @@ export class ListMyBillingUseCase {
     if (!member) throw new DomainError('MEMBER_PROFILE_NOT_FOUND', 'No member profile linked');
     return this.repo.listReceipts(organizationId, member.id);
   }
-}
-
-async function settleSucceededPayment(
-  repo: BillingRepository,
-  input: { organizationId: string; paymentId: string; actorUserId?: string },
-) {
-  const allocations = await repo.listAllocations(input.organizationId, input.paymentId);
-  const now = new Date();
-
-  for (const line of allocations) {
-    const invoice = await repo.findInvoice(input.organizationId, line.invoiceId);
-    if (!invoice) throw new DomainError('INVOICE_NOT_FOUND', 'Allocated invoice missing');
-    const next = nextInvoiceBalance(
-      BigInt(invoice.amountDueKobo),
-      BigInt(invoice.amountPaidKobo),
-      line.amountKobo,
-    );
-    await repo.updateInvoice({
-      organizationId: input.organizationId,
-      id: invoice.id,
-      amountPaidKobo: next.amountPaidKobo,
-      status: next.status,
-      paidAt: next.status === 'paid' ? now : invoice.paidAt ? new Date(invoice.paidAt) : null,
-    });
-  }
-
-  const payment = await repo.updatePayment({
-    organizationId: input.organizationId,
-    id: input.paymentId,
-    status: 'succeeded',
-    paidAt: now,
-    verifiedByUserId: input.actorUserId ?? null,
-    verifiedAt: input.actorUserId ? now : now,
-  });
-
-  const year = now.getUTCFullYear();
-  const seq = await repo.nextInvoiceSequence(input.organizationId, `RCP-${year}-`);
-  await repo.createReceipt({
-    organizationId: input.organizationId,
-    paymentId: payment.id,
-    receiptNo: `RCP-${year}-${String(seq).padStart(6, '0')}`,
-    issuedAt: now,
-    issuedByUserId: input.actorUserId ?? null,
-  });
-
-  const remittance = await repo.findBulkRemittanceByPaymentId(input.organizationId, payment.id);
-  if (remittance && remittance.status === 'submitted') {
-    await repo.updateBulkRemittance({
-      organizationId: input.organizationId,
-      id: remittance.id,
-      status: 'allocated',
-    });
-  }
-
-  return payment;
 }
 
 function allocateAcrossInvoices(

@@ -30,7 +30,7 @@ Each milestone must **compile**, **pass its tests**, include **documentation**, 
 | M3 | Approved (2026-08-05) | [M3-PLATFORM-ADMIN.md](./milestones/M3-PLATFORM-ADMIN.md) |
 | M3b | Approved (2026-08-05) | [M3B-RBAC.md](./milestones/M3B-RBAC.md) |
 | M4 | Approved (2026-08-05) | [M4-FILES.md](./milestones/M4-FILES.md) |
-| M5 | Complete — awaiting review | [M5-MEMBERS-INSTITUTIONS.md](./milestones/M5-MEMBERS-INSTITUTIONS.md) |
+| M5 | Approved (2026-08-05) | [M5-MEMBERS-INSTITUTIONS.md](./milestones/M5-MEMBERS-INSTITUTIONS.md) |
 | M6 | Complete — awaiting review | [M6-BILLING.md](./milestones/M6-BILLING.md) |
 | M7a | Complete — awaiting review | [M7-CMS-EVENTS-COMMITTEES-API.md](./milestones/M7-CMS-EVENTS-COMMITTEES-API.md) |
 | M7b | Complete — awaiting review | [M7-WEB.md](./milestones/M7-WEB.md) |

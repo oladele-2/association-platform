@@ -1,10 +1,14 @@
 import { describe, expect, it, vi } from 'vitest';
 import {
   AssertInstitutionAdminAccessUseCase,
+  AssertInstitutionPortalPermissionUseCase,
+  AssignInstitutionAdminUseCase,
   CreateInstitutionUseCase,
   LinkInstitutionMemberUseCase,
 } from './institution.use-cases';
 import type { InstitutionRepository } from './ports/institution.repository';
+import type { AuthorizationService } from '../../rbac/application/rbac.use-cases';
+import type { RbacRepository } from '../../rbac/application/ports/rbac.repository';
 
 describe('CreateInstitutionUseCase', () => {
   it('normalizes code and type', async () => {
@@ -59,6 +63,81 @@ describe('AssertInstitutionAdminAccessUseCase', () => {
     const usecase = new AssertInstitutionAdminAccessUseCase(repo);
     await expect(usecase.execute('o1', 'i1', 'u1')).rejects.toMatchObject({
       code: 'INSTITUTION_ADMIN_REQUIRED',
+    });
+  });
+});
+
+describe('AssertInstitutionPortalPermissionUseCase', () => {
+  it('requires institution_admins row then scoped permission', async () => {
+    const repo = {
+      findById: vi.fn().mockResolvedValue({ id: 'i1' }),
+      isInstitutionAdmin: vi.fn().mockResolvedValue(true),
+    } as unknown as InstitutionRepository;
+    const authz = {
+      assertPermissions: vi.fn().mockResolvedValue(undefined),
+    } as unknown as AuthorizationService;
+
+    const usecase = new AssertInstitutionPortalPermissionUseCase(
+      new AssertInstitutionAdminAccessUseCase(repo),
+      authz,
+    );
+    await usecase.execute({
+      organizationId: 'o1',
+      institutionId: 'i1',
+      userId: 'u1',
+      permissionKey: 'institutions.read',
+    });
+    expect(authz.assertPermissions).toHaveBeenCalledWith({
+      organizationId: 'o1',
+      userId: 'u1',
+      permissionKeys: ['institutions.read'],
+      scope: { scopeType: 'institution', scopeId: 'i1' },
+    });
+  });
+
+  it('denies when scoped permission fails', async () => {
+    const repo = {
+      findById: vi.fn().mockResolvedValue({ id: 'i1' }),
+      isInstitutionAdmin: vi.fn().mockResolvedValue(true),
+    } as unknown as InstitutionRepository;
+    const authz = {
+      assertPermissions: vi.fn().mockRejectedValue({ code: 'FORBIDDEN' }),
+    } as unknown as AuthorizationService;
+
+    const usecase = new AssertInstitutionPortalPermissionUseCase(
+      new AssertInstitutionAdminAccessUseCase(repo),
+      authz,
+    );
+    await expect(
+      usecase.execute({
+        organizationId: 'o1',
+        institutionId: 'i1',
+        userId: 'u1',
+        permissionKey: 'institutions.read',
+      }),
+    ).rejects.toMatchObject({ code: 'FORBIDDEN' });
+  });
+});
+
+describe('AssignInstitutionAdminUseCase', () => {
+  it('assigns table admin and scoped institution_admin role', async () => {
+    const repo = {
+      findById: vi.fn().mockResolvedValue({ id: 'i1' }),
+      assignAdmin: vi.fn().mockResolvedValue({ id: 'a1', userId: 'u1' }),
+    } as unknown as InstitutionRepository;
+    const rbac = {
+      listRoles: vi.fn().mockResolvedValue([{ id: 'role-ia', key: 'institution_admin' }]),
+      assignUserRole: vi.fn().mockResolvedValue({ id: 'ur1' }),
+    } as unknown as RbacRepository;
+
+    const usecase = new AssignInstitutionAdminUseCase(repo, rbac);
+    await usecase.execute({ organizationId: 'o1', institutionId: 'i1', userId: 'u1' });
+    expect(rbac.assignUserRole).toHaveBeenCalledWith({
+      organizationId: 'o1',
+      userId: 'u1',
+      roleId: 'role-ia',
+      scopeType: 'institution',
+      scopeId: 'i1',
     });
   });
 });

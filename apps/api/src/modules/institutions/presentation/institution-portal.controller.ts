@@ -16,31 +16,29 @@ import type { AuthenticatedRequestUser } from '../../identity/presentation/acces
 import { TenantGuard, TENANT_HEADER } from '../../tenancy/presentation/tenant.guard';
 import { CurrentTenant } from '../../tenancy/presentation/current-tenant.decorator';
 import type { TenantContext } from '../../tenancy/domain/tenant-context';
-import { PermissionsGuard } from '../../rbac/presentation/permissions.guard';
-import { RequirePermissions } from '../../rbac/presentation/require-permissions.decorator';
 import {
-  AssertInstitutionAdminAccessUseCase,
+  AssertInstitutionPortalPermissionUseCase,
   GetInstitutionUseCase,
   ListInstitutionMembersUseCase,
   ListMyInstitutionsUseCase,
   UpdateInstitutionUseCase,
 } from '../application/institution.use-cases';
-import { UpdateInstitutionDto } from './institution.dto';
+import { UpdateInstitutionPortalDto } from './institution.dto';
 
 /**
- * Institution-portal scoped routes. Caller must be listed on institution_admins
- * for the target institution (in addition to JWT + tenant).
+ * Institution-portal routes. Access = institution_admins row + scoped/org permission
+ * (AuthorizationService with institution scope — not org-level PermissionsGuard alone).
  */
 @ApiTags('institution-portal')
 @ApiBearerAuth()
 @ApiHeader({ name: TENANT_HEADER, required: false })
-@UseGuards(TenantGuard, AccessJwtGuard, PermissionsGuard)
+@UseGuards(TenantGuard, AccessJwtGuard)
 @UseFilters(DomainErrorFilter)
 @Controller('institutions')
 export class InstitutionPortalController {
   constructor(
     private readonly listMine: ListMyInstitutionsUseCase,
-    private readonly assertAdmin: AssertInstitutionAdminAccessUseCase,
+    private readonly assertPortal: AssertInstitutionPortalPermissionUseCase,
     private readonly getInstitution: GetInstitutionUseCase,
     private readonly updateInstitution: UpdateInstitutionUseCase,
     private readonly listMembers: ListInstitutionMembersUseCase,
@@ -53,25 +51,37 @@ export class InstitutionPortalController {
   }
 
   @Get(':id')
-  @RequirePermissions('institutions.read')
+  @ApiOperation({ summary: 'Get institution (institution admin + institutions.read scope)' })
   async get(
     @CurrentTenant() tenant: TenantContext,
     @CurrentAuthUser() auth: AuthenticatedRequestUser,
     @Param('id', ParseUUIDPipe) id: string,
   ) {
-    await this.assertAdmin.execute(tenant.organizationId, id, auth.userId);
+    await this.assertPortal.execute({
+      organizationId: tenant.organizationId,
+      institutionId: id,
+      userId: auth.userId,
+      permissionKey: 'institutions.read',
+    });
     return this.getInstitution.byId(tenant.organizationId, id);
   }
 
   @Patch(':id')
-  @RequirePermissions('institutions.write')
+  @ApiOperation({
+    summary: 'Update institution profile fields (institution admin + institutions.write scope)',
+  })
   async update(
     @CurrentTenant() tenant: TenantContext,
     @CurrentAuthUser() auth: AuthenticatedRequestUser,
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() body: UpdateInstitutionDto,
+    @Body() body: UpdateInstitutionPortalDto,
   ) {
-    await this.assertAdmin.execute(tenant.organizationId, id, auth.userId);
+    await this.assertPortal.execute({
+      organizationId: tenant.organizationId,
+      institutionId: id,
+      userId: auth.userId,
+      permissionKey: 'institutions.write',
+    });
     return this.updateInstitution.execute({
       organizationId: tenant.organizationId,
       id,
@@ -80,13 +90,20 @@ export class InstitutionPortalController {
   }
 
   @Get(':id/members')
-  @RequirePermissions('institution.members.manage')
+  @ApiOperation({
+    summary: 'List institution members (institution admin + institution.members.manage scope)',
+  })
   async members(
     @CurrentTenant() tenant: TenantContext,
     @CurrentAuthUser() auth: AuthenticatedRequestUser,
     @Param('id', ParseUUIDPipe) id: string,
   ) {
-    await this.assertAdmin.execute(tenant.organizationId, id, auth.userId);
+    await this.assertPortal.execute({
+      organizationId: tenant.organizationId,
+      institutionId: id,
+      userId: auth.userId,
+      permissionKey: 'institution.members.manage',
+    });
     return this.listMembers.execute(tenant.organizationId, id);
   }
 }

@@ -2,7 +2,9 @@ import { describe, expect, it, vi } from 'vitest';
 import {
   ActivateMemberUseCase,
   CreateMemberUseCase,
+  DeleteMemberUseCase,
   SetMemberExemptionUseCase,
+  SuspendMemberUseCase,
 } from './member.use-cases';
 import type { MemberRepository } from './ports/member.repository';
 
@@ -48,6 +50,39 @@ describe('ActivateMemberUseCase', () => {
         activatedAt: expect.any(Date),
       }),
     );
+  });
+
+  it('rejects already-active members', async () => {
+    const usecase = new ActivateMemberUseCase({
+      findMemberById: vi.fn().mockResolvedValue({ id: 'm1', status: 'active' }),
+      updateMember: vi.fn(),
+    } as unknown as MemberRepository);
+    await expect(usecase.execute('o1', 'm1')).rejects.toMatchObject({
+      code: 'MEMBER_ALREADY_ACTIVE',
+    });
+  });
+});
+
+describe('SuspendMemberUseCase', () => {
+  it('suspends active members', async () => {
+    const repo = {
+      findMemberById: vi.fn().mockResolvedValue({ id: 'm1', status: 'active' }),
+      updateMember: vi.fn().mockResolvedValue({ id: 'm1', status: 'suspended' }),
+    } as unknown as MemberRepository;
+    const usecase = new SuspendMemberUseCase(repo);
+    await expect(usecase.execute('o1', 'm1')).resolves.toMatchObject({ status: 'suspended' });
+  });
+});
+
+describe('DeleteMemberUseCase', () => {
+  it('soft-deletes existing members', async () => {
+    const repo = {
+      findMemberById: vi.fn().mockResolvedValue({ id: 'm1', status: 'active' }),
+      softDeleteMember: vi.fn().mockResolvedValue(undefined),
+    } as unknown as MemberRepository;
+    const usecase = new DeleteMemberUseCase(repo);
+    await expect(usecase.execute('o1', 'm1')).resolves.toEqual({ ok: true });
+    expect(repo.softDeleteMember).toHaveBeenCalledWith('o1', 'm1');
   });
 });
 

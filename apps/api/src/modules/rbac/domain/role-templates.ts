@@ -48,7 +48,13 @@ export const SYSTEM_ROLE_TEMPLATES: readonly RoleTemplate[] = [
   {
     key: 'institution_admin',
     name: 'Institution Administrator',
-    permissionKeys: ['members.read', 'institution.members.manage', 'payments.read'],
+    permissionKeys: [
+      'members.read',
+      'institutions.read',
+      'institutions.write',
+      'institution.members.manage',
+      'payments.read',
+    ],
   },
   {
     key: 'member',

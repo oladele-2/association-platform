@@ -8,6 +8,8 @@ import {
   type InstitutionOwnership,
 } from '../domain/institution.rules';
 import { INSTITUTION_REPOSITORY, type InstitutionRepository } from './ports/institution.repository';
+import { AuthorizationService } from '../../rbac/application/rbac.use-cases';
+import { RBAC_REPOSITORY, type RbacRepository } from '../../rbac/application/ports/rbac.repository';
 
 @Injectable()
 export class ListInstitutionsUseCase {
@@ -47,7 +49,7 @@ export class CreateInstitutionUseCase {
     address?: string | null;
     phone?: string | null;
     email?: string | null;
-    isAgpmpnMember?: boolean;
+    isNetworkAffiliate?: boolean;
     status?: string;
   }) {
     return this.repo.createInstitution({
@@ -75,7 +77,7 @@ export class UpdateInstitutionUseCase {
     address?: string | null;
     phone?: string | null;
     email?: string | null;
-    isAgpmpnMember?: boolean;
+    isNetworkAffiliate?: boolean;
     status?: string;
   }) {
     const existing = await this.repo.findById(input.organizationId, input.id);
@@ -101,7 +103,7 @@ export class UpdateInstitutionUseCase {
       address: input.address,
       phone: input.phone,
       email: input.email !== undefined ? (input.email?.trim().toLowerCase() ?? null) : undefined,
-      isAgpmpnMember: input.isAgpmpnMember,
+      isNetworkAffiliate: input.isNetworkAffiliate,
       status: input.status,
     });
   }
@@ -129,19 +131,63 @@ export class ListInstitutionAdminsUseCase {
 
 @Injectable()
 export class AssignInstitutionAdminUseCase {
-  constructor(@Inject(INSTITUTION_REPOSITORY) private readonly repo: InstitutionRepository) {}
+  constructor(
+    @Inject(INSTITUTION_REPOSITORY) private readonly repo: InstitutionRepository,
+    @Inject(RBAC_REPOSITORY) private readonly rbac: RbacRepository,
+  ) {}
   async execute(input: { organizationId: string; institutionId: string; userId: string }) {
     await assertInstitution(this.repo, input.organizationId, input.institutionId);
-    return this.repo.assignAdmin(input);
+    const admin = await this.repo.assignAdmin(input);
+
+    const roles = await this.rbac.listRoles(input.organizationId);
+    const institutionAdminRole = roles.find((r) => r.key === 'institution_admin');
+    if (institutionAdminRole) {
+      try {
+        await this.rbac.assignUserRole({
+          organizationId: input.organizationId,
+          userId: input.userId,
+          roleId: institutionAdminRole.id,
+          scopeType: 'institution',
+          scopeId: input.institutionId,
+        });
+      } catch (err) {
+        if (!(err instanceof DomainError && err.code === 'ROLE_ALREADY_ASSIGNED')) {
+          throw err;
+        }
+      }
+    }
+
+    return admin;
   }
 }
 
 @Injectable()
 export class RevokeInstitutionAdminUseCase {
-  constructor(@Inject(INSTITUTION_REPOSITORY) private readonly repo: InstitutionRepository) {}
+  constructor(
+    @Inject(INSTITUTION_REPOSITORY) private readonly repo: InstitutionRepository,
+    @Inject(RBAC_REPOSITORY) private readonly rbac: RbacRepository,
+  ) {}
   async execute(organizationId: string, institutionId: string, adminId: string) {
     await assertInstitution(this.repo, organizationId, institutionId);
+    const admins = await this.repo.listAdmins(organizationId, institutionId);
+    const target = admins.find((a) => a.id === adminId);
+    if (!target) {
+      throw new DomainError('INSTITUTION_ADMIN_NOT_FOUND', 'Institution admin not found');
+    }
+
     await this.repo.revokeAdmin(organizationId, institutionId, adminId);
+
+    const assignments = await this.rbac.listUserRoles(organizationId, target.userId);
+    for (const assignment of assignments) {
+      if (
+        assignment.roleKey === 'institution_admin' &&
+        assignment.scopeType === 'institution' &&
+        assignment.scopeId === institutionId
+      ) {
+        await this.rbac.revokeUserRole(organizationId, target.userId, assignment.id);
+      }
+    }
+
     return { ok: true as const };
   }
 }
@@ -241,6 +287,33 @@ export class AssertInstitutionAdminAccessUseCase {
     if (!ok) {
       throw new DomainError('INSTITUTION_ADMIN_REQUIRED', 'Not an admin of this institution');
     }
+  }
+}
+
+/**
+ * Portal access: must be listed on institution_admins AND hold the permission
+ * as an org-wide grant or an institution-scoped grant for this institution.
+ */
+@Injectable()
+export class AssertInstitutionPortalPermissionUseCase {
+  constructor(
+    private readonly assertAdmin: AssertInstitutionAdminAccessUseCase,
+    private readonly authz: AuthorizationService,
+  ) {}
+
+  async execute(input: {
+    organizationId: string;
+    institutionId: string;
+    userId: string;
+    permissionKey: string;
+  }) {
+    await this.assertAdmin.execute(input.organizationId, input.institutionId, input.userId);
+    await this.authz.assertPermissions({
+      organizationId: input.organizationId,
+      userId: input.userId,
+      permissionKeys: [input.permissionKey],
+      scope: { scopeType: 'institution', scopeId: input.institutionId },
+    });
   }
 }
 

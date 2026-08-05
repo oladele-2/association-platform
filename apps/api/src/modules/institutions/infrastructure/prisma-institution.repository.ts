@@ -74,7 +74,7 @@ export class PrismaInstitutionRepository implements InstitutionRepository {
     address?: string | null;
     phone?: string | null;
     email?: string | null;
-    isAgpmpnMember?: boolean;
+    isNetworkAffiliate?: boolean;
     status?: string;
   }) {
     return this.prisma.asTenant(input.organizationId, async (tx) => {
@@ -90,7 +90,7 @@ export class PrismaInstitutionRepository implements InstitutionRepository {
           address: input.address ?? null,
           phone: input.phone ?? null,
           email: input.email ?? null,
-          isAgpmpnMember: input.isAgpmpnMember ?? false,
+          isNetworkAffiliate: input.isNetworkAffiliate ?? false,
           status: input.status ?? 'active',
         },
       });
@@ -110,7 +110,7 @@ export class PrismaInstitutionRepository implements InstitutionRepository {
     address?: string | null;
     phone?: string | null;
     email?: string | null;
-    isAgpmpnMember?: boolean;
+    isNetworkAffiliate?: boolean;
     status?: string;
   }) {
     return this.prisma.asTenant(input.organizationId, async (tx) => {
@@ -128,7 +128,9 @@ export class PrismaInstitutionRepository implements InstitutionRepository {
           ...(input.address !== undefined ? { address: input.address } : {}),
           ...(input.phone !== undefined ? { phone: input.phone } : {}),
           ...(input.email !== undefined ? { email: input.email } : {}),
-          ...(input.isAgpmpnMember !== undefined ? { isAgpmpnMember: input.isAgpmpnMember } : {}),
+          ...(input.isNetworkAffiliate !== undefined
+            ? { isNetworkAffiliate: input.isNetworkAffiliate }
+            : {}),
           ...(input.status !== undefined ? { status: input.status } : {}),
         },
       });
@@ -348,11 +350,22 @@ export class PrismaInstitutionRepository implements InstitutionRepository {
 
   async unlinkMember(organizationId: string, institutionId: string, linkId: string) {
     await this.prisma.asTenant(organizationId, async (tx) => {
-      const result = await tx.institutionMember.deleteMany({
+      const link = await tx.institutionMember.findFirst({
         where: { id: linkId, organizationId, institutionId },
       });
-      if (result.count === 0) {
+      if (!link) {
         throw new DomainError('INSTITUTION_LINK_NOT_FOUND', 'Institution member link not found');
+      }
+      await tx.institutionMember.delete({ where: { id: link.id } });
+      if (link.isPrimary) {
+        await tx.member.updateMany({
+          where: {
+            id: link.memberId,
+            organizationId,
+            primaryInstitutionId: institutionId,
+          },
+          data: { primaryInstitutionId: null },
+        });
       }
     });
   }
@@ -380,7 +393,7 @@ function mapInstitution(row: {
   address: string | null;
   phone: string | null;
   email: string | null;
-  isAgpmpnMember: boolean;
+  isNetworkAffiliate: boolean;
   status: string;
   createdAt: Date;
   updatedAt: Date;
@@ -397,7 +410,7 @@ function mapInstitution(row: {
     address: row.address,
     phone: row.phone,
     email: row.email,
-    isAgpmpnMember: row.isAgpmpnMember,
+    isNetworkAffiliate: row.isNetworkAffiliate,
     status: row.status,
     createdAt: row.createdAt.toISOString(),
     updatedAt: row.updatedAt.toISOString(),

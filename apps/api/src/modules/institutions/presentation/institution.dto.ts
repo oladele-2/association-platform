@@ -50,10 +50,13 @@ export class CreateInstitutionDto {
   @IsEmail()
   email?: string | null;
 
-  @ApiPropertyOptional()
+  @ApiPropertyOptional({
+    description:
+      'Whether the institution is affiliated with a partner/network body (tenant-agnostic)',
+  })
   @IsOptional()
   @IsBoolean()
-  isAgpmpnMember?: boolean;
+  isNetworkAffiliate?: boolean;
 
   @ApiPropertyOptional()
   @IsOptional()
@@ -109,15 +112,51 @@ export class UpdateInstitutionDto {
   @IsEmail()
   email?: string | null;
 
-  @ApiPropertyOptional()
+  @ApiPropertyOptional({
+    description:
+      'Whether the institution is affiliated with a partner/network body (tenant-agnostic)',
+  })
   @IsOptional()
   @IsBoolean()
-  isAgpmpnMember?: boolean;
+  isNetworkAffiliate?: boolean;
 
   @ApiPropertyOptional()
   @IsOptional()
   @IsString()
   status?: string;
+}
+
+export class UpdateInstitutionPortalDto {
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  @MinLength(2)
+  name?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  state?: string | null;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  lga?: string | null;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  address?: string | null;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  phone?: string | null;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsEmail()
+  email?: string | null;
 }
 
 export class AssignInstitutionAdminDto {

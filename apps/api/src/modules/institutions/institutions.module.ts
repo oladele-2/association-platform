@@ -5,6 +5,7 @@ import { RbacModule } from '../rbac/rbac.module';
 import { INSTITUTION_REPOSITORY } from './application/ports/institution.repository';
 import {
   AssertInstitutionAdminAccessUseCase,
+  AssertInstitutionPortalPermissionUseCase,
   AssignInstitutionAdminUseCase,
   CreateInstitutionUseCase,
   DeleteInstitutionUseCase,
@@ -42,6 +43,7 @@ import { InstitutionPortalController } from './presentation/institution-portal.c
     UnlinkInstitutionMemberUseCase,
     ListMyInstitutionsUseCase,
     AssertInstitutionAdminAccessUseCase,
+    AssertInstitutionPortalPermissionUseCase,
   ],
   exports: [INSTITUTION_REPOSITORY, AssertInstitutionAdminAccessUseCase],
 })

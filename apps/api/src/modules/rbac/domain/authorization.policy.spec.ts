@@ -96,4 +96,16 @@ describe('role templates', () => {
       }
     }
   });
+
+  it('gives institution_admin institutions.read/write for portal scope checks', () => {
+    const ia = SYSTEM_ROLE_TEMPLATES.find((t) => t.key === 'institution_admin')!;
+    const keys = resolveTemplatePermissionKeys(ia);
+    expect(keys).toEqual(
+      expect.arrayContaining([
+        'institutions.read',
+        'institutions.write',
+        'institution.members.manage',
+      ]),
+    );
+  });
 });

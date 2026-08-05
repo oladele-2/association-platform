@@ -12,7 +12,7 @@ export type InstitutionView = {
   address: string | null;
   phone: string | null;
   email: string | null;
-  isAgpmpnMember: boolean;
+  isNetworkAffiliate: boolean;
   status: string;
   createdAt: string;
   updatedAt: string;
@@ -60,7 +60,7 @@ export interface InstitutionRepository {
     address?: string | null;
     phone?: string | null;
     email?: string | null;
-    isAgpmpnMember?: boolean;
+    isNetworkAffiliate?: boolean;
     status?: string;
   }): Promise<InstitutionView>;
 
@@ -76,7 +76,7 @@ export interface InstitutionRepository {
     address?: string | null;
     phone?: string | null;
     email?: string | null;
-    isAgpmpnMember?: boolean;
+    isNetworkAffiliate?: boolean;
     status?: string;
   }): Promise<InstitutionView>;
 

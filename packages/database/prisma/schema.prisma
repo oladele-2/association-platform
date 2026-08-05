@@ -1,7 +1,7 @@
 // Association Management Platform — Prisma Schema
 // Source of truth mirrored from docs/database/schema.prisma (approved).
 // PostgreSQL 16+ | Shared schema + RLS (see docs/database/rls_and_partial_indexes.sql)
-// Partial unique indexes / RLS applied via raw SQL migrations (Milestone 2).
+// Partial unique indexes / RLS applied via raw SQL migrations (Milestone 1).
 
 generator client {
   provider        = "prisma-client-js"
@@ -9,8 +9,9 @@ generator client {
 }
 
 datasource db {
-  provider   = "postgresql"
-  url        = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL_UNPOOLED")
   extensions = [pgcrypto, citext]
 }
 

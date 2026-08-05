@@ -1,20 +1,3 @@
-import { PrismaClient } from '@prisma/client';
-
-export { PrismaClient };
+export { PrismaClient } from '@prisma/client';
 export * from '@prisma/client';
-
-/**
- * Factory for a PrismaClient. Tenant RLS session vars are applied in Milestone 2/3
- * via interactive transactions (SET LOCAL app.organization_id).
- */
-export function createPrismaClient(databaseUrl?: string): PrismaClient {
-  return new PrismaClient(
-    databaseUrl
-      ? {
-          datasources: {
-            db: { url: databaseUrl },
-          },
-        }
-      : undefined,
-  );
-}
+export { createPrismaClient } from './create-prisma-client';

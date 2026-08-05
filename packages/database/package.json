@@ -7,18 +7,25 @@
   "scripts": {
     "build": "prisma generate && tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "prisma validate",
-    "clean": "rimraf dist src/generated",
+    "lint": "eslint \"src/**/*.ts\" --max-warnings=0",
+    "test": "prisma validate && vitest run",
+    "clean": "rimraf dist",
     "prisma:generate": "prisma generate",
     "prisma:validate": "prisma validate",
+    "prisma:migrate:deploy": "prisma migrate deploy",
+    "prisma:migrate:status": "prisma migrate status",
     "prisma:format": "prisma format"
   },
   "dependencies": {
     "@prisma/client": "^6.1.0"
   },
   "devDependencies": {
+    "@association/eslint-config": "workspace:*",
     "@association/typescript-config": "workspace:*",
+    "eslint": "^9.17.0",
+    "pg": "^8.22.0",
     "prisma": "^6.1.0",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
   }
 }

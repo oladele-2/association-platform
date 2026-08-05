@@ -7,7 +7,7 @@ export class HealthService {
     return {
       status: 'ok' as const,
       service: APP_NAME,
-      milestone: 1,
+      milestone: 0,
     };
   }
 }

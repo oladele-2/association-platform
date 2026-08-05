@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactForm from '../components/ContactForm';
+import { tenant } from '../config/tenant';
+---
+
+<BaseLayout
+  title="Contact"
+  description={`Contact ${tenant.displayName}.`}
+  path="/contact"
+>
+  <section class="page-hero">
+    <div class="container">
+      <span class="section__eyebrow">Reach us</span>
+      <h1>Contact</h1>
+      <p class="section__lead">
+        {tenant.address}. Email <a href={`mailto:${tenant.email}`}>{tenant.email}</a> or use the form
+        below.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container split">
+      <div>
+        <ContactForm client:load />
+      </div>
+      <div class="media-plane">
+        <img
+          src={tenant.images.hero}
+          alt="Doctors' House, Abeokuta"
+          width="900"
+          height="720"
+          loading="lazy"
+        />
+      </div>
+    </div>
+  </section>
+</BaseLayout>

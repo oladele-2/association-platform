@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getAllNews } from '../../lib/api';
+
+const news = await getAllNews();
+
+function formatDate(iso: string) {
+  try {
+    return new Date(iso).toLocaleDateString('en-NG', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+    });
+  } catch {
+    return iso;
+  }
+}
+---
+
+<BaseLayout title="News" description="News and notices from NMA Ogun." path="/news">
+  <section class="page-hero">
+    <div class="container">
+      <span class="section__eyebrow">Updates</span>
+      <h1>News</h1>
+      <p class="section__lead">Circulars, programmes, and stories from the branch.</p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container list-stack">
+      {
+        news.map((item) => (
+          <a class="list-item" href={`/news/${item.slug}`}>
+            <div class="list-item__media">
+              <img src={item.cover} alt="" width="440" height="280" loading="lazy" />
+            </div>
+            <div>
+              <div class="list-item__meta">{formatDate(item.publishedAt)}</div>
+              <h2 class="list-item__title">{item.title}</h2>
+              <p class="list-item__excerpt">{item.excerpt}</p>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>

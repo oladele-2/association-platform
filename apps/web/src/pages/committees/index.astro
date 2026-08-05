@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCommittees } from '../../lib/api';
+
+const committees = await getCommittees();
+---
+
+<BaseLayout
+  title="Committees"
+  description="Standing committees of NMA Ogun State Branch."
+  path="/committees"
+>
+  <section class="page-hero">
+    <div class="container">
+      <span class="section__eyebrow">Structure</span>
+      <h1>Committees</h1>
+      <p class="section__lead">Where specialist work of the branch gets done.</p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container list-stack">
+      {
+        committees.map((c) => (
+          <a class="list-item" href={`/committees/${c.slug}`}>
+            <div>
+              <h2 class="list-item__title">{c.name}</h2>
+              <p class="list-item__excerpt">{c.description}</p>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>

@@ -14,3 +14,12 @@ packages/database/src/generated
 .idea
 .vscode/*
 !.vscode/extensions.json
+.cursor/
+apps/web/.astro/
+apps/web/dist/
+apps/portal/dist/
+apps/platform/dist/
+mobile/.dart_tool/
+mobile/build/
+mobile/.flutter-plugins
+mobile/.flutter-plugins-dependencies

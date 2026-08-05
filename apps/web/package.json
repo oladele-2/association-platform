@@ -2,9 +2,26 @@
   "name": "@association/web",
   "version": "0.0.1",
   "private": true,
+  "type": "module",
   "scripts": {
-    "build": "node -e \"console.log('web: stub — Astro app starts in Milestone 8')\"",
-    "test": "node -e \"console.log('web: no tests yet')\"",
-    "dev": "node -e \"console.log('web: stub')\""
+    "dev": "astro dev --port 4321",
+    "build": "astro build",
+    "preview": "astro preview --port 4321",
+    "lint": "astro check",
+    "test": "node -e \"console.log('web: smoke — astro config present')\"",
+    "typecheck": "astro check",
+    "clean": "rimraf dist .astro"
+  },
+  "dependencies": {
+    "@astrojs/react": "^6.0.2",
+    "astro": "^7.1.6",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "typescript": "^5.9.3"
   }
 }

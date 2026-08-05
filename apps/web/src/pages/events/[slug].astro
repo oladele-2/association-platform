@@ -1,0 +1,61 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { demoEvents } from '../../data/demo';
+import { getAllEvents, getEventBySlug } from '../../lib/api';
+
+export async function getStaticPaths() {
+  const all = await getAllEvents();
+  const slugs = new Set([...all.map((e) => e.slug), ...demoEvents.map((e) => e.slug)]);
+  return [...slugs].filter(Boolean).map((slug) => ({ params: { slug } }));
+}
+
+const { slug } = Astro.params;
+const event = slug ? await getEventBySlug(slug) : null;
+
+if (!event) {
+  return Astro.redirect('/events');
+}
+
+function formatDate(iso: string) {
+  try {
+    return new Date(iso).toLocaleString('en-NG', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  } catch {
+    return iso;
+  }
+}
+---
+
+<BaseLayout title={event.title} description={event.excerpt} path={`/events/${event.slug}`}>
+  <section class="page-hero">
+    <div class="container">
+      <span class="section__eyebrow">Event</span>
+      <h1>{event.title}</h1>
+      <p class="section__lead">
+        {formatDate(event.startsAt)} · {event.venue}
+      </p>
+      <p><a href="/events">← All events</a></p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container" style="max-width: 760px;">
+      <div class="media-plane" style="margin-bottom: 2rem;">
+        <img src={event.cover} alt="" width="1200" height="720" loading="lazy" />
+      </div>
+      <div class="prose">
+        <p>{event.excerpt}</p>
+        <p>
+          Members can register or RSVP from the
+          <a href={import.meta.env.PUBLIC_PORTAL_URL ?? 'http://localhost:5173'}>members portal</a>
+          when the event is published there.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getAllEvents } from '../../lib/api';
+
+const events = await getAllEvents();
+
+function formatDate(iso: string) {
+  try {
+    return new Date(iso).toLocaleDateString('en-NG', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+    });
+  } catch {
+    return iso;
+  }
+}
+---
+
+<BaseLayout title="Events" description="Upcoming NMA Ogun events." path="/events">
+  <section class="page-hero">
+    <div class="container">
+      <span class="section__eyebrow">Calendar</span>
+      <h1>Events</h1>
+      <p class="section__lead">Meetings, CME programmes, and branch gatherings.</p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container list-stack">
+      {
+        events.map((ev) => (
+          <a class="list-item" href={`/events/${ev.slug}`}>
+            <div class="list-item__media">
+              <img src={ev.cover} alt="" width="440" height="280" loading="lazy" />
+            </div>
+            <div>
+              <div class="list-item__meta">
+                {formatDate(ev.startsAt)} · {ev.venue}
+              </div>
+              <h2 class="list-item__title">{ev.title}</h2>
+              <p class="list-item__excerpt">{ev.excerpt}</p>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>

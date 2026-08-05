@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { demoGallery } from '../data/demo';
+---
+
+<BaseLayout
+  title="Gallery"
+  description="Photos from NMA Ogun State Branch activities."
+  path="/gallery"
+>
+  <section class="page-hero">
+    <div class="container">
+      <span class="section__eyebrow">Moments</span>
+      <h1>Gallery</h1>
+      <p class="section__lead">From Doctors' House, meetings, and branch programmes.</p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container gallery-grid">
+      {
+        demoGallery.map((g) => (
+          <figure>
+            <img src={g.src} alt={g.alt} width="800" height="600" loading="lazy" />
+          </figure>
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>

@@ -7,11 +7,14 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint \"src/**/*.ts\" --max-warnings=0",
     "test": "node -e \"console.log('shared: no tests yet')\"",
     "clean": "rimraf dist"
   },
   "devDependencies": {
+    "@association/eslint-config": "workspace:*",
     "@association/typescript-config": "workspace:*",
+    "eslint": "^9.17.0",
     "typescript": "^5.7.2"
   }
 }

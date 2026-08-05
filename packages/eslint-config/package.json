@@ -1,0 +1,14 @@
+{
+  "name": "@association/eslint-config",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./base": "./base.js",
+    "./nestjs": "./nestjs.js"
+  },
+  "dependencies": {
+    "@eslint/js": "^9.17.0",
+    "typescript-eslint": "^8.18.2"
+  }
+}

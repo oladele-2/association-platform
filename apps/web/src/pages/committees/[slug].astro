@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { demoCommittees } from '../../data/demo';
+import { getCommitteeBySlug, getCommittees } from '../../lib/api';
+
+export async function getStaticPaths() {
+  const all = await getCommittees();
+  const slugs = new Set([...all.map((c) => c.slug), ...demoCommittees.map((c) => c.slug)]);
+  return [...slugs].map((slug) => ({ params: { slug } }));
+}
+
+const { slug } = Astro.params;
+const committee = slug ? await getCommitteeBySlug(slug) : null;
+
+if (!committee) {
+  return Astro.redirect('/committees');
+}
+---
+
+<BaseLayout
+  title={committee.name}
+  description={committee.description}
+  path={`/committees/${committee.slug}`}
+>
+  <section class="page-hero">
+    <div class="container">
+      <span class="section__eyebrow">Committee</span>
+      <h1>{committee.name}</h1>
+      <p class="section__lead">{committee.description}</p>
+      <p><a href="/committees">← All committees</a></p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container prose">
+      <p>
+        Membership of this committee is managed in the members portal. Public roster details can be
+        published here from the CMS when available.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

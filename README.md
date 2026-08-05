@@ -1,45 +1,46 @@
 # Association Management Platform
 
-Multi-tenant Association Management Platform (Ajir).  
-Architecture, database, and functional specs live under [`docs/`](./docs/).
+Multi-tenant **Association Management Platform** by Ajir.
 
-## Milestone-based development
+| Doc | Purpose |
+|---|---|
+| [PROJECT_VISION.md](./PROJECT_VISION.md) | Why we build this |
+| [ARCHITECTURE.md](./ARCHITECTURE.md) | System shape, stack, DDD |
+| [CODING_STANDARDS.md](./CODING_STANDARDS.md) | Coding rules |
+| [CONTRIBUTING.md](./CONTRIBUTING.md) | Setup and PRs |
+| [SECURITY.md](./SECURITY.md) | Security posture |
+| [ROADMAP.md](./ROADMAP.md) | Milestones |
+| [CURSOR_RULES.md](./CURSOR_RULES.md) | AI agent rules |
+| [docs/](./docs/) | Specs, ADRs, milestone reports |
 
-See [`docs/MILESTONES.md`](./docs/MILESTONES.md). Implement one milestone at a time; each must compile, pass tests, and be reviewed before the next.
+## Current status
 
-**Current:** Milestone 1 — Foundation (monorepo, shared kernel, database package).
-
-## Prerequisites
-
-- Node.js 22+ (20+ may work)
-- pnpm 9+
-- PostgreSQL 16+ (required from Milestone 2 for migrations)
-
-## Quick start (Milestone 1)
+**Milestone 0 (Foundation)** — complete, awaiting review.  
+See [docs/milestones/M0-FOUNDATION.md](./docs/milestones/M0-FOUNDATION.md).
 
 ```bash
 pnpm install
+pnpm docker:up    # Postgres + Redis locally
+pnpm lint
 pnpm build
 pnpm test
 ```
 
-## Workspace layout
+## Prerequisites
 
-```
-apps/
-  api/       NestJS API (DDD modular monolith)
-  web/       Astro public site (stub until CMS milestone)
-  portal/    React tenant portal (stub)
-  platform/  React Platform Operator console (stub)
-packages/
-  database/      Prisma schema + client
-  shared-kernel/ Domain primitives (OrganizationId, Money, Result, DomainEvent)
-  shared/        Cross-app constants / Zod (grows later)
-  typescript-config/
-  eslint-config/
+- Node.js 20+ (22 recommended)
+- pnpm 9+
+- Docker (for local Postgres/Redis)
+- Optional: Neon `DATABASE_URL` / `DATABASE_URL_UNPOOLED` in `.env`
+
+## Workspace
+
+```text
+apps/api|web|portal|platform
+packages/database|shared-kernel|shared|typescript-config|eslint-config
 docs/
-  database/
-  specs/
+.github/workflows/ci.yml
+docker-compose.yml
 ```
 
 ## License

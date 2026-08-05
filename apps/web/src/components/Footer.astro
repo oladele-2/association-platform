@@ -1,0 +1,27 @@
+---
+import { tenant } from '../config/tenant';
+---
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <div class="footer-brand">NMA Ogun</div>
+      <p>{tenant.legalName}</p>
+      <p>{tenant.address}</p>
+    </div>
+    <div>
+      <p><strong>Contact</strong></p>
+      <p><a href={`mailto:${tenant.email}`}>{tenant.email}</a></p>
+      <p><a href={`tel:${tenant.phone.replace(/\s/g, '')}`}>{tenant.phone}</a></p>
+    </div>
+    <div>
+      <p><strong>Explore</strong></p>
+      <p><a href="/about">About the branch</a></p>
+      <p><a href="/events">Upcoming events</a></p>
+      <p><a href={tenant.portalUrl}>Members portal</a></p>
+    </div>
+  </div>
+  <div class="container footer-copy">
+    © {new Date().getFullYear()} {tenant.legalName}. Powered by Ajir Association Platform.
+  </div>
+</footer>

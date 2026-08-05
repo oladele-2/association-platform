@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { demoNews } from '../../data/demo';
+import { getAllNews, getNewsBySlug } from '../../lib/api';
+
+export async function getStaticPaths() {
+  const all = await getAllNews();
+  const slugs = new Set([...all.map((n) => n.slug), ...demoNews.map((n) => n.slug)]);
+  return [...slugs].filter(Boolean).map((slug) => ({ params: { slug } }));
+}
+
+const { slug } = Astro.params;
+const item = slug ? await getNewsBySlug(slug) : null;
+
+if (!item) {
+  return Astro.redirect('/news');
+}
+
+function formatDate(iso: string) {
+  try {
+    return new Date(iso).toLocaleDateString('en-NG', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    });
+  } catch {
+    return iso;
+  }
+}
+---
+
+<BaseLayout title={item.title} description={item.excerpt} path={`/news/${item.slug}`}>
+  <section class="page-hero">
+    <div class="container">
+      <span class="section__eyebrow">{formatDate(item.publishedAt)}</span>
+      <h1>{item.title}</h1>
+      <p class="section__lead">{item.excerpt}</p>
+      <p><a href="/news">← All news</a></p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container" style="max-width: 760px;">
+      <div class="media-plane" style="margin-bottom: 2rem;">
+        <img src={item.cover} alt="" width="1200" height="720" loading="lazy" />
+      </div>
+      <div class="prose">
+        {item.body.split(/\n\n+/).map((para) => <p>{para}</p>)}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

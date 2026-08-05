@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { demoDownloads } from '../data/demo';
+---
+
+<BaseLayout
+  title="Downloads"
+  description="Public documents from NMA Ogun State Branch."
+  path="/downloads"
+>
+  <section class="page-hero">
+    <div class="container">
+      <span class="section__eyebrow">Resources</span>
+      <h1>Downloads</h1>
+      <p class="section__lead">
+        Public leaflets and programmes. Replace placeholders with CMS-published files when ready.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container list-stack">
+      {
+        demoDownloads.map((doc) => (
+          <div class="list-item" style="grid-template-columns: 1fr;">
+            <div>
+              <h2 class="list-item__title">{doc.title}</h2>
+              <p class="list-item__excerpt">{doc.note}</p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>

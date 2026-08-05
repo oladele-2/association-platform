@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { tenant } from '../config/tenant';
+---
+
+<BaseLayout
+  title="About"
+  description={`About ${tenant.legalName} — vision, mission, and values.`}
+  path="/about"
+>
+  <section class="page-hero">
+    <div class="container">
+      <span class="section__eyebrow">About</span>
+      <h1>{tenant.legalName}</h1>
+      <p class="section__lead">
+        A state branch of the Nigerian Medical Association, rooted at Doctors' House in Abeokuta.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container split">
+      <div>
+        <h2>Vision</h2>
+        <p class="prose">{tenant.vision}</p>
+        <h2 style="margin-top: 2rem;">Mission</h2>
+        <p class="prose">{tenant.mission}</p>
+        <h2 style="margin-top: 2rem;">Core values</h2>
+        <ul class="values">
+          {tenant.values.map((v) => <li>{v}</li>)}
+        </ul>
+      </div>
+      <div>
+        <div class="media-plane" style="margin-bottom: 1.25rem;">
+          <img
+            src={tenant.images.vision}
+            alt="NMA Ogun vision and mission plaque"
+            width="800"
+            height="1000"
+            loading="lazy"
+          />
+        </div>
+        <div class="media-plane">
+          <img
+            src={tenant.images.meeting}
+            alt="NMA Ogun members in session"
+            width="900"
+            height="600"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

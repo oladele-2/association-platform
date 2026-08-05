@@ -1,0 +1,121 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { tenant } from '../config/tenant';
+import { getLatestNews, getUpcomingEvents } from '../lib/api';
+
+const news = await getLatestNews(3);
+const events = await getUpcomingEvents(2);
+
+function formatDate(iso: string) {
+  try {
+    return new Date(iso).toLocaleDateString('en-NG', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+    });
+  } catch {
+    return iso;
+  }
+}
+---
+
+<BaseLayout title={tenant.displayName} description={tenant.tagline} path="/">
+  <section class="hero" aria-label="Welcome">
+    <div class="hero__media">
+      <img
+        src={tenant.images.hero}
+        alt="Doctors' House, NMA Ogun State secretariat in Abeokuta"
+        width="1600"
+        height="1000"
+        fetchpriority="high"
+      />
+    </div>
+    <div class="hero__content">
+      <h1 class="hero__brand">NMA Ogun</h1>
+      <p class="hero__headline">The professional home of doctors in Ogun State.</p>
+      <p class="hero__support">{tenant.tagline}</p>
+      <div class="btn-row">
+        <a class="btn btn--primary" href={tenant.portalUrl}>Members portal</a>
+        <a class="btn btn--ghost" href="/about">About the branch</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container split">
+      <div class="reveal">
+        <span class="section__eyebrow">Who we are</span>
+        <h2 class="section__title">Serving members. Strengthening care.</h2>
+        <p class="section__lead prose">{tenant.mission}</p>
+        <div class="btn-row">
+          <a class="btn btn--outline" href="/about">Vision &amp; values</a>
+          <a class="btn btn--outline" href="/executives">Meet leadership</a>
+        </div>
+      </div>
+      <div class="media-plane reveal">
+        <img
+          src={tenant.images.about}
+          alt="NMA Ogun Doctors' House exterior"
+          width="900"
+          height="720"
+          loading="lazy"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <span class="section__eyebrow">News</span>
+      <h2 class="section__title">From the secretariat</h2>
+      <p class="section__lead">Branch updates, programmes, and notices.</p>
+      <div class="list-stack" style="margin-top: 2rem;">
+        {
+          news.map((item) => (
+            <a class="list-item" href={`/news/${item.slug}`}>
+              <div class="list-item__media">
+                <img src={item.cover} alt="" width="440" height="280" loading="lazy" />
+              </div>
+              <div>
+                <div class="list-item__meta">{formatDate(item.publishedAt)}</div>
+                <h3 class="list-item__title">{item.title}</h3>
+                <p class="list-item__excerpt">{item.excerpt}</p>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+      <p style="margin-top: 1.5rem;">
+        <a href="/news">All news →</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="band">
+        <span class="section__eyebrow" style="color: rgba(255,255,255,0.75);">Events</span>
+        <h2 class="section__title" style="color: white; max-width: none;">Gatherings that move the branch forward</h2>
+        <div class="list-stack" style="margin-top: 1.5rem;">
+          {
+            events.map((ev) => (
+              <a class="list-item" href={`/events/${ev.slug}`} style="border-color: rgba(255,255,255,0.2);">
+                <div class="list-item__media">
+                  <img src={ev.cover} alt="" width="440" height="280" loading="lazy" />
+                </div>
+                <div>
+                  <div class="list-item__meta" style="color: #f7c9d0;">{formatDate(ev.startsAt)} · {ev.venue}</div>
+                  <h3 class="list-item__title" style="color: white;">{ev.title}</h3>
+                  <p class="list-item__excerpt" style="color: rgba(255,255,255,0.8);">{ev.excerpt}</p>
+                </div>
+              </a>
+            ))
+          }
+        </div>
+        <p style="margin-top: 1.25rem;">
+          <a href="/events" style="color: white;">Full calendar →</a>
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

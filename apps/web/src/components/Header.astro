@@ -1,0 +1,80 @@
+---
+import { tenant } from '../config/tenant';
+
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+
+const links = [
+  { href: '/', label: 'Home' },
+  { href: '/about', label: 'About' },
+  { href: '/executives', label: 'Executives' },
+  { href: '/committees', label: 'Committees' },
+  { href: '/news', label: 'News' },
+  { href: '/events', label: 'Events' },
+  { href: '/gallery', label: 'Gallery' },
+  { href: '/downloads', label: 'Downloads' },
+  { href: '/contact', label: 'Contact' },
+];
+
+function isCurrent(href: string) {
+  if (href === '/') return currentPath === '/';
+  return currentPath === href || currentPath.startsWith(`${href}/`);
+}
+---
+
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="brand" href="/">
+      <img
+        class="brand__mark"
+        src={tenant.images.logo}
+        alt={`${tenant.displayName} crest`}
+        width="44"
+        height="44"
+      />
+      <span class="brand__text">
+        <span class="brand__name">NMA Ogun</span>
+        <span class="brand__sub">State Branch</span>
+      </span>
+    </a>
+
+    <nav class="nav" aria-label="Primary">
+      {
+        links.map((link) => (
+          <a href={link.href} aria-current={isCurrent(link.href) ? 'page' : undefined}>
+            {link.label}
+          </a>
+        ))
+      }
+      <a class="btn btn--primary nav__cta" href={tenant.portalUrl}>Members portal</a>
+    </nav>
+
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav" id="nav-toggle">
+      Menu
+    </button>
+  </div>
+
+  <div class="mobile-nav" id="mobile-nav" hidden>
+    {
+      links.map((link) => (
+        <a href={link.href} aria-current={isCurrent(link.href) ? 'page' : undefined}>
+          {link.label}
+        </a>
+      ))
+    }
+    <a class="btn btn--primary" href={tenant.portalUrl}>Members portal</a>
+  </div>
+</header>
+
+<script>
+  const toggle = document.getElementById('nav-toggle');
+  const panel = document.getElementById('mobile-nav');
+  toggle?.addEventListener('click', () => {
+    const open = panel?.classList.toggle('is-open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (panel) panel.hidden = !open;
+  });
+</script>

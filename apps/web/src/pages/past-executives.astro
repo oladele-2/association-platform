@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getPastExecutives } from '../lib/api';
+
+const past = await getPastExecutives();
+---
+
+<BaseLayout
+  title="Past executives"
+  description="Former executive officers of NMA Ogun State Branch."
+  path="/past-executives"
+>
+  <section class="page-hero">
+    <div class="container">
+      <span class="section__eyebrow">Leadership history</span>
+      <h1>Past executives</h1>
+      <p class="section__lead">
+        Honouring those who have served the branch. Records will grow as CMS content is added.
+      </p>
+      <p><a href="/executives">Current executives →</a></p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container people">
+      {
+        past.map((person) => (
+          <article class="person">
+            <div class="person__photo">
+              <img src={person.photo} alt={person.name} width="440" height="550" loading="lazy" />
+            </div>
+            <div class="person__role">{person.role}</div>
+            <h2 class="person__name">{person.name}</h2>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>

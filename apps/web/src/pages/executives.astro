@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getExecutives } from '../lib/api';
+
+const executives = await getExecutives();
+---
+
+<BaseLayout
+  title="Executives"
+  description="Current executive officers of NMA Ogun State Branch."
+  path="/executives"
+>
+  <section class="page-hero">
+    <div class="container">
+      <span class="section__eyebrow">Leadership</span>
+      <h1>Current executives</h1>
+      <p class="section__lead">
+        Officers stewarding the branch. Profile photographs will sync from the CMS as they are published.
+      </p>
+      <p><a href="/past-executives">View past executives →</a></p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container people">
+      {
+        executives.map((person) => (
+          <article class="person">
+            <div class="person__photo">
+              <img src={person.photo} alt={person.name} width="440" height="550" loading="lazy" />
+            </div>
+            <div class="person__role">{person.role}</div>
+            <h2 class="person__name">{person.name}</h2>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>

@@ -15,6 +15,7 @@ Architecture review artifacts. **No application implementation until specs are a
 | RLS & partial indexes SQL | [database/rls_and_partial_indexes.sql](./database/rls_and_partial_indexes.sql) | Approved |
 | Functional specification | [specs/FUNCTIONAL_SPECIFICATION.md](./specs/FUNCTIONAL_SPECIFICATION.md) | Approved |
 | Architecture Decision Records | [adr/README.md](./adr/README.md) | Accepted |
-| Development milestones | [MILESTONES.md](./MILESTONES.md) | M0 complete — awaiting review |
-| M0 completion report | [milestones/M0-FOUNDATION.md](./milestones/M0-FOUNDATION.md) | Awaiting review |
+| Development milestones | [MILESTONES.md](./MILESTONES.md) | M0 approved; M1 ready for approval |
+| M0 completion report | [milestones/M0-FOUNDATION.md](./milestones/M0-FOUNDATION.md) | Approved |
+| M1 completion report | [milestones/M1-DATABASE-RUNTIME.md](./milestones/M1-DATABASE-RUNTIME.md) | Ready for approval |
 | Neon setup | [neon-setup.md](./neon-setup.md) | Active |

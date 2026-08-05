@@ -46,7 +46,6 @@ jobs:
       JWT_REFRESH_SECRET: ci-refresh-secret-min-16
       APP_PUBLIC_URL: http://localhost:3000
       CI: 'true'
-      SKIP_DB_SMOKE: 'true'
 
     steps:
       - uses: actions/checkout@v4
@@ -71,6 +70,9 @@ jobs:
 
       - name: Build
         run: pnpm build
+
+      - name: Prisma migrate deploy
+        run: pnpm --filter @association/database prisma:migrate:deploy
 
       - name: Test
         run: pnpm test

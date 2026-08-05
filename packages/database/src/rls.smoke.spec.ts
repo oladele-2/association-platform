@@ -1,11 +1,13 @@
 import { afterAll, describe, expect, it } from 'vitest';
 import { PrismaClient } from '@prisma/client';
 
-const skipSmoke = process.env.SKIP_DB_SMOKE === 'true' || process.env.CI === 'true';
+/** Skip only when explicitly requested (no live Neon / Postgres with migrations). */
+const skipSmoke = process.env.SKIP_DB_SMOKE === 'true';
 
 /**
- * DB smoke tests (Neon / local Postgres with migrations applied).
- * Set SKIP_DB_SMOKE=true or CI=true to skip (CI validates schema separately).
+ * DB smoke tests (Neon or local Postgres with migrations applied).
+ * Set SKIP_DB_SMOKE=true when the database is unavailable.
+ * CI migrates the workflow Postgres service and leaves this unset so smoke runs.
  */
 const prisma = new PrismaClient();
 

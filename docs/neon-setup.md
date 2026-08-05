@@ -30,7 +30,7 @@ DATABASE_URL="postgresql://USER:PASSWORD@ep-xxxxx-pooler.region.aws.neon.tech/ne
 DATABASE_URL_UNPOOLED="postgresql://USER:PASSWORD@ep-xxxxx.region.aws.neon.tech/neondb?sslmode=require"
 ```
 
-Prisma schema can keep a single `url` for Milestone 1–2 validation; from migration work onward we wire `directUrl` to `DATABASE_URL_UNPOOLED`.
+Prisma `url` uses `DATABASE_URL` (pooled). Migrations use `directUrl` → `DATABASE_URL_UNPOOLED`.
 
 ## Create an API key (for neonctl / automation)
 
@@ -73,4 +73,4 @@ pnpm --filter @association/database exec prisma db pull --print
 
 - Prefer Neon **branches**: `main` for shared staging, ephemeral branches for PRs later.
 - Rotate the connection password if it was ever pasted into chat.
-- App role should not be a superuser; RLS (Milestone 2) assumes a non-bypass role.
+- App role should not be a superuser; M1 RLS uses non-bypass `association_app` (`SET LOCAL ROLE` in the API/tests).

@@ -15,15 +15,16 @@ Multi-tenant **Association Management Platform** by Ajir.
 
 ## Current status
 
-**Milestone 0 (Foundation)** — complete, awaiting review.  
-See [docs/milestones/M0-FOUNDATION.md](./docs/milestones/M0-FOUNDATION.md).
+**Milestone 0 (Foundation)** — Approved.  
+**Milestone 1 (Database runtime)** — Ready for approval.  
+See [docs/milestones/M1-DATABASE-RUNTIME.md](./docs/milestones/M1-DATABASE-RUNTIME.md).
 
 ```bash
 pnpm install
 pnpm docker:up    # Postgres + Redis locally
 pnpm lint
 pnpm build
-pnpm test
+pnpm test         # set SKIP_DB_SMOKE=true if no Neon/migrated DB
 ```
 
 ## Prerequisites

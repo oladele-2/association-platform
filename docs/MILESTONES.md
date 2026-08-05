@@ -36,6 +36,7 @@ Each milestone must **compile**, **pass its tests**, include **documentation**, 
 | M7b | Approved (2026-08-05) | [M7-WEB.md](./milestones/M7-WEB.md) |
 | M8 | Approved (2026-08-05) | [M8-PORTAL.md](./milestones/M8-PORTAL.md) |
 | M9 | Approved (2026-08-05) — CME + Comms slice; registration/FCM deferred | [M9-CME-COMMS.md](./milestones/M9-CME-COMMS.md) |
+| M9b | Approved (2026-08-05) — registration + SMTP drain; FCM deferred | [M9B-EVENTS-EMAIL.md](./milestones/M9B-EVENTS-EMAIL.md) |
 | F1 | Approved (2026-08-05) | [F1-FLUTTER-SHELL.md](./milestones/F1-FLUTTER-SHELL.md) |
 | P1 | Approved (2026-08-05) | [P1-PLATFORM-CONSOLE.md](./milestones/P1-PLATFORM-CONSOLE.md) |
 

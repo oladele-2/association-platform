@@ -4,7 +4,6 @@ import {
   assertAudienceSize,
   assertCampaignName,
   assertCanQueueCampaign,
-  campaignStatusAfterSend,
   normalizeTemplateKey,
   parseAudienceFilter,
 } from '../domain/comms.rules';
@@ -92,7 +91,7 @@ export class CreateEmailCampaignUseCase {
   }
 }
 
-/** Queue campaign: CAS claim → deliveries → mock-send (provider stub). */
+/** Queue campaign: CAS claim → create deliveries → return (async drain sends). */
 @Injectable()
 export class QueueEmailCampaignUseCase {
   constructor(
@@ -130,40 +129,61 @@ export class QueueEmailCampaignUseCase {
     );
 
     await this.repo.updateCampaignStatus(organizationId, id, 'sending');
-    const deliveries = await this.repo.listQueuedDeliveries(organizationId, id);
-    let sent = 0;
-    let failed = 0;
-    for (const delivery of deliveries) {
-      try {
-        await this.email.send({
-          to: delivery.toEmail,
-          subject: campaign.subject,
-          bodyMarkdown: campaign.bodyMarkdown,
-        });
-        await this.repo.markDelivery(organizationId, delivery.id, 'sent');
-        sent += 1;
-      } catch (err) {
-        await this.repo.markDelivery(
-          organizationId,
-          delivery.id,
-          'failed',
-          err instanceof Error ? err.message : 'send failed',
-        );
-        failed += 1;
-      }
-    }
-
-    const finalStatus = campaignStatusAfterSend(sent, failed);
-    await this.repo.updateCampaignStatus(organizationId, id, finalStatus);
 
     return {
       campaignId: id,
       recipients: created,
-      sent,
-      failed,
-      status: finalStatus,
+      status: 'sending' as const,
       provider: this.email.driver,
     };
+  }
+}
+
+@Injectable()
+export class DrainEmailDeliveriesUseCase {
+  constructor(
+    @Inject(COMMS_REPOSITORY) private readonly repo: CommsRepository,
+    @Inject(EMAIL_PROVIDER) private readonly email: EmailProvider,
+  ) {}
+
+  async execute(limit = 20) {
+    const batch = await this.repo.claimQueuedDeliveries(limit);
+    let sent = 0;
+    let failed = 0;
+    const campaigns = new Set<string>();
+    for (const delivery of batch) {
+      if (delivery.campaignId) {
+        campaigns.add(`${delivery.organizationId}:${delivery.campaignId}`);
+      }
+      try {
+        const result = await this.email.send({
+          to: delivery.toEmail,
+          subject: delivery.subject,
+          bodyMarkdown: delivery.bodyMarkdown,
+        });
+        await this.repo.markDelivery(delivery.organizationId, delivery.id, 'sent', null, {
+          provider: this.email.driver,
+          providerMessageId: result.providerMessageId,
+        });
+        sent += 1;
+      } catch (err) {
+        await this.repo.markDelivery(
+          delivery.organizationId,
+          delivery.id,
+          'failed',
+          err instanceof Error ? err.message : 'send failed',
+          { provider: this.email.driver },
+        );
+        failed += 1;
+      }
+    }
+    for (const key of campaigns) {
+      const [organizationId, campaignId] = key.split(':');
+      if (organizationId && campaignId) {
+        await this.repo.finalizeCampaignIfDrainComplete(organizationId, campaignId);
+      }
+    }
+    return { claimed: batch.length, sent, failed };
   }
 }
 

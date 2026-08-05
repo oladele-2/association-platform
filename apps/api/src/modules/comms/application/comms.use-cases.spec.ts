@@ -1,5 +1,9 @@
 import { describe, expect, it, vi } from 'vitest';
-import { CreateEmailCampaignUseCase, QueueEmailCampaignUseCase } from './comms.use-cases';
+import {
+  CreateEmailCampaignUseCase,
+  DrainEmailDeliveriesUseCase,
+  QueueEmailCampaignUseCase,
+} from './comms.use-cases';
 import type { CommsRepository, EmailProvider } from './ports/comms.repository';
 
 describe('CreateEmailCampaignUseCase', () => {
@@ -42,7 +46,7 @@ describe('CreateEmailCampaignUseCase', () => {
 });
 
 describe('QueueEmailCampaignUseCase', () => {
-  it('claims draft, creates deliveries, and mock-sends', async () => {
+  it('claims draft, creates deliveries, and returns sending without inline send', async () => {
     const repo = {
       findCampaign: vi.fn().mockResolvedValue({
         id: 'camp1',
@@ -55,22 +59,18 @@ describe('QueueEmailCampaignUseCase', () => {
       claimCampaignForQueue: vi.fn().mockResolvedValue({ id: 'camp1', status: 'queued' }),
       updateCampaignStatus: vi.fn().mockResolvedValue({}),
       createDeliveries: vi.fn().mockResolvedValue(1),
-      listQueuedDeliveries: vi
-        .fn()
-        .mockResolvedValue([{ id: 'd1', toEmail: 'a@b.com', status: 'queued' }]),
-      markDelivery: vi.fn(),
     } as unknown as CommsRepository;
     const email = {
       driver: 'mock',
-      send: vi.fn().mockResolvedValue({ providerMessageId: 'm1' }),
+      send: vi.fn(),
     } as unknown as EmailProvider;
 
     const usecase = new QueueEmailCampaignUseCase(repo, email);
     const result = await usecase.execute('o1', 'camp1');
-    expect(result.sent).toBe(1);
-    expect(result.status).toBe('sent');
+    expect(result.recipients).toBe(1);
+    expect(result.status).toBe('sending');
     expect(repo.claimCampaignForQueue).toHaveBeenCalled();
-    expect(email.send).toHaveBeenCalled();
+    expect(email.send).not.toHaveBeenCalled();
   });
 
   it('fails when another worker already claimed the campaign', async () => {
@@ -113,5 +113,36 @@ describe('QueueEmailCampaignUseCase', () => {
     await expect(usecase.execute('o1', 'camp1')).rejects.toMatchObject({
       code: 'EMPTY_AUDIENCE',
     });
+  });
+});
+
+describe('DrainEmailDeliveriesUseCase', () => {
+  it('sends claimed deliveries and finalizes campaigns', async () => {
+    const repo = {
+      claimQueuedDeliveries: vi.fn().mockResolvedValue([
+        {
+          id: 'd1',
+          organizationId: 'o1',
+          campaignId: 'c1',
+          toEmail: 'a@b.com',
+          subject: 'Hi',
+          bodyMarkdown: 'Body',
+          status: 'sending',
+          error: null,
+          createdAt: new Date().toISOString(),
+        },
+      ]),
+      markDelivery: vi.fn(),
+      finalizeCampaignIfDrainComplete: vi.fn(),
+    } as unknown as CommsRepository;
+    const email = {
+      driver: 'mock',
+      send: vi.fn().mockResolvedValue({ providerMessageId: 'm1' }),
+    } as unknown as EmailProvider;
+    const usecase = new DrainEmailDeliveriesUseCase(repo, email);
+    const result = await usecase.execute(10);
+    expect(result.sent).toBe(1);
+    expect(email.send).toHaveBeenCalled();
+    expect(repo.finalizeCampaignIfDrainComplete).toHaveBeenCalledWith('o1', 'c1');
   });
 });

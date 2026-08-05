@@ -14,7 +14,7 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiHeader, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsInt, IsOptional, Min } from 'class-validator';
+import { IsIn, IsInt, IsOptional, Min } from 'class-validator';
 import { DomainErrorFilter } from '../../identity/presentation/domain-error.filter';
 import { AccessJwtGuard } from '../../identity/presentation/access-jwt.guard';
 import { TenantGuard, TENANT_HEADER } from '../../tenancy/presentation/tenant.guard';
@@ -32,6 +32,11 @@ import {
   ReplaceEventSpeakersUseCase,
   UpdateEventUseCase,
 } from '../application/event.use-cases';
+import {
+  ListEventRegistrationsUseCase,
+  UpdateEventRegistrationStatusUseCase,
+} from '../application/registration.use-cases';
+import type { RegistrationStatus } from '../application/ports/event.repository';
 import { CreateEventDto, ReplaceSpeakersDto, UpdateEventDto } from './event.dto';
 
 class AdminEventsQueryDto {
@@ -46,6 +51,11 @@ class AdminEventsQueryDto {
   @IsInt()
   @Min(1)
   limit?: number;
+}
+
+class UpdateRegistrationStatusDto {
+  @IsIn(['registered', 'cancelled', 'attended', 'no_show'])
+  status!: RegistrationStatus;
 }
 
 @ApiTags('admin-events')
@@ -64,6 +74,8 @@ export class AdminEventsController {
     private readonly publishEvent: PublishEventUseCase,
     private readonly cancelEvent: CancelEventUseCase,
     private readonly replaceSpeakers: ReplaceEventSpeakersUseCase,
+    private readonly listRegistrations: ListEventRegistrationsUseCase,
+    private readonly updateRegistrationStatus: UpdateEventRegistrationStatusUseCase,
   ) {}
 
   @Get()
@@ -83,6 +95,30 @@ export class AdminEventsController {
       organizationId: tenant.organizationId,
       ...body,
     });
+  }
+
+  @Get(':id/registrations')
+  @RequirePermissions('events.read')
+  @ApiOperation({ summary: 'List event registrations' })
+  registrations(@CurrentTenant() tenant: TenantContext, @Param('id', ParseUUIDPipe) id: string) {
+    return this.listRegistrations.execute(tenant.organizationId, id);
+  }
+
+  @Patch(':id/registrations/:registrationId')
+  @RequirePermissions('events.manage')
+  @ApiOperation({ summary: 'Update registration status' })
+  patchRegistration(
+    @CurrentTenant() tenant: TenantContext,
+    @Param('id', ParseUUIDPipe) id: string,
+    @Param('registrationId', ParseUUIDPipe) registrationId: string,
+    @Body() body: UpdateRegistrationStatusDto,
+  ) {
+    return this.updateRegistrationStatus.execute(
+      tenant.organizationId,
+      id,
+      registrationId,
+      body.status,
+    );
   }
 
   @Get(':id')

@@ -6,12 +6,14 @@ import type { CampaignStatus } from '../domain/comms.rules';
 import { MAX_CAMPAIGN_AUDIENCE, parseAudienceFilter } from '../domain/comms.rules';
 import type {
   AudienceMember,
+  ClaimedDelivery,
   CommsRepository,
   EmailCampaignView,
   EmailDeliveryView,
   EmailTemplateView,
   NotificationView,
 } from '../application/ports/comms.repository';
+import { campaignStatusAfterSend } from '../domain/comms.rules';
 
 @Injectable()
 export class PrismaCommsRepository implements CommsRepository {
@@ -177,7 +179,7 @@ export class PrismaCommsRepository implements CommsRepository {
           userId: r.userId,
           toEmail: r.toEmail,
           status: 'queued',
-          provider: 'mock',
+          provider: null,
         })),
       });
       return result.count;
@@ -193,11 +195,45 @@ export class PrismaCommsRepository implements CommsRepository {
     });
   }
 
+  async claimQueuedDeliveries(limit: number) {
+    const take = Math.min(100, Math.max(1, limit));
+    return this.prisma.asPlatform(async (tx) => {
+      const candidates = await tx.emailDelivery.findMany({
+        where: { status: 'queued', campaignId: { not: null } },
+        orderBy: { createdAt: 'asc' },
+        take,
+        include: { campaign: true },
+      });
+      const out: ClaimedDelivery[] = [];
+      for (const row of candidates) {
+        if (!row.campaign) continue;
+        const cas = await tx.emailDelivery.updateMany({
+          where: { id: row.id, status: 'queued' },
+          data: { status: 'sending' },
+        });
+        if (cas.count === 0) continue;
+        out.push({
+          id: row.id,
+          organizationId: row.organizationId,
+          campaignId: row.campaignId,
+          toEmail: row.toEmail,
+          status: 'sending',
+          error: null,
+          createdAt: row.createdAt.toISOString(),
+          subject: row.campaign.subject,
+          bodyMarkdown: row.campaign.bodyMarkdown,
+        });
+      }
+      return out;
+    });
+  }
+
   async markDelivery(
     organizationId: string,
     deliveryId: string,
     status: 'sent' | 'failed',
     error?: string | null,
+    meta?: { provider?: string; providerMessageId?: string | null },
   ) {
     await this.prisma.asTenant(organizationId, async (tx) => {
       await tx.emailDelivery.updateMany({
@@ -205,9 +241,37 @@ export class PrismaCommsRepository implements CommsRepository {
         data: {
           status,
           error: error ?? null,
-          providerMessageId: status === 'sent' ? `mock_${deliveryId}` : null,
+          ...(meta?.provider ? { provider: meta.provider } : {}),
+          ...(meta?.providerMessageId !== undefined
+            ? { providerMessageId: meta.providerMessageId }
+            : {}),
         },
       });
+    });
+  }
+
+  async finalizeCampaignIfDrainComplete(organizationId: string, campaignId: string) {
+    return this.prisma.asTenant(organizationId, async (tx) => {
+      const remaining = await tx.emailDelivery.count({
+        where: {
+          organizationId,
+          campaignId,
+          status: { in: ['queued', 'sending'] },
+        },
+      });
+      if (remaining > 0) return null;
+      const sent = await tx.emailDelivery.count({
+        where: { organizationId, campaignId, status: 'sent' },
+      });
+      const failed = await tx.emailDelivery.count({
+        where: { organizationId, campaignId, status: 'failed' },
+      });
+      const status = campaignStatusAfterSend(sent, failed);
+      await tx.emailCampaign.updateMany({
+        where: { id: campaignId, organizationId },
+        data: { status },
+      });
+      return status;
     });
   }
 

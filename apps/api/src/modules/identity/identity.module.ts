@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { TenancyModule } from '../tenancy/tenancy.module';
-import { EMAIL_SENDER } from './application/ports/email.sender';
+import type { AppEnv } from '../../config/env.validation';
+import { EMAIL_SENDER, type EmailSender } from './application/ports/email.sender';
 import { EMAIL_VERIFICATION_TOKEN_REPOSITORY } from './application/ports/email-verification-token.repository';
 import { PASSWORD_HASHER } from './application/ports/password-hasher';
 import { PASSWORD_RESET_TOKEN_REPOSITORY } from './application/ports/password-reset-token.repository';
@@ -17,6 +19,7 @@ import { RequestEmailVerificationUseCase } from './application/request-email-ver
 import { ConfirmEmailVerificationUseCase } from './application/confirm-email-verification.use-case';
 import { Argon2PasswordHasher } from './infrastructure/argon2-password.hasher';
 import { ConsoleEmailSender } from './infrastructure/console-email.sender';
+import { SmtpEmailSender } from './infrastructure/smtp-email.sender';
 import { JwtTokenService } from './infrastructure/jwt-token.service';
 import { PrismaUserRepository } from './infrastructure/prisma-user.repository';
 import { PrismaRefreshTokenRepository } from './infrastructure/prisma-refresh-token.repository';
@@ -39,7 +42,15 @@ import { AccessJwtGuard } from './presentation/access-jwt.guard';
     AccessJwtGuard,
     { provide: PASSWORD_HASHER, useClass: Argon2PasswordHasher },
     { provide: TOKEN_SERVICE, useClass: JwtTokenService },
-    { provide: EMAIL_SENDER, useClass: ConsoleEmailSender },
+    {
+      provide: EMAIL_SENDER,
+      inject: [ConfigService],
+      useFactory: (config: ConfigService<AppEnv, true>): EmailSender => {
+        return config.get('EMAIL_DRIVER', { infer: true }) === 'smtp'
+          ? new SmtpEmailSender(config)
+          : new ConsoleEmailSender();
+      },
+    },
     { provide: USER_REPOSITORY, useClass: PrismaUserRepository },
     { provide: REFRESH_TOKEN_REPOSITORY, useClass: PrismaRefreshTokenRepository },
     {

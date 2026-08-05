@@ -24,6 +24,7 @@ Monorepo (pnpm + Turborepo), shared kernel, Prisma schema package (Neon), Nest h
 | M7 | CMS APIs + Astro public website | Partial — **M7a API done**; Astro not started |
 | M8 | React portal shells (member / institution / admin) | Not started |
 | M9 | CME + Comms (registration/FCM deferred) | Approved — see [docs/milestones/M9-CME-COMMS.md](./docs/milestones/M9-CME-COMMS.md) |
+| M9b | Event registration + SMTP drain | Approved — see [docs/milestones/M9B-EVENTS-EMAIL.md](./docs/milestones/M9B-EVENTS-EMAIL.md) |
 
 ### Phase 2 — Depth + Mobile
 

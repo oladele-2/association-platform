@@ -25,6 +25,15 @@ export type AppEnv = {
   /** Explicit opt-in to mock Paystack when secret is unset (required in production without Paystack). */
   ALLOW_MOCK_PAYSTACK: boolean;
   PAYMENTS_DRIVER: 'mock' | 'paystack';
+  SMTP_HOST: string | undefined;
+  SMTP_PORT: number;
+  SMTP_USER: string | undefined;
+  SMTP_PASS: string | undefined;
+  SMTP_FROM: string | undefined;
+  ALLOW_MOCK_EMAIL: boolean;
+  EMAIL_DRIVER: 'mock' | 'smtp';
+  /** Interval for delivery drain; 0 disables. */
+  EMAIL_DRAIN_INTERVAL_MS: number;
 };
 
 export function validateEnv(config: Record<string, unknown>): AppEnv {
@@ -78,6 +87,27 @@ export function validateEnv(config: Record<string, unknown>): AppEnv {
     throw new Error('Production requires PAYSTACK_SECRET_KEY or explicit ALLOW_MOCK_PAYSTACK=true');
   }
 
+  const smtpHost = optionalTrim(config.SMTP_HOST);
+  const smtpPort = Number(config.SMTP_PORT ?? 587);
+  const smtpUser = optionalTrim(config.SMTP_USER);
+  const smtpPass = optionalTrim(config.SMTP_PASS);
+  const smtpFrom = optionalTrim(config.SMTP_FROM);
+  const allowMockEmail =
+    String(config.ALLOW_MOCK_EMAIL ?? '')
+      .trim()
+      .toLowerCase() === 'true';
+  const emailDriver: 'mock' | 'smtp' = smtpHost ? 'smtp' : 'mock';
+  if (nodeEnv === 'production' && emailDriver === 'mock' && !allowMockEmail) {
+    throw new Error('Production requires SMTP_HOST or explicit ALLOW_MOCK_EMAIL=true');
+  }
+  if (emailDriver === 'smtp' && (!Number.isFinite(smtpPort) || smtpPort <= 0)) {
+    throw new Error('SMTP_PORT must be a positive number');
+  }
+  const emailDrainIntervalMs = Number(config.EMAIL_DRAIN_INTERVAL_MS ?? 5000);
+  if (!Number.isFinite(emailDrainIntervalMs) || emailDrainIntervalMs < 0) {
+    throw new Error('EMAIL_DRAIN_INTERVAL_MS must be >= 0');
+  }
+
   if (!Number.isFinite(port) || port <= 0) {
     throw new Error('PORT must be a positive number');
   }
@@ -118,6 +148,14 @@ export function validateEnv(config: Record<string, unknown>): AppEnv {
     PAYSTACK_SECRET_KEY: paystackSecretKey,
     ALLOW_MOCK_PAYSTACK: allowMockPaystack,
     PAYMENTS_DRIVER: paymentsDriver,
+    SMTP_HOST: smtpHost,
+    SMTP_PORT: smtpPort,
+    SMTP_USER: smtpUser,
+    SMTP_PASS: smtpPass,
+    SMTP_FROM: smtpFrom,
+    ALLOW_MOCK_EMAIL: allowMockEmail,
+    EMAIL_DRIVER: emailDriver,
+    EMAIL_DRAIN_INTERVAL_MS: emailDrainIntervalMs,
   };
 }
 

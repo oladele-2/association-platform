@@ -58,6 +58,7 @@ describe('validateEnv', () => {
         ...base,
         NODE_ENV: 'production',
         ALLOW_MOCK_PAYSTACK: 'true',
+        ALLOW_MOCK_EMAIL: 'true',
       }),
     ).toThrow(/ALLOW_MOCK_STORAGE/);
   });
@@ -68,8 +69,20 @@ describe('validateEnv', () => {
         ...base,
         NODE_ENV: 'production',
         ALLOW_MOCK_STORAGE: 'true',
+        ALLOW_MOCK_EMAIL: 'true',
       }),
     ).toThrow(/ALLOW_MOCK_PAYSTACK/);
+  });
+
+  it('requires SMTP_HOST or ALLOW_MOCK_EMAIL in production', () => {
+    expect(() =>
+      validateEnv({
+        ...base,
+        NODE_ENV: 'production',
+        ALLOW_MOCK_STORAGE: 'true',
+        ALLOW_MOCK_PAYSTACK: 'true',
+      }),
+    ).toThrow(/ALLOW_MOCK_EMAIL/);
   });
 
   it('accepts production when Paystack and storage mocks are explicit', () => {
@@ -78,8 +91,10 @@ describe('validateEnv', () => {
       NODE_ENV: 'production',
       ALLOW_MOCK_STORAGE: 'true',
       ALLOW_MOCK_PAYSTACK: 'true',
+      ALLOW_MOCK_EMAIL: 'true',
     });
     expect(env.PAYMENTS_DRIVER).toBe('mock');
     expect(env.STORAGE_DRIVER).toBe('mock');
+    expect(env.EMAIL_DRIVER).toBe('mock');
   });
 });

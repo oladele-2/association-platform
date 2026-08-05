@@ -3,10 +3,13 @@ import { DomainError } from '@association/shared-kernel';
 import { Prisma } from '@association/database';
 import { PrismaService } from '../../../infrastructure/prisma/prisma.service';
 import type { EventStatus } from '../domain/event.rules';
+import { assertHasCapacity } from '../domain/event.rules';
 import type {
   EventRepository,
   EventSpeakerView,
   EventView,
+  RegistrationStatus,
+  RegistrationView,
 } from '../application/ports/event.repository';
 
 const speakerInclude = {
@@ -213,6 +216,182 @@ export class PrismaEventRepository implements EventRepository {
       return mapEvent(row);
     });
   }
+
+  async findMemberIdByUserId(organizationId: string, userId: string) {
+    return this.prisma.asTenant(organizationId, async (tx) => {
+      const member = await tx.member.findFirst({
+        where: { organizationId, userId, deletedAt: null },
+        select: { id: true },
+      });
+      return member?.id ?? null;
+    });
+  }
+
+  async listPublishedForMember(organizationId: string, memberId: string) {
+    return this.prisma.asTenant(organizationId, async (tx) => {
+      const events = await tx.event.findMany({
+        where: { organizationId, deletedAt: null, status: 'published' },
+        include: speakerInclude,
+        orderBy: { startsAt: 'asc' },
+      });
+      const regs = await tx.eventRegistration.findMany({
+        where: {
+          organizationId,
+          memberId,
+          eventId: { in: events.map((e) => e.id) },
+        },
+        include: { member: { select: { membershipNo: true } } },
+      });
+      const byEvent = new Map(regs.map((r) => [r.eventId, r]));
+      return events.map((e) => {
+        const reg = byEvent.get(e.id);
+        return {
+          ...mapEvent(e),
+          myRegistration: reg ? mapRegistration(reg) : null,
+        };
+      });
+    });
+  }
+
+  async countActiveRegistrations(organizationId: string, eventId: string) {
+    return this.prisma.asTenant(organizationId, async (tx) => {
+      return tx.eventRegistration.count({
+        where: { organizationId, eventId, status: 'registered' },
+      });
+    });
+  }
+
+  async findRegistration(organizationId: string, eventId: string, memberId: string) {
+    return this.prisma.asTenant(organizationId, async (tx) => {
+      const row = await tx.eventRegistration.findFirst({
+        where: { organizationId, eventId, memberId },
+        include: { member: { select: { membershipNo: true } } },
+      });
+      return row ? mapRegistration(row) : null;
+    });
+  }
+
+  async register(organizationId: string, eventId: string, memberId: string) {
+    return this.prisma.asTenant(organizationId, async (tx) => {
+      const event = await tx.event.findFirst({
+        where: { id: eventId, organizationId, deletedAt: null },
+      });
+      if (!event) throw new DomainError('EVENT_NOT_FOUND', 'Event not found');
+
+      const existing = await tx.eventRegistration.findUnique({
+        where: { eventId_memberId: { eventId, memberId } },
+        include: { member: { select: { membershipNo: true } } },
+      });
+      if (existing?.status === 'registered') {
+        throw new DomainError('ALREADY_REGISTERED', 'Already registered for this event');
+      }
+
+      const activeCount = await tx.eventRegistration.count({
+        where: { organizationId, eventId, status: 'registered' },
+      });
+      assertHasCapacity(event.capacity, activeCount);
+
+      try {
+        if (existing) {
+          const row = await tx.eventRegistration.update({
+            where: { id: existing.id },
+            data: { status: 'registered', registeredAt: new Date(), checkedInAt: null },
+            include: { member: { select: { membershipNo: true } } },
+          });
+          return mapRegistration(row);
+        }
+        const row = await tx.eventRegistration.create({
+          data: {
+            organizationId,
+            eventId,
+            memberId,
+            status: 'registered',
+          },
+          include: { member: { select: { membershipNo: true } } },
+        });
+        return mapRegistration(row);
+      } catch (err) {
+        if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === 'P2002') {
+          throw new DomainError('ALREADY_REGISTERED', 'Already registered for this event');
+        }
+        throw err;
+      }
+    });
+  }
+
+  async cancelRegistration(organizationId: string, eventId: string, memberId: string) {
+    return this.prisma.asTenant(organizationId, async (tx) => {
+      const existing = await tx.eventRegistration.findFirst({
+        where: { organizationId, eventId, memberId, status: 'registered' },
+        include: { member: { select: { membershipNo: true } } },
+      });
+      if (!existing) {
+        throw new DomainError('REGISTRATION_NOT_FOUND', 'Active registration not found');
+      }
+      const row = await tx.eventRegistration.update({
+        where: { id: existing.id },
+        data: { status: 'cancelled' },
+        include: { member: { select: { membershipNo: true } } },
+      });
+      return mapRegistration(row);
+    });
+  }
+
+  async listRegistrations(organizationId: string, eventId: string) {
+    return this.prisma.asTenant(organizationId, async (tx) => {
+      const rows = await tx.eventRegistration.findMany({
+        where: { organizationId, eventId },
+        include: { member: { select: { membershipNo: true } } },
+        orderBy: { registeredAt: 'asc' },
+      });
+      return rows.map(mapRegistration);
+    });
+  }
+
+  async updateRegistrationStatus(
+    organizationId: string,
+    eventId: string,
+    registrationId: string,
+    status: RegistrationStatus,
+  ) {
+    return this.prisma.asTenant(organizationId, async (tx) => {
+      const result = await tx.eventRegistration.updateMany({
+        where: { id: registrationId, organizationId, eventId },
+        data: {
+          status,
+          ...(status === 'attended' ? { checkedInAt: new Date() } : {}),
+        },
+      });
+      if (result.count === 0) {
+        throw new DomainError('REGISTRATION_NOT_FOUND', 'Registration not found');
+      }
+      const row = await tx.eventRegistration.findFirstOrThrow({
+        where: { id: registrationId },
+        include: { member: { select: { membershipNo: true } } },
+      });
+      return mapRegistration(row);
+    });
+  }
+}
+
+function mapRegistration(row: {
+  id: string;
+  eventId: string;
+  memberId: string;
+  status: RegistrationStatus;
+  registeredAt: Date;
+  checkedInAt: Date | null;
+  member: { membershipNo: string | null };
+}): RegistrationView {
+  return {
+    id: row.id,
+    eventId: row.eventId,
+    memberId: row.memberId,
+    membershipNo: row.member.membershipNo,
+    status: row.status,
+    registeredAt: row.registeredAt.toISOString(),
+    checkedInAt: row.checkedInAt?.toISOString() ?? null,
+  };
 }
 
 function mapSpeaker(row: {

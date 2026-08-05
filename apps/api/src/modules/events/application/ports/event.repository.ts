@@ -85,6 +85,52 @@ export interface EventRepository {
       sortOrder?: number;
     }>,
   ): Promise<EventView>;
+
+  findMemberIdByUserId(organizationId: string, userId: string): Promise<string | null>;
+
+  listPublishedForMember(organizationId: string, memberId: string): Promise<MemberEventView[]>;
+
+  countActiveRegistrations(organizationId: string, eventId: string): Promise<number>;
+
+  findRegistration(
+    organizationId: string,
+    eventId: string,
+    memberId: string,
+  ): Promise<RegistrationView | null>;
+
+  /** Race-safe register with capacity check. */
+  register(organizationId: string, eventId: string, memberId: string): Promise<RegistrationView>;
+
+  cancelRegistration(
+    organizationId: string,
+    eventId: string,
+    memberId: string,
+  ): Promise<RegistrationView>;
+
+  listRegistrations(organizationId: string, eventId: string): Promise<RegistrationView[]>;
+
+  updateRegistrationStatus(
+    organizationId: string,
+    eventId: string,
+    registrationId: string,
+    status: RegistrationStatus,
+  ): Promise<RegistrationView>;
 }
+
+export type RegistrationStatus = 'registered' | 'cancelled' | 'attended' | 'no_show';
+
+export type RegistrationView = {
+  id: string;
+  eventId: string;
+  memberId: string;
+  membershipNo: string | null;
+  status: RegistrationStatus;
+  registeredAt: string;
+  checkedInAt: string | null;
+};
+
+export type MemberEventView = EventView & {
+  myRegistration: RegistrationView | null;
+};
 
 export const EVENT_REPOSITORY = Symbol('EVENT_REPOSITORY');

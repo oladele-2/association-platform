@@ -80,12 +80,20 @@ export interface CommsRepository {
     recipients: { userId: string | null; toEmail: string }[],
   ): Promise<number>;
   listQueuedDeliveries(organizationId: string, campaignId: string): Promise<EmailDeliveryView[]>;
+  /** Claim up to `limit` queued deliveries globally for the drain worker. */
+  claimQueuedDeliveries(limit: number): Promise<ClaimedDelivery[]>;
   markDelivery(
     organizationId: string,
     deliveryId: string,
     status: 'sent' | 'failed',
     error?: string | null,
+    meta?: { provider?: string; providerMessageId?: string | null },
   ): Promise<void>;
+  /** Recount sent/failed and set campaign terminal status when no queued remain. */
+  finalizeCampaignIfDrainComplete(
+    organizationId: string,
+    campaignId: string,
+  ): Promise<CampaignStatus | null>;
   listNotifications(organizationId: string, userId: string): Promise<NotificationView[]>;
   markNotificationRead(
     organizationId: string,
@@ -94,6 +102,12 @@ export interface CommsRepository {
   ): Promise<NotificationView>;
   markAllNotificationsRead(organizationId: string, userId: string): Promise<{ updated: number }>;
 }
+
+export type ClaimedDelivery = EmailDeliveryView & {
+  organizationId: string;
+  subject: string;
+  bodyMarkdown: string;
+};
 
 export const COMMS_REPOSITORY = Symbol('COMMS_REPOSITORY');
 

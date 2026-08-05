@@ -224,6 +224,7 @@ enum CampaignStatus {
 
 enum DeliveryStatus {
   queued
+  sending
   sent
   failed
   bounced

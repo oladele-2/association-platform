@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 
 import '../api/api_client.dart';
@@ -40,14 +42,32 @@ class TenantInfo {
   final String displayName;
   final String slug;
   final String? primaryColor;
+
+  Map<String, String> toCacheMap() => {
+        'displayName': displayName,
+        'slug': slug,
+        if (primaryColor != null) 'primaryColor': primaryColor!,
+      };
+
+  factory TenantInfo.fromCacheMap(Map<String, String> map, String fallbackSlug) {
+    return TenantInfo(
+      displayName: map['displayName']?.isNotEmpty == true
+          ? map['displayName']!
+          : 'Association',
+      slug: map['slug']?.isNotEmpty == true ? map['slug']! : fallbackSlug,
+      primaryColor: map['primaryColor'],
+    );
+  }
 }
 
 class AuthState extends ChangeNotifier {
-  AuthState({required this.config}) : _storage = TokenStore() {
+  AuthState({required this.config, TokenStore? storage})
+      : _storage = storage ?? TokenStore() {
     _api = ApiClient(
       baseUrl: config.apiBaseUrl,
       orgSlug: config.orgSlug,
       getAccessToken: () async => _accessToken,
+      onUnauthorized: _handleUnauthorized,
     );
   }
 
@@ -57,15 +77,24 @@ class AuthState extends ChangeNotifier {
 
   static const _refreshKey = 'refresh_token';
   static const _accessKey = 'access_token';
+  static const _accessExpKey = 'access_expires_at';
+  static const _brandNameKey = 'brand_display_name';
+  static const _brandSlugKey = 'brand_slug';
+  static const _brandColorKey = 'brand_primary_color';
 
   bool ready = false;
   String? _accessToken;
+  DateTime? _accessExpiresAt;
   AuthUser? user;
   TenantInfo? tenant;
   String? bootstrapError;
+  Future<bool>? _refreshInFlight;
 
   ApiClient get api => _api;
   bool get isAuthenticated => user != null && _accessToken != null;
+  bool get needsPasswordReset => user?.mustResetPassword == true;
+  bool get needsEmailVerification =>
+      user != null && user!.emailVerified == false;
 
   Future<void> bootstrap() async {
     try {
@@ -76,25 +105,37 @@ class AuthState extends ChangeNotifier {
       );
       final org = resolved['organization'] as Map<String, dynamic>? ?? {};
       final branding = resolved['branding'] as Map<String, dynamic>?;
+      final slug = org['slug'] as String? ?? config.orgSlug;
       tenant = TenantInfo(
         displayName: org['displayName'] as String? ?? 'Association',
-        slug: org['slug'] as String? ?? config.orgSlug,
+        slug: slug,
         primaryColor: branding?['primaryColor'] as String?,
       );
+      _api.updateOrgSlug(slug);
+      await _cacheBranding(tenant!);
     } catch (_) {
-      tenant = TenantInfo(
-        displayName: 'NMA Ogun State',
-        slug: config.orgSlug,
-        primaryColor: '#0b6b3a',
-      );
-      bootstrapError = 'Offline branding defaults (API unreachable).';
+      tenant = await _loadCachedBranding();
+      bootstrapError =
+          'Using cached branding (API unreachable). Check API_BASE_URL / network.';
     }
 
     _accessToken = await _storage.read(_accessKey);
+    final expRaw = await _storage.read(_accessExpKey);
+    if (expRaw != null && expRaw.isNotEmpty) {
+      _accessExpiresAt = DateTime.tryParse(expRaw);
+    }
     final refresh = await _storage.read(_refreshKey);
     if (refresh != null && refresh.isNotEmpty) {
       try {
-        await _refreshWith(refresh);
+        if (_shouldRefreshProactively) {
+          await _refreshWith(refresh);
+        } else if (_accessToken == null || _accessToken!.isEmpty) {
+          await _refreshWith(refresh);
+        } else {
+          // Have access + refresh; still validate refresh path is usable later via 401.
+          // Restore minimal user from a lightweight refresh so shell knows identity.
+          await _refreshWith(refresh);
+        }
       } catch (_) {
         await _clearTokens();
       }
@@ -102,6 +143,12 @@ class AuthState extends ChangeNotifier {
 
     ready = true;
     notifyListeners();
+  }
+
+  bool get _shouldRefreshProactively {
+    final exp = _accessExpiresAt;
+    if (exp == null) return true;
+    return DateTime.now().isAfter(exp.subtract(const Duration(minutes: 1)));
   }
 
   Future<void> login(String email, String password) async {
@@ -126,6 +173,33 @@ class AuthState extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<bool> _handleUnauthorized() async {
+    _refreshInFlight ??= _refreshOnce().whenComplete(() {
+      _refreshInFlight = null;
+    });
+    return _refreshInFlight!;
+  }
+
+  Future<bool> _refreshOnce() async {
+    final refresh = await _storage.read(_refreshKey);
+    if (refresh == null || refresh.isEmpty) {
+      await _clearTokens();
+      user = null;
+      notifyListeners();
+      return false;
+    }
+    try {
+      await _refreshWith(refresh);
+      notifyListeners();
+      return true;
+    } catch (_) {
+      await _clearTokens();
+      user = null;
+      notifyListeners();
+      return false;
+    }
+  }
+
   Future<void> _refreshWith(String refreshToken) async {
     final session = await _api.post(
       '/v1/auth/refresh',
@@ -138,6 +212,15 @@ class AuthState extends ChangeNotifier {
     _accessToken = session['accessToken'] as String?;
     final refresh = session['refreshToken'] as String?;
     final userJson = session['user'] as Map<String, dynamic>?;
+    final expiresIn = session['accessTokenExpiresIn'];
+    if (expiresIn is num) {
+      _accessExpiresAt =
+          DateTime.now().add(Duration(seconds: expiresIn.toInt()));
+      await _storage.write(
+        _accessExpKey,
+        _accessExpiresAt!.toUtc().toIso8601String(),
+      );
+    }
     if (_accessToken != null) {
       await _storage.write(_accessKey, _accessToken!);
     }
@@ -151,7 +234,33 @@ class AuthState extends ChangeNotifier {
 
   Future<void> _clearTokens() async {
     _accessToken = null;
-    await _storage.delete(_accessKey);
-    await _storage.delete(_refreshKey);
+    _accessExpiresAt = null;
+    await _storage.clearSessionKeys([
+      _accessKey,
+      _refreshKey,
+      _accessExpKey,
+    ]);
+  }
+
+  Future<void> _cacheBranding(TenantInfo info) async {
+    await _storage.write(_brandNameKey, info.displayName);
+    await _storage.write(_brandSlugKey, info.slug);
+    if (info.primaryColor != null) {
+      await _storage.write(_brandColorKey, info.primaryColor!);
+    }
+  }
+
+  Future<TenantInfo> _loadCachedBranding() async {
+    final map = await _storage.readAll();
+    final cached = TenantInfo.fromCacheMap(
+      {
+        'displayName': map[_brandNameKey] ?? '',
+        'slug': map[_brandSlugKey] ?? '',
+        'primaryColor': map[_brandColorKey] ?? '',
+      },
+      config.orgSlug,
+    );
+    _api.updateOrgSlug(cached.slug);
+    return cached;
   }
 }

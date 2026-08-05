@@ -81,8 +81,9 @@ class _HomeTab extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.all(16),
             child: Text(
-              'Member shell scaffold. Profile, dues, CME, and notifications '
-              'tabs are wired for navigation; live API screens follow next.',
+              'Use the tabs below for Profile, Dues, CME, and Alerts. '
+              'Digital membership ID and on-device CME evidence upload are planned '
+              'for a later slice.',
             ),
           ),
         ),

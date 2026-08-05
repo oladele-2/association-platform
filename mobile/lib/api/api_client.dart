@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
@@ -11,16 +12,33 @@ class ApiException implements Exception {
   String toString() => 'ApiException($statusCode): $message';
 }
 
+typedef AccessTokenGetter = Future<String?> Function();
+typedef UnauthorizedHandler = Future<bool> Function();
+
 class ApiClient {
   ApiClient({
     required this.baseUrl,
-    required this.orgSlug,
+    required String orgSlug,
     this.getAccessToken,
-  });
+    this.onUnauthorized,
+    http.Client? httpClient,
+    this.timeout = const Duration(seconds: 30),
+  })  : _orgSlug = orgSlug,
+        _http = httpClient ?? http.Client();
 
   final String baseUrl;
-  final String orgSlug;
-  final Future<String?> Function()? getAccessToken;
+  String _orgSlug;
+  final AccessTokenGetter? getAccessToken;
+  final UnauthorizedHandler? onUnauthorized;
+  final http.Client _http;
+  final Duration timeout;
+
+  String get orgSlug => _orgSlug;
+
+  void updateOrgSlug(String slug) {
+    final trimmed = slug.trim();
+    if (trimmed.isNotEmpty) _orgSlug = trimmed;
+  }
 
   Uri _uri(String path, [Map<String, String>? query]) {
     final normalized = baseUrl.endsWith('/')
@@ -35,40 +53,64 @@ class ApiClient {
     Map<String, dynamic>? body,
     Map<String, String>? query,
     bool auth = false,
+    bool retried = false,
   }) async {
     final headers = <String, String>{
       'Content-Type': 'application/json',
-      'X-Organization-Slug': orgSlug,
+      'X-Organization-Slug': _orgSlug,
     };
     if (auth) {
       final token = await getAccessToken?.call();
-      if (token != null && token.isNotEmpty) {
-        headers['Authorization'] = 'Bearer $token';
+      if (token == null || token.isEmpty) {
+        throw ApiException(401, 'Not authenticated');
       }
+      headers['Authorization'] = 'Bearer $token';
     }
 
     final uri = _uri(path, query);
     late http.Response res;
-    switch (method.toUpperCase()) {
-      case 'GET':
-        res = await http.get(uri, headers: headers);
-        break;
-      case 'POST':
-        res = await http.post(
-          uri,
-          headers: headers,
-          body: body == null ? null : jsonEncode(body),
+    try {
+      switch (method.toUpperCase()) {
+        case 'GET':
+          res = await _http.get(uri, headers: headers).timeout(timeout);
+          break;
+        case 'POST':
+          res = await _http
+              .post(
+                uri,
+                headers: headers,
+                body: body == null ? null : jsonEncode(body),
+              )
+              .timeout(timeout);
+          break;
+        case 'PATCH':
+          res = await _http
+              .patch(
+                uri,
+                headers: headers,
+                body: body == null ? null : jsonEncode(body),
+              )
+              .timeout(timeout);
+          break;
+        default:
+          throw ApiException(0, 'Unsupported method $method');
+      }
+    } on TimeoutException {
+      throw ApiException(0, 'Request timed out');
+    }
+
+    if (res.statusCode == 401 && auth && !retried && onUnauthorized != null) {
+      final refreshed = await onUnauthorized!();
+      if (refreshed) {
+        return request(
+          method,
+          path,
+          body: body,
+          query: query,
+          auth: auth,
+          retried: true,
         );
-        break;
-      case 'PATCH':
-        res = await http.patch(
-          uri,
-          headers: headers,
-          body: body == null ? null : jsonEncode(body),
-        );
-        break;
-      default:
-        throw ApiException(0, 'Unsupported method $method');
+      }
     }
 
     if (res.statusCode < 200 || res.statusCode >= 300) {

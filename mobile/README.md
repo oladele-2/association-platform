@@ -1,17 +1,48 @@
-# association_mobile
+# Association member companion (Flutter)
 
-A new Flutter project.
+Phase 2 mobile shell against the same OpenAPI as the portal.
 
-## Getting Started
+## Configure
 
-This project is a starting point for a Flutter application.
+Release builds **require**:
 
-A few resources to get you started if this is your first Flutter project:
+```bash
+flutter run --release \
+  --dart-define=API_BASE_URL=https://api.example.com \
+  --dart-define=ORG_SLUG=your-org-slug
+```
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+Debug defaults (emulator → host API): `http://10.0.2.2:3000` and slug `demo`. Override with the same defines. Desktop local API example:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```bash
+flutter run -d windows \
+  --dart-define=API_BASE_URL=http://127.0.0.1:3000 \
+  --dart-define=ORG_SLUG=demo
+```
+
+`ALLOW_INSECURE_API=true` may be used only for controlled non-HTTPS exceptions in release.
+
+## Verify
+
+```bash
+cd mobile
+flutter pub get
+flutter analyze
+flutter test
+```
+
+## Security notes
+
+- **Windows:** refresh/access tokens use Windows Credential Manager (`CredWrite` / `CredRead`).
+- **Other platforms:** app-dir vault file (`session.vault.json`); migrate to Keystore/Keychain before store release.
+- Legacy plaintext `session.json` is migrated once then deleted.
+- Mid-session 401 triggers single-flight refresh + one retry.
+- Account gates (`mustResetPassword`, unverified email) block the member shell.
+- No Flutter plugins that require Windows Developer Mode / directory symlinks.
+
+## Deferred
+
+- Digital membership ID screen (needs API)
+- On-device CME evidence upload / photograph
+- FCM push
+- Store release signing (do not ship debug-signed APKs)

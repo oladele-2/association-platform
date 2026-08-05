@@ -1,10 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../api/api_client.dart';
 import '../auth/auth_state.dart';
+import '../format_money.dart';
+import '../open_url.dart';
 
 class DuesScreen extends StatefulWidget {
   const DuesScreen({super.key});
@@ -22,18 +24,21 @@ class _DuesScreenState extends State<DuesScreen> {
   String? _error;
   String? _message;
 
-  final _naira = NumberFormat.currency(locale: 'en_NG', symbol: 'NGN ');
-
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) => _load());
   }
 
-  String _money(dynamic kobo) {
-    final n = kobo is String ? num.tryParse(kobo) : kobo as num?;
-    if (n == null) return '-';
-    return _naira.format(n / 100);
+  String _money(Map<String, dynamic> row, String amountKey) {
+    return formatMoneyFromMinor(row[amountKey], row['currency'] as String?);
+  }
+
+  String _idempotencyKey() {
+    final r = Random.secure();
+    final bytes = List<int>.generate(16, (_) => r.nextInt(256));
+    final hex = bytes.map((b) => b.toRadixString(16).padLeft(2, '0')).join();
+    return 'mobile-$hex';
   }
 
   List<Map<String, dynamic>> _asList(Map<String, dynamic> pageOrList) {
@@ -92,14 +97,17 @@ class _DuesScreenState extends State<DuesScreen> {
         auth: true,
         body: {
           'invoiceIds': _selected.toList(),
-          'idempotencyKey':
-              'mobile-${DateTime.now().millisecondsSinceEpoch}-${_selected.length}',
+          'idempotencyKey': _idempotencyKey(),
         },
       );
       final url = result['authorizationUrl'] as String?;
       if (url != null && url.isNotEmpty) {
-        await Clipboard.setData(ClipboardData(text: url));
-        setState(() => _message = 'Payment URL copied to clipboard.');
+        final opened = await openExternalUrl(url);
+        setState(
+          () => _message = opened
+              ? 'Opened payment page. Return here after completing payment.'
+              : 'Could not open payment URL: $url',
+        );
       } else {
         setState(() => _message = 'Payment initialized (mock gateway).');
       }
@@ -171,7 +179,7 @@ class _DuesScreenState extends State<DuesScreen> {
                         }
                       : null,
                   title: Text(inv['invoiceNo'] as String? ?? id),
-                  subtitle: Text('${_money(inv['amountDueKobo'])} · $status'),
+                  subtitle: Text('${_money(inv, 'amountDueKobo')} · $status'),
                 ),
               );
             }),
@@ -198,7 +206,7 @@ class _DuesScreenState extends State<DuesScreen> {
                     p['reference'] as String? ?? p['id'] as String? ?? '',
                   ),
                   subtitle: Text(
-                    '${_money(p['amountKobo'])} · ${p['channel']} · ${p['status']}',
+                    '${_money(p, 'amountKobo')} · ${p['channel']} · ${p['status']}',
                   ),
                 ),
               );

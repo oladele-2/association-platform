@@ -9,6 +9,7 @@ import {
 } from '../domain/cme.rules';
 import { CME_REPOSITORY, type CmeRepository } from './ports/cme.repository';
 import { GetReadyFileUseCase } from '../../files/application/file.use-cases';
+import { FanOutPushUseCase } from '../../comms/application/comms.use-cases';
 
 @Injectable()
 export class ListCmeSubmissionsUseCase {
@@ -72,7 +73,10 @@ export class SubmitCmeUseCase {
 
 @Injectable()
 export class ApproveCmeUseCase {
-  constructor(@Inject(CME_REPOSITORY) private readonly repo: CmeRepository) {}
+  constructor(
+    @Inject(CME_REPOSITORY) private readonly repo: CmeRepository,
+    private readonly fanOutPush: FanOutPushUseCase,
+  ) {}
 
   async execute(organizationId: string, id: string, reviewerUserId: string) {
     const existing = await this.repo.findById(organizationId, id);
@@ -108,12 +112,24 @@ export class ApproveCmeUseCase {
       payload: { memberId, submissionId, approved },
     });
     if (userId) {
+      const title = approved ? 'CME approved' : 'CME rejected';
+      const body = approved
+        ? 'Your CME submission was approved.'
+        : 'Your CME submission was rejected.';
+      const data = { submissionId, approved };
       await this.repo.createNotification({
         organizationId,
         userId,
-        title: approved ? 'CME approved' : 'CME rejected',
-        body: approved ? 'Your CME submission was approved.' : 'Your CME submission was rejected.',
-        data: { submissionId, approved },
+        title,
+        body,
+        data,
+      });
+      await this.fanOutPush.execute({
+        organizationId,
+        userId,
+        title,
+        body,
+        data,
       });
     }
   }
@@ -121,7 +137,10 @@ export class ApproveCmeUseCase {
 
 @Injectable()
 export class RejectCmeUseCase {
-  constructor(@Inject(CME_REPOSITORY) private readonly repo: CmeRepository) {}
+  constructor(
+    @Inject(CME_REPOSITORY) private readonly repo: CmeRepository,
+    private readonly fanOutPush: FanOutPushUseCase,
+  ) {}
 
   async execute(organizationId: string, id: string, reviewerUserId: string, reason: string) {
     if (!reason.trim()) {
@@ -151,12 +170,22 @@ export class RejectCmeUseCase {
       payload: { memberId: existing.memberId, submissionId: id, reason: reason.trim() },
     });
     if (userId) {
+      const title = 'CME rejected';
+      const body = reason.trim();
+      const data = { submissionId: id, approved: false };
       await this.repo.createNotification({
         organizationId,
         userId,
-        title: 'CME rejected',
-        body: reason.trim(),
-        data: { submissionId: id, approved: false },
+        title,
+        body,
+        data,
+      });
+      await this.fanOutPush.execute({
+        organizationId,
+        userId,
+        title,
+        body,
+        data,
       });
     }
     return updated;

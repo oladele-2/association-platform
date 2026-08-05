@@ -17,6 +17,8 @@ Each milestone must **compile**, **pass its tests**, include **documentation**, 
 | **M7b** | Astro public website | Branded NMA Ogun demo site; config-driven; public API + demo fallback |
 | **M8** | Portal shells | Member / institution / admin React portal |
 | **M9** | CME + Events depth + Comms | CME, event registration, email queue + FCM stubs |
+| **M10** | Member self-registration | Public/portal/Android signup + welcome CTAs |
+| **M11** | FCM push | Device tokens + fail-closed push + CME fan-out |
 | **F1** | Flutter member shell | Phase 2 companion: auth + member live screens |
 | **P1** | Platform Operator console | Login, org list, provision, org detail |
 
@@ -39,6 +41,8 @@ Each milestone must **compile**, **pass its tests**, include **documentation**, 
 | M9b | Approved (2026-08-05) — registration + SMTP drain; FCM deferred | [M9B-EVENTS-EMAIL.md](./milestones/M9B-EVENTS-EMAIL.md) |
 | F1 | Approved (2026-08-05) | [F1-FLUTTER-SHELL.md](./milestones/F1-FLUTTER-SHELL.md) |
 | P1 | Approved (2026-08-05) | [P1-PLATFORM-CONSOLE.md](./milestones/P1-PLATFORM-CONSOLE.md) |
+| M10 | Approved (2026-08-05) | [M10-MEMBER-SELF-REGISTRATION.md](./milestones/M10-MEMBER-SELF-REGISTRATION.md) |
+| M11 | Approved (2026-08-05) — FCM device tokens + push fan-out | [M11-FCM-PUSH.md](./milestones/M11-FCM-PUSH.md) |
 
 ```bash
 pnpm install

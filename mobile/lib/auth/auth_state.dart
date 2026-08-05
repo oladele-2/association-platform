@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 
 import '../api/api_client.dart';
 import '../config.dart';
+import '../push_registration.dart';
 import 'token_store.dart';
 
 class AuthUser {
@@ -143,6 +144,11 @@ class AuthState extends ChangeNotifier {
 
     ready = true;
     notifyListeners();
+    if (isAuthenticated) {
+      unawaited(
+        registerPushTokenIfEnabled(enableFcm: config.enableFcm, api: _api),
+      );
+    }
   }
 
   bool get _shouldRefreshProactively {
@@ -158,10 +164,15 @@ class AuthState extends ChangeNotifier {
     );
     await _applySession(session);
     notifyListeners();
+    // Best-effort; never block login on push setup.
+    unawaited(
+      registerPushTokenIfEnabled(enableFcm: config.enableFcm, api: _api),
+    );
   }
 
   Future<void> logout() async {
     final refresh = await _storage.read(_refreshKey);
+    await revokePushTokenIfEnabled(enableFcm: config.enableFcm, api: _api);
     try {
       await _api.post(
         '/v1/auth/logout',

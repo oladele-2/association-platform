@@ -22,6 +22,15 @@ flutter run -d windows \
 
 `ALLOW_INSECURE_API=true` may be used only for controlled non-HTTPS exceptions in release.
 
+### Push (FCM)
+
+Default is **off**. To register a device token after login:
+
+1. Place Firebase `android/app/google-services.json` (see `google-services.json.example`).
+2. Run with `--dart-define=ENABLE_FCM=true`.
+
+API must have `FIREBASE_*` credentials (or `ALLOW_MOCK_PUSH=true` in non-prod).
+
 ## Verify
 
 ```bash
@@ -44,5 +53,4 @@ flutter test
 
 - Digital membership ID screen (needs API)
 - On-device CME evidence upload / photograph
-- FCM push
 - Store release signing (do not ship debug-signed APKs)

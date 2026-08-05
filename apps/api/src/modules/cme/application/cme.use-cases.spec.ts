@@ -2,6 +2,13 @@ import { describe, expect, it, vi } from 'vitest';
 import { ApproveCmeUseCase, RejectCmeUseCase, SubmitCmeUseCase } from './cme.use-cases';
 import type { CmeRepository } from './ports/cme.repository';
 import type { GetReadyFileUseCase } from '../../files/application/file.use-cases';
+import type { FanOutPushUseCase } from '../../comms/application/comms.use-cases';
+
+function mockPush(): FanOutPushUseCase {
+  return {
+    execute: vi.fn().mockResolvedValue({ attempted: 0, successCount: 0, revoked: 0 }),
+  } as unknown as FanOutPushUseCase;
+}
 
 describe('SubmitCmeUseCase', () => {
   it('requires member profile and ready file', async () => {
@@ -46,12 +53,14 @@ describe('ApproveCmeUseCase', () => {
       writeOutbox: vi.fn(),
       createNotification: vi.fn(),
     } as unknown as CmeRepository;
+    const push = mockPush();
 
-    const usecase = new ApproveCmeUseCase(repo);
+    const usecase = new ApproveCmeUseCase(repo, push);
     const result = await usecase.execute('o1', 'c1', 'admin1');
     expect(result.status).toBe('approved');
     expect(repo.writeOutbox).toHaveBeenCalled();
     expect(repo.createNotification).toHaveBeenCalled();
+    expect(push.execute).toHaveBeenCalled();
   });
 
   it('fails closed when CAS loses the race', async () => {
@@ -60,7 +69,7 @@ describe('ApproveCmeUseCase', () => {
       reviewIfPending: vi.fn().mockResolvedValue(null),
       writeOutbox: vi.fn(),
     } as unknown as CmeRepository;
-    const usecase = new ApproveCmeUseCase(repo);
+    const usecase = new ApproveCmeUseCase(repo, mockPush());
     await expect(usecase.execute('o1', 'c1', 'admin1')).rejects.toMatchObject({
       code: 'CME_NOT_PENDING',
     });
@@ -73,7 +82,7 @@ describe('RejectCmeUseCase', () => {
     const repo = {
       findById: vi.fn(),
     } as unknown as CmeRepository;
-    const usecase = new RejectCmeUseCase(repo);
+    const usecase = new RejectCmeUseCase(repo, mockPush());
     await expect(usecase.execute('o1', 'c1', 'admin1', '  ')).rejects.toMatchObject({
       code: 'REJECTION_REASON_REQUIRED',
     });

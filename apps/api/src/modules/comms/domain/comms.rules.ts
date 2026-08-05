@@ -90,3 +90,23 @@ export function campaignStatusAfterSend(sent: number, failed: number): CampaignS
   if (sent === 0 && failed > 0) return 'cancelled';
   return 'sent';
 }
+
+export type DevicePlatform = 'android' | 'ios' | 'web';
+
+const PLATFORMS = new Set<DevicePlatform>(['android', 'ios', 'web']);
+
+export function assertDevicePlatform(platform: string): DevicePlatform {
+  const normalized = platform.trim().toLowerCase();
+  if (!PLATFORMS.has(normalized as DevicePlatform)) {
+    throw new DomainError('INVALID_PLATFORM', 'platform must be android, ios, or web');
+  }
+  return normalized as DevicePlatform;
+}
+
+export function assertDeviceToken(token: string): string {
+  const trimmed = token.trim();
+  if (trimmed.length < 32 || trimmed.length > 4096) {
+    throw new DomainError('INVALID_DEVICE_TOKEN', 'Device token length is invalid');
+  }
+  return trimmed;
+}

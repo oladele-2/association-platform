@@ -34,6 +34,12 @@ export type AppEnv = {
   EMAIL_DRIVER: 'mock' | 'smtp';
   /** Interval for delivery drain; 0 disables. */
   EMAIL_DRAIN_INTERVAL_MS: number;
+  /** Explicit opt-in to mock push when Firebase is unset (required in production without FCM). */
+  ALLOW_MOCK_PUSH: boolean;
+  PUSH_DRIVER: 'mock' | 'fcm';
+  FIREBASE_PROJECT_ID: string | undefined;
+  /** Full service-account JSON string (never commit real credentials). */
+  FIREBASE_SERVICE_ACCOUNT_JSON: string | undefined;
 };
 
 export function validateEnv(config: Record<string, unknown>): AppEnv {
@@ -108,6 +114,43 @@ export function validateEnv(config: Record<string, unknown>): AppEnv {
     throw new Error('EMAIL_DRAIN_INTERVAL_MS must be >= 0');
   }
 
+  const firebaseProjectId = optionalTrim(config.FIREBASE_PROJECT_ID);
+  const firebaseServiceAccountJson = optionalTrim(config.FIREBASE_SERVICE_ACCOUNT_JSON);
+  const allowMockPush =
+    String(config.ALLOW_MOCK_PUSH ?? '')
+      .trim()
+      .toLowerCase() === 'true';
+  const fcmConfigured = Boolean(firebaseProjectId && firebaseServiceAccountJson);
+  if (
+    (firebaseProjectId && !firebaseServiceAccountJson) ||
+    (!firebaseProjectId && firebaseServiceAccountJson)
+  ) {
+    throw new Error(
+      'Partial FCM configuration: set FIREBASE_PROJECT_ID and FIREBASE_SERVICE_ACCOUNT_JSON together',
+    );
+  }
+  if (firebaseServiceAccountJson) {
+    try {
+      const parsed = JSON.parse(firebaseServiceAccountJson) as {
+        client_email?: string;
+        private_key?: string;
+      };
+      if (!parsed.client_email || !parsed.private_key) {
+        throw new Error('missing fields');
+      }
+    } catch {
+      throw new Error(
+        'FIREBASE_SERVICE_ACCOUNT_JSON must be valid JSON with client_email and private_key',
+      );
+    }
+  }
+  const pushDriver: 'mock' | 'fcm' = fcmConfigured ? 'fcm' : 'mock';
+  if (nodeEnv === 'production' && pushDriver === 'mock' && !allowMockPush) {
+    throw new Error(
+      'Production requires Firebase FCM (FIREBASE_PROJECT_ID + FIREBASE_SERVICE_ACCOUNT_JSON) or explicit ALLOW_MOCK_PUSH=true',
+    );
+  }
+
   if (!Number.isFinite(port) || port <= 0) {
     throw new Error('PORT must be a positive number');
   }
@@ -156,6 +199,10 @@ export function validateEnv(config: Record<string, unknown>): AppEnv {
     ALLOW_MOCK_EMAIL: allowMockEmail,
     EMAIL_DRIVER: emailDriver,
     EMAIL_DRAIN_INTERVAL_MS: emailDrainIntervalMs,
+    ALLOW_MOCK_PUSH: allowMockPush,
+    PUSH_DRIVER: pushDriver,
+    FIREBASE_PROJECT_ID: firebaseProjectId,
+    FIREBASE_SERVICE_ACCOUNT_JSON: firebaseServiceAccountJson,
   };
 }
 

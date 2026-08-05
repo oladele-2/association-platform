@@ -6,6 +6,7 @@ class AppConfig {
     required this.apiBaseUrl,
     required this.orgSlug,
     this.portalWebUrl = '',
+    this.enableFcm = false,
   });
 
   final String apiBaseUrl;
@@ -14,12 +15,17 @@ class AppConfig {
   /// Optional CTA after registration / welcome (member web portal).
   final String portalWebUrl;
 
+  /// When true, initialize Firebase Messaging and register the device token.
+  /// Requires `google-services.json` (Android) and Firebase app configuration.
+  final bool enableFcm;
+
   /// Release builds **require** `API_BASE_URL` (HTTPS) and `ORG_SLUG`.
   /// Debug/profile allow emulator HTTP + placeholder slug for local runs.
   static AppConfig resolve() {
     const apiFromEnv = String.fromEnvironment('API_BASE_URL');
     const slugFromEnv = String.fromEnvironment('ORG_SLUG');
     const portalFromEnv = String.fromEnvironment('PORTAL_WEB_URL');
+    const enableFcm = bool.fromEnvironment('ENABLE_FCM', defaultValue: false);
     const allowInsecure = bool.fromEnvironment(
       'ALLOW_INSECURE_API',
       defaultValue: false,
@@ -42,6 +48,7 @@ class AppConfig {
         apiBaseUrl: apiFromEnv,
         orgSlug: slugFromEnv,
         portalWebUrl: portalFromEnv,
+        enableFcm: enableFcm,
       );
     }
 
@@ -51,6 +58,7 @@ class AppConfig {
       orgSlug: slugFromEnv.isEmpty ? 'demo' : slugFromEnv,
       portalWebUrl:
           portalFromEnv.isEmpty ? 'http://localhost:5173' : portalFromEnv,
+      enableFcm: enableFcm,
     );
   }
 }

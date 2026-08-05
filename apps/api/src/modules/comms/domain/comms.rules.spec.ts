@@ -3,6 +3,8 @@ import { DomainError } from '@association/shared-kernel';
 import {
   assertAudienceSize,
   assertCanQueueCampaign,
+  assertDevicePlatform,
+  assertDeviceToken,
   campaignStatusAfterSend,
   normalizeTemplateKey,
   parseAudienceFilter,
@@ -46,5 +48,12 @@ describe('comms.rules', () => {
     expect(campaignStatusAfterSend(1, 0)).toBe('sent');
     expect(campaignStatusAfterSend(1, 2)).toBe('sent');
     expect(campaignStatusAfterSend(0, 3)).toBe('cancelled');
+  });
+
+  it('validates device token and platform', () => {
+    expect(assertDevicePlatform('Android')).toBe('android');
+    expect(() => assertDevicePlatform('desktop')).toThrow(DomainError);
+    expect(assertDeviceToken('x'.repeat(32)).length).toBe(32);
+    expect(() => assertDeviceToken('short')).toThrow(DomainError);
   });
 });

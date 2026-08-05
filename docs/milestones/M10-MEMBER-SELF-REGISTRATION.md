@@ -1,6 +1,6 @@
 # Milestone M10 — Public member self-registration (completion report)
 
-**Status:** Ready for approval  
+**Status:** Approved (2026-08-05)  
 **Depends on:** M5 Members, M2 Identity, M7b Web, M8 Portal, F1 Mobile  
 **Scope:** Doctors register on public website (multi-step), portal, and Android; congratulate + CTA to portal/app; admins retain edit/delete.
 
@@ -39,4 +39,4 @@
 
 ## Approval gate
 
-- [ ] Approve M10 when Ready for approval
+- [x] Approve M10 → authorize next milestone only when explicitly requested

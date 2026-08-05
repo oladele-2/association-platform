@@ -101,12 +101,33 @@ export interface CommsRepository {
     id: string,
   ): Promise<NotificationView>;
   markAllNotificationsRead(organizationId: string, userId: string): Promise<{ updated: number }>;
+  upsertDeviceToken(input: {
+    organizationId: string;
+    userId: string;
+    token: string;
+    platform: 'android' | 'ios' | 'web';
+  }): Promise<DeviceTokenView>;
+  revokeDeviceToken(input: {
+    organizationId: string;
+    userId: string;
+    token: string;
+  }): Promise<{ revoked: boolean }>;
+  listActiveDeviceTokens(organizationId: string, userId: string): Promise<DeviceTokenView[]>;
+  revokeDeviceTokensByValues(organizationId: string, tokens: string[]): Promise<number>;
 }
 
 export type ClaimedDelivery = EmailDeliveryView & {
   organizationId: string;
   subject: string;
   bodyMarkdown: string;
+};
+
+export type DeviceTokenView = {
+  id: string;
+  token: string;
+  platform: string;
+  createdAt: string;
+  revokedAt: string | null;
 };
 
 export const COMMS_REPOSITORY = Symbol('COMMS_REPOSITORY');
@@ -121,3 +142,22 @@ export interface EmailProvider {
 }
 
 export const EMAIL_PROVIDER = Symbol('EMAIL_PROVIDER');
+
+export type PushSendResult = {
+  successCount: number;
+  failureCount: number;
+  /** Tokens FCM reported as permanently invalid — caller should revoke. */
+  invalidTokens: string[];
+};
+
+export interface PushProvider {
+  readonly driver: 'mock' | 'fcm';
+  send(input: {
+    tokens: string[];
+    title: string;
+    body: string;
+    data?: Record<string, string>;
+  }): Promise<PushSendResult>;
+}
+
+export const PUSH_PROVIDER = Symbol('PUSH_PROVIDER');

@@ -1,17 +1,21 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { DomainError } from '@association/shared-kernel';
 import {
   assertAudienceSize,
   assertCampaignName,
   assertCanQueueCampaign,
+  assertDevicePlatform,
+  assertDeviceToken,
   normalizeTemplateKey,
   parseAudienceFilter,
 } from '../domain/comms.rules';
 import {
   COMMS_REPOSITORY,
   EMAIL_PROVIDER,
+  PUSH_PROVIDER,
   type CommsRepository,
   type EmailProvider,
+  type PushProvider,
 } from './ports/comms.repository';
 
 @Injectable()
@@ -208,5 +212,89 @@ export class MarkAllNotificationsReadUseCase {
   constructor(@Inject(COMMS_REPOSITORY) private readonly repo: CommsRepository) {}
   execute(organizationId: string, userId: string) {
     return this.repo.markAllNotificationsRead(organizationId, userId);
+  }
+}
+
+@Injectable()
+export class RegisterDeviceTokenUseCase {
+  constructor(@Inject(COMMS_REPOSITORY) private readonly repo: CommsRepository) {}
+
+  execute(input: { organizationId: string; userId: string; token: string; platform: string }) {
+    return this.repo.upsertDeviceToken({
+      organizationId: input.organizationId,
+      userId: input.userId,
+      token: assertDeviceToken(input.token),
+      platform: assertDevicePlatform(input.platform),
+    });
+  }
+}
+
+@Injectable()
+export class RevokeDeviceTokenUseCase {
+  constructor(@Inject(COMMS_REPOSITORY) private readonly repo: CommsRepository) {}
+
+  execute(input: { organizationId: string; userId: string; token: string }) {
+    return this.repo.revokeDeviceToken({
+      organizationId: input.organizationId,
+      userId: input.userId,
+      token: assertDeviceToken(input.token),
+    });
+  }
+}
+
+/**
+ * Best-effort push fan-out for an already-persisted in-app notification.
+ * Failures never throw to callers (e.g. CME review).
+ */
+@Injectable()
+export class FanOutPushUseCase {
+  private readonly logger = new Logger(FanOutPushUseCase.name);
+
+  constructor(
+    @Inject(COMMS_REPOSITORY) private readonly repo: CommsRepository,
+    @Inject(PUSH_PROVIDER) private readonly push: PushProvider,
+  ) {}
+
+  async execute(input: {
+    organizationId: string;
+    userId: string;
+    title: string;
+    body: string;
+    data?: Record<string, unknown>;
+  }): Promise<{ attempted: number; successCount: number; revoked: number }> {
+    try {
+      const tokens = await this.repo.listActiveDeviceTokens(input.organizationId, input.userId);
+      if (tokens.length === 0) {
+        return { attempted: 0, successCount: 0, revoked: 0 };
+      }
+      const data: Record<string, string> = {};
+      if (input.data) {
+        for (const [k, v] of Object.entries(input.data)) {
+          if (v == null) continue;
+          data[k] = typeof v === 'string' ? v : JSON.stringify(v);
+        }
+      }
+      const result = await this.push.send({
+        tokens: tokens.map((t) => t.token),
+        title: input.title,
+        body: input.body,
+        data,
+      });
+      let revoked = 0;
+      if (result.invalidTokens.length > 0) {
+        revoked = await this.repo.revokeDeviceTokensByValues(
+          input.organizationId,
+          result.invalidTokens,
+        );
+      }
+      return {
+        attempted: tokens.length,
+        successCount: result.successCount,
+        revoked,
+      };
+    } catch (err) {
+      this.logger.warn(`Push fan-out failed: ${err instanceof Error ? err.message : String(err)}`);
+      return { attempted: 0, successCount: 0, revoked: 0 };
+    }
   }
 }

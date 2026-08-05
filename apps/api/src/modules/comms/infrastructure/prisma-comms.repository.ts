@@ -309,6 +309,68 @@ export class PrismaCommsRepository implements CommsRepository {
       return { updated: result.count };
     });
   }
+
+  async upsertDeviceToken(input: {
+    organizationId: string;
+    userId: string;
+    token: string;
+    platform: 'android' | 'ios' | 'web';
+  }) {
+    // Token is globally unique; rebind requires platform context so RLS can
+    // clear a prior org/user claim when the same device signs into a new session.
+    return this.prisma.asPlatform(async (tx) => {
+      await tx.deviceToken.deleteMany({ where: { token: input.token } });
+      const row = await tx.deviceToken.create({
+        data: {
+          organizationId: input.organizationId,
+          userId: input.userId,
+          token: input.token,
+          platform: input.platform,
+        },
+      });
+      return mapDeviceToken(row);
+    });
+  }
+
+  async revokeDeviceToken(input: { organizationId: string; userId: string; token: string }) {
+    return this.prisma.asTenant(input.organizationId, async (tx) => {
+      const result = await tx.deviceToken.updateMany({
+        where: {
+          organizationId: input.organizationId,
+          userId: input.userId,
+          token: input.token,
+          revokedAt: null,
+        },
+        data: { revokedAt: new Date() },
+      });
+      return { revoked: result.count > 0 };
+    });
+  }
+
+  async listActiveDeviceTokens(organizationId: string, userId: string) {
+    return this.prisma.asTenant(organizationId, async (tx) => {
+      const rows = await tx.deviceToken.findMany({
+        where: { organizationId, userId, revokedAt: null },
+        orderBy: { updatedAt: 'desc' },
+      });
+      return rows.map(mapDeviceToken);
+    });
+  }
+
+  async revokeDeviceTokensByValues(organizationId: string, tokens: string[]) {
+    if (tokens.length === 0) return 0;
+    return this.prisma.asTenant(organizationId, async (tx) => {
+      const result = await tx.deviceToken.updateMany({
+        where: {
+          organizationId,
+          token: { in: tokens },
+          revokedAt: null,
+        },
+        data: { revokedAt: new Date() },
+      });
+      return result.count;
+    });
+  }
 }
 
 function mapTemplate(row: {
@@ -390,5 +452,21 @@ function mapNotification(row: {
     data: (row.data as Record<string, unknown>) ?? {},
     readAt: row.readAt?.toISOString() ?? null,
     createdAt: row.createdAt.toISOString(),
+  };
+}
+
+function mapDeviceToken(row: {
+  id: string;
+  token: string;
+  platform: string;
+  createdAt: Date;
+  revokedAt: Date | null;
+}) {
+  return {
+    id: row.id,
+    token: row.token,
+    platform: row.platform,
+    createdAt: row.createdAt.toISOString(),
+    revokedAt: row.revokedAt?.toISOString() ?? null,
   };
 }

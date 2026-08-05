@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { ApproveCmeUseCase, SubmitCmeUseCase } from './cme.use-cases';
+import { ApproveCmeUseCase, RejectCmeUseCase, SubmitCmeUseCase } from './cme.use-cases';
 import type { CmeRepository } from './ports/cme.repository';
 import type { GetReadyFileUseCase } from '../../files/application/file.use-cases';
 
@@ -20,12 +20,14 @@ describe('SubmitCmeUseCase', () => {
       fileId: 'f1',
       title: 'Conference 2026',
       creditHours: '3',
+      completedOn: '2026-03-01',
     });
     expect(repo.create).toHaveBeenCalledWith(
       expect.objectContaining({
         memberId: 'm1',
         title: 'Conference 2026',
         creditHours: '3.00',
+        completedOn: expect.any(Date),
       }),
     );
   });
@@ -39,7 +41,7 @@ describe('ApproveCmeUseCase', () => {
         status: 'pending',
         memberId: 'm1',
       }),
-      review: vi.fn().mockResolvedValue({ id: 'c1', status: 'approved' }),
+      reviewIfPending: vi.fn().mockResolvedValue({ id: 'c1', status: 'approved' }),
       findMemberUserId: vi.fn().mockResolvedValue('u1'),
       writeOutbox: vi.fn(),
       createNotification: vi.fn(),
@@ -50,5 +52,30 @@ describe('ApproveCmeUseCase', () => {
     expect(result.status).toBe('approved');
     expect(repo.writeOutbox).toHaveBeenCalled();
     expect(repo.createNotification).toHaveBeenCalled();
+  });
+
+  it('fails closed when CAS loses the race', async () => {
+    const repo = {
+      findById: vi.fn().mockResolvedValue({ id: 'c1', status: 'pending', memberId: 'm1' }),
+      reviewIfPending: vi.fn().mockResolvedValue(null),
+      writeOutbox: vi.fn(),
+    } as unknown as CmeRepository;
+    const usecase = new ApproveCmeUseCase(repo);
+    await expect(usecase.execute('o1', 'c1', 'admin1')).rejects.toMatchObject({
+      code: 'CME_NOT_PENDING',
+    });
+    expect(repo.writeOutbox).not.toHaveBeenCalled();
+  });
+});
+
+describe('RejectCmeUseCase', () => {
+  it('requires a reason', async () => {
+    const repo = {
+      findById: vi.fn(),
+    } as unknown as CmeRepository;
+    const usecase = new RejectCmeUseCase(repo);
+    await expect(usecase.execute('o1', 'c1', 'admin1', '  ')).rejects.toMatchObject({
+      code: 'REJECTION_REASON_REQUIRED',
+    });
   });
 });

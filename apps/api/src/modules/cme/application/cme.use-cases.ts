@@ -3,6 +3,7 @@ import { DomainError } from '@association/shared-kernel';
 import {
   assertCmePending,
   assertCmeTitle,
+  parseCompletedOn,
   parseCreditHours,
   type CmeStatus,
 } from '../domain/cme.rules';
@@ -64,7 +65,7 @@ export class SubmitCmeUseCase {
       title: assertCmeTitle(input.title),
       provider: input.provider?.trim() || null,
       creditHours: parseCreditHours(input.creditHours),
-      completedOn: input.completedOn ? new Date(input.completedOn) : null,
+      completedOn: parseCompletedOn(input.completedOn),
     });
   }
 }
@@ -78,12 +79,15 @@ export class ApproveCmeUseCase {
     if (!existing) throw new DomainError('CME_NOT_FOUND', 'CME submission not found');
     assertCmePending(existing.status);
 
-    const updated = await this.repo.review({
+    const updated = await this.repo.reviewIfPending({
       organizationId,
       id,
       status: 'approved',
       reviewerUserId,
     });
+    if (!updated) {
+      throw new DomainError('CME_NOT_PENDING', 'Only pending CME submissions can be reviewed');
+    }
 
     await this.notify(organizationId, existing.memberId, id, true);
     return updated;
@@ -127,13 +131,16 @@ export class RejectCmeUseCase {
     if (!existing) throw new DomainError('CME_NOT_FOUND', 'CME submission not found');
     assertCmePending(existing.status);
 
-    const updated = await this.repo.review({
+    const updated = await this.repo.reviewIfPending({
       organizationId,
       id,
       status: 'rejected',
       reviewerUserId,
       rejectionReason: reason.trim(),
     });
+    if (!updated) {
+      throw new DomainError('CME_NOT_PENDING', 'Only pending CME submissions can be reviewed');
+    }
 
     const userId = await this.repo.findMemberUserId(organizationId, existing.memberId);
     await this.repo.writeOutbox({

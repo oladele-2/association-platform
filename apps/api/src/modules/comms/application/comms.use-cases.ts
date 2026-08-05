@@ -1,9 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { DomainError } from '@association/shared-kernel';
 import {
+  assertAudienceSize,
   assertCampaignName,
   assertCanQueueCampaign,
+  campaignStatusAfterSend,
   normalizeTemplateKey,
+  parseAudienceFilter,
 } from '../domain/comms.rules';
 import {
   COMMS_REPOSITORY,
@@ -58,7 +61,7 @@ export class GetEmailCampaignUseCase {
 @Injectable()
 export class CreateEmailCampaignUseCase {
   constructor(@Inject(COMMS_REPOSITORY) private readonly repo: CommsRepository) {}
-  execute(input: {
+  async execute(input: {
     organizationId: string;
     name: string;
     subject: string;
@@ -70,18 +73,26 @@ export class CreateEmailCampaignUseCase {
     if (!input.bodyMarkdown.trim()) {
       throw new DomainError('INVALID_BODY', 'bodyMarkdown is required');
     }
+    const audienceFilter = parseAudienceFilter(input.audienceFilter ?? { allActiveMembers: true });
     return this.repo.createCampaign({
       organizationId: input.organizationId,
       name: assertCampaignName(input.name),
       subject: input.subject.trim(),
       bodyMarkdown: input.bodyMarkdown,
-      audienceFilter: input.audienceFilter ?? { allActiveMembers: true },
+      audienceFilter: {
+        allActiveMembers: audienceFilter.membershipStatus === 'active',
+        membershipStatus: audienceFilter.membershipStatus,
+        ...(audienceFilter.institutionId ? { institutionId: audienceFilter.institutionId } : {}),
+        ...(audienceFilter.membershipTypeId
+          ? { membershipTypeId: audienceFilter.membershipTypeId }
+          : {}),
+      },
       createdByUserId: input.createdByUserId,
     });
   }
 }
 
-/** Queue campaign: create deliveries + mock-send (provider stub). */
+/** Queue campaign: CAS claim → deliveries → mock-send (provider stub). */
 @Injectable()
 export class QueueEmailCampaignUseCase {
   constructor(
@@ -94,12 +105,24 @@ export class QueueEmailCampaignUseCase {
     if (!campaign) throw new DomainError('CAMPAIGN_NOT_FOUND', 'Campaign not found');
     assertCanQueueCampaign(campaign.status);
 
-    const audience = await this.repo.resolveAudience(organizationId, campaign.audienceFilter);
+    const audienceFilter = parseAudienceFilter(campaign.audienceFilter);
+    const audience = await this.repo.resolveAudience(organizationId, {
+      membershipStatus: audienceFilter.membershipStatus,
+      ...(audienceFilter.institutionId ? { institutionId: audienceFilter.institutionId } : {}),
+      ...(audienceFilter.membershipTypeId
+        ? { membershipTypeId: audienceFilter.membershipTypeId }
+        : {}),
+    });
     if (audience.length === 0) {
       throw new DomainError('EMPTY_AUDIENCE', 'No recipients matched the audience filter');
     }
+    assertAudienceSize(audience.length);
 
-    await this.repo.updateCampaignStatus(organizationId, id, 'queued');
+    const claimed = await this.repo.claimCampaignForQueue(organizationId, id);
+    if (!claimed) {
+      throw new DomainError('CAMPAIGN_NOT_DRAFT', 'Only draft campaigns can be queued');
+    }
+
     const created = await this.repo.createDeliveries(
       organizationId,
       id,
@@ -129,13 +152,16 @@ export class QueueEmailCampaignUseCase {
         failed += 1;
       }
     }
-    await this.repo.updateCampaignStatus(organizationId, id, 'sent');
+
+    const finalStatus = campaignStatusAfterSend(sent, failed);
+    await this.repo.updateCampaignStatus(organizationId, id, finalStatus);
 
     return {
       campaignId: id,
       recipients: created,
       sent,
       failed,
+      status: finalStatus,
       provider: this.email.driver,
     };
   }

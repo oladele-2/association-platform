@@ -77,9 +77,29 @@ export class PrismaCmeRepository implements CmeRepository {
     reviewerUserId: string;
     rejectionReason?: string | null;
   }) {
+    const claimed = await this.reviewIfPending(input);
+    if (!claimed) {
+      const row = await this.findById(input.organizationId, input.id);
+      if (!row) throw new DomainError('CME_NOT_FOUND', 'CME submission not found');
+      throw new DomainError('CME_NOT_PENDING', 'Only pending CME submissions can be reviewed');
+    }
+    return claimed;
+  }
+
+  async reviewIfPending(input: {
+    organizationId: string;
+    id: string;
+    status: 'approved' | 'rejected';
+    reviewerUserId: string;
+    rejectionReason?: string | null;
+  }) {
     return this.prisma.asTenant(input.organizationId, async (tx) => {
-      await tx.cmeSubmission.updateMany({
-        where: { id: input.id, organizationId: input.organizationId },
+      const cas = await tx.cmeSubmission.updateMany({
+        where: {
+          id: input.id,
+          organizationId: input.organizationId,
+          status: 'pending',
+        },
         data: {
           status: input.status,
           reviewerUserId: input.reviewerUserId,
@@ -87,10 +107,11 @@ export class PrismaCmeRepository implements CmeRepository {
           rejectionReason: input.status === 'rejected' ? (input.rejectionReason ?? null) : null,
         },
       });
+      if (cas.count === 0) return null;
       const row = await tx.cmeSubmission.findFirst({
         where: { id: input.id, organizationId: input.organizationId },
       });
-      if (!row) throw new DomainError('CME_NOT_FOUND', 'CME submission not found');
+      if (!row) return null;
       return mapCme(row);
     });
   }

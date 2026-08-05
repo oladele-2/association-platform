@@ -23,7 +23,7 @@ Monorepo (pnpm + Turborepo), shared kernel, Prisma schema package (Neon), Nest h
 | M6 | Billing (Paystack + manual evidence + receipts) | Not started |
 | M7 | CMS APIs + Astro public website | Partial — **M7a API done**; Astro not started |
 | M8 | React portal shells (member / institution / admin) | Not started |
-| M9 | CME, event registration, Comms | Not started (event admin/public APIs landed in M7a) |
+| M9 | CME + Comms (registration/FCM deferred) | Approved — see [docs/milestones/M9-CME-COMMS.md](./docs/milestones/M9-CME-COMMS.md) |
 
 ### Phase 2 — Depth + Mobile
 

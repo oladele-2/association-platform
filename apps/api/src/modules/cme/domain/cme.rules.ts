@@ -24,3 +24,17 @@ export function parseCreditHours(value: string | number | null | undefined): str
   }
   return n.toFixed(2);
 }
+
+/** Accepts `YYYY-MM-DD` or a parseable ISO datetime; rejects Invalid Date. */
+export function parseCompletedOn(value: string | null | undefined): Date | null {
+  if (value === null || value === undefined || value.trim() === '') return null;
+  const raw = value.trim();
+  if (!/^\d{4}-\d{2}-\d{2}(T.*)?$/.test(raw) && Number.isNaN(Date.parse(raw))) {
+    throw new DomainError('INVALID_COMPLETED_ON', 'completedOn must be a valid date');
+  }
+  const date = new Date(raw.includes('T') ? raw : `${raw}T00:00:00.000Z`);
+  if (Number.isNaN(date.getTime())) {
+    throw new DomainError('INVALID_COMPLETED_ON', 'completedOn must be a valid date');
+  }
+  return date;
+}

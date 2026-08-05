@@ -68,6 +68,8 @@ export interface CommsRepository {
     id: string,
     status: CampaignStatus,
   ): Promise<EmailCampaignView>;
+  /** CAS: draft → queued. Returns null if not draft / missing. */
+  claimCampaignForQueue(organizationId: string, id: string): Promise<EmailCampaignView | null>;
   resolveAudience(
     organizationId: string,
     filter: Record<string, unknown>,

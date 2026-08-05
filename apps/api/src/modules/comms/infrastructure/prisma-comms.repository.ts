@@ -3,6 +3,7 @@ import { DomainError } from '@association/shared-kernel';
 import { Prisma } from '@association/database';
 import { PrismaService } from '../../../infrastructure/prisma/prisma.service';
 import type { CampaignStatus } from '../domain/comms.rules';
+import { MAX_CAMPAIGN_AUDIENCE, parseAudienceFilter } from '../domain/comms.rules';
 import type {
   AudienceMember,
   CommsRepository,
@@ -114,32 +115,43 @@ export class PrismaCommsRepository implements CommsRepository {
     });
   }
 
-  async resolveAudience(organizationId: string, filter: Record<string, unknown>) {
+  async claimCampaignForQueue(organizationId: string, id: string) {
     return this.prisma.asTenant(organizationId, async (tx) => {
-      const institutionId =
-        typeof filter.institutionId === 'string' ? filter.institutionId : undefined;
-      const membershipTypeId =
-        typeof filter.membershipTypeId === 'string' ? filter.membershipTypeId : undefined;
-      const membershipStatus =
-        typeof filter.membershipStatus === 'string' ? filter.membershipStatus : 'active';
+      const cas = await tx.emailCampaign.updateMany({
+        where: { id, organizationId, status: 'draft' },
+        data: { status: 'queued' },
+      });
+      if (cas.count === 0) return null;
+      const row = await tx.emailCampaign.findFirst({
+        where: { id, organizationId },
+        include: { _count: { select: { deliveries: true } } },
+      });
+      if (!row) return null;
+      return mapCampaign(row, row._count.deliveries);
+    });
+  }
 
+  async resolveAudience(organizationId: string, filter: Record<string, unknown>) {
+    const parsed = parseAudienceFilter(filter);
+    return this.prisma.asTenant(organizationId, async (tx) => {
       const members = await tx.member.findMany({
         where: {
           organizationId,
           deletedAt: null,
-          status: membershipStatus as never,
-          ...(membershipTypeId ? { membershipTypeId } : {}),
-          ...(institutionId
+          status: parsed.membershipStatus as never,
+          ...(parsed.membershipTypeId ? { membershipTypeId: parsed.membershipTypeId } : {}),
+          ...(parsed.institutionId
             ? {
                 OR: [
-                  { primaryInstitutionId: institutionId },
-                  { institutionLinks: { some: { institutionId } } },
+                  { primaryInstitutionId: parsed.institutionId },
+                  { institutionLinks: { some: { institutionId: parsed.institutionId } } },
                 ],
               }
             : {}),
           userId: { not: null },
         },
         include: { user: true },
+        take: MAX_CAMPAIGN_AUDIENCE + 1,
       });
 
       const out: AudienceMember[] = [];

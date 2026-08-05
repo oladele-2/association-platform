@@ -41,6 +41,14 @@ export interface CmeRepository {
     reviewerUserId: string;
     rejectionReason?: string | null;
   }): Promise<CmeSubmissionView>;
+  /** CAS: only transitions from `pending`. Returns null if already reviewed / missing. */
+  reviewIfPending(input: {
+    organizationId: string;
+    id: string;
+    status: 'approved' | 'rejected';
+    reviewerUserId: string;
+    rejectionReason?: string | null;
+  }): Promise<CmeSubmissionView | null>;
   findMemberIdByUserId(organizationId: string, userId: string): Promise<string | null>;
   findMemberUserId(organizationId: string, memberId: string): Promise<string | null>;
   writeOutbox(input: {

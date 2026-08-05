@@ -43,6 +43,8 @@ export const SYSTEM_ROLE_TEMPLATES: readonly RoleTemplate[] = [
       'events.read',
       'events.manage',
       'cme.read',
+      'cme.review',
+      'comms.campaign',
     ],
   },
   {

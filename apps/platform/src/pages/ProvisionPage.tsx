@@ -14,6 +14,9 @@ export function ProvisionPage() {
   const [displayName, setDisplayName] = useState('');
   const [orgType, setOrgType] = useState<(typeof ORG_TYPES)[number]>('professional_association');
   const [planCode, setPlanCode] = useState('starter');
+  const [countryCode, setCountryCode] = useState('NG');
+  const [timezone, setTimezone] = useState('Africa/Lagos');
+  const [defaultCurrency, setDefaultCurrency] = useState('NGN');
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -32,9 +35,9 @@ export function ProvisionPage() {
           displayName: displayName.trim(),
           orgType,
           planCode: planCode.trim() || 'starter',
-          countryCode: 'NG',
-          timezone: 'Africa/Lagos',
-          defaultCurrency: 'NGN',
+          countryCode: countryCode.trim().toUpperCase() || 'NG',
+          timezone: timezone.trim() || 'UTC',
+          defaultCurrency: defaultCurrency.trim().toUpperCase() || 'NGN',
           trialDays: 30,
         }),
       });
@@ -61,7 +64,7 @@ export function ProvisionPage() {
             onChange={(ev) => setSlug(ev.target.value)}
             required
             pattern="[a-z0-9-]+"
-            placeholder="nma-ogun"
+            placeholder="acme-association"
           />
         </label>
         <label>
@@ -88,6 +91,35 @@ export function ProvisionPage() {
         <label>
           Plan code
           <input value={planCode} onChange={(ev) => setPlanCode(ev.target.value)} />
+        </label>
+        <label>
+          Country code (ISO)
+          <input
+            value={countryCode}
+            onChange={(ev) => setCountryCode(ev.target.value)}
+            required
+            maxLength={2}
+            placeholder="NG"
+          />
+        </label>
+        <label>
+          Timezone
+          <input
+            value={timezone}
+            onChange={(ev) => setTimezone(ev.target.value)}
+            required
+            placeholder="Africa/Lagos"
+          />
+        </label>
+        <label>
+          Default currency
+          <input
+            value={defaultCurrency}
+            onChange={(ev) => setDefaultCurrency(ev.target.value)}
+            required
+            maxLength={3}
+            placeholder="NGN"
+          />
         </label>
         <div className="toolbar">
           <button className="btn btn--primary" type="submit" disabled={busy}>

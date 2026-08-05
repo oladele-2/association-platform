@@ -160,6 +160,9 @@ importers:
       vite:
         specifier: ^7.3.1
         version: 7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.33.0)(terser@5.49.1)(yaml@2.9.0)
+      vitest:
+        specifier: ^2.1.9
+        version: 2.1.9(@types/node@22.20.1)(lightningcss@1.33.0)(terser@5.49.1)
 
   apps/portal:
     dependencies:

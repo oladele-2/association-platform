@@ -37,7 +37,7 @@ Each milestone must **compile**, **pass its tests**, include **documentation**, 
 | M8 | Approved (2026-08-05) | [M8-PORTAL.md](./milestones/M8-PORTAL.md) |
 | M9 | Approved (2026-08-05) — CME + Comms slice; registration/FCM deferred | [M9-CME-COMMS.md](./milestones/M9-CME-COMMS.md) |
 | F1 | Approved (2026-08-05) | [F1-FLUTTER-SHELL.md](./milestones/F1-FLUTTER-SHELL.md) |
-| P1 | Complete — awaiting review | [P1-PLATFORM-CONSOLE.md](./milestones/P1-PLATFORM-CONSOLE.md) |
+| P1 | Approved (2026-08-05) | [P1-PLATFORM-CONSOLE.md](./milestones/P1-PLATFORM-CONSOLE.md) |
 
 ```bash
 pnpm install

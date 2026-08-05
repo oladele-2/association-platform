@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, Navigate, useNavigate, useSearchParams } from 'react-router-dom';
-import type { ApiError } from '../lib/api';
+import { safeReturnUrl, type ApiError } from '../lib/api';
 import { useAuth } from '../lib/auth';
 
 export function LoginPage() {
@@ -12,8 +12,10 @@ export function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
+  const returnUrl = safeReturnUrl(params.get('returnUrl'), '/');
+
   if (ready && user) {
-    return <Navigate to={params.get('returnUrl') || '/'} replace />;
+    return <Navigate to={returnUrl} replace />;
   }
 
   async function onSubmit(e: { preventDefault(): void }) {
@@ -22,7 +24,7 @@ export function LoginPage() {
     setError(null);
     try {
       await login(email, password);
-      navigate(params.get('returnUrl') || '/', { replace: true });
+      navigate(returnUrl, { replace: true });
     } catch (err) {
       setError((err as ApiError).message || 'Login failed');
     } finally {
@@ -61,10 +63,12 @@ export function LoginPage() {
             {busy ? 'Signing in…' : 'Sign in'}
           </button>
         </form>
-        <p className="muted" style={{ marginTop: '1rem', fontSize: '0.88rem' }}>
-          First user: <code>POST /v1/platform/auth/bootstrap</code> with{' '}
-          <code>PLATFORM_BOOTSTRAP_SECRET</code>.
-        </p>
+        {import.meta.env.DEV ? (
+          <p className="muted" style={{ marginTop: '1rem', fontSize: '0.88rem' }}>
+            First user: <code>POST /v1/platform/auth/bootstrap</code> with{' '}
+            <code>PLATFORM_BOOTSTRAP_SECRET</code>.
+          </p>
+        ) : null}
         <p>
           <Link to="/">Back</Link>
         </p>

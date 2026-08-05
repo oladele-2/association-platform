@@ -14,7 +14,12 @@ packages/database/src/generated
 .idea
 .vscode/*
 !.vscode/extensions.json
-.cursor/
+
+# Keep Cursor project rules in VCS; ignore the rest of .cursor
+.cursor/*
+!.cursor/rules/
+!.cursor/rules/**
+
 apps/web/.astro/
 apps/web/dist/
 apps/portal/dist/

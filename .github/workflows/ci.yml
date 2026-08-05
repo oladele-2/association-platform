@@ -42,9 +42,11 @@ jobs:
       DATABASE_URL: postgresql://association:association@localhost:5432/association_platform?schema=public
       DATABASE_URL_UNPOOLED: postgresql://association:association@localhost:5432/association_platform?schema=public
       REDIS_URL: redis://localhost:6379
-      JWT_ACCESS_SECRET: ci-access-secret
-      JWT_REFRESH_SECRET: ci-refresh-secret
+      JWT_ACCESS_SECRET: ci-access-secret-min-16
+      JWT_REFRESH_SECRET: ci-refresh-secret-min-16
+      APP_PUBLIC_URL: http://localhost:3000
       CI: 'true'
+      SKIP_DB_SMOKE: 'true'
 
     steps:
       - uses: actions/checkout@v4
@@ -61,14 +63,17 @@ jobs:
       - name: Install
         run: pnpm install --frozen-lockfile
 
+      - name: Format check
+        run: pnpm format:check
+
       - name: Lint
         run: pnpm lint
 
       - name: Build
         run: pnpm build
 
-      - name: Test (unit)
-        run: pnpm test --filter=@association/shared-kernel --filter=@association/api --filter=@association/shared
+      - name: Test
+        run: pnpm test
 
       - name: Prisma validate
         run: pnpm --filter @association/database prisma:validate

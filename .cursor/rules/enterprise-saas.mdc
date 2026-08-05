@@ -1,0 +1,39 @@
+---
+description: Core enterprise SaaS standards for Association Platform (Ajir)
+alwaysApply: true
+---
+
+# Association Platform — Core Rules
+
+This repository is an **enterprise multi-tenant SaaS** association management platform.
+
+## Priorities
+
+- Prefer **maintainability, clarity, and extensibility** over shipping fast.
+- Generate **production-ready** code. Do **not** invent placeholder/stub implementations unless the user explicitly asks for stubs.
+- When uncertain about an approach, **explain trade-offs and wait** before coding.
+
+## Domain-Driven Design
+
+- Follow DDD + clean architecture in `apps/api` modules: `presentation` → `application` → `domain` ← `infrastructure`.
+- **Controllers stay thin**: validate input, enforce authz, delegate to one use case.
+- **Business rules** live in domain entities/services or application use cases — never in controllers.
+- **Repositories** only persist/retrieve; they do not own business policy.
+- Every module must be **independently testable** (domain tests without Nest/Prisma).
+- **Never duplicate** business logic across modules; use facades, ports, or domain events.
+
+## Multi-tenancy & product reuse
+
+- **Never hardcode** organization-specific values (no NMA Ogun branding, membership labels, or fee rules in source).
+- Everything tenant-owned must support **multi-tenancy** (`organization_id`, Host resolution, RLS-aware data access).
+- Design modules for reuse across associations and future Ajir products.
+
+## Security & design
+
+- **Never bypass authorization**; check permissions (not role display names).
+- Prefer **composition over inheritance**.
+- Do not commit secrets. Money uses integer minor units (kobo), never floats.
+
+## References
+
+See `ARCHITECTURE.md`, `CODING_STANDARDS.md`, `SECURITY.md`, and `docs/adr/`.

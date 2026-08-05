@@ -24,7 +24,7 @@ Each milestone must **compile**, **pass its tests**, include **documentation**, 
 
 | Milestone | Status | Report |
 |---|---|---|
-| M0 | Complete — awaiting review | [M0-FOUNDATION.md](./milestones/M0-FOUNDATION.md) |
+| M0 | Approved | [M0-FOUNDATION.md](./milestones/M0-FOUNDATION.md) |
 | M1 | Complete — awaiting review | [M1-DATABASE-RUNTIME.md](./milestones/M1-DATABASE-RUNTIME.md) |
 | M2 | Complete — awaiting review | [M2-TENANCY-IDENTITY.md](./milestones/M2-TENANCY-IDENTITY.md) |
 | M3 | Complete — awaiting review | [M3-PLATFORM-ADMIN.md](./milestones/M3-PLATFORM-ADMIN.md) |

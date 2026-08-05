@@ -1,0 +1,45 @@
+---
+description: NestJS DDD module layout and layer boundaries
+globs: apps/api/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# NestJS API — DDD Boundaries
+
+Module layout:
+
+```text
+modules/<context>/
+  presentation/      # controllers, HTTP DTOs only
+  application/       # use cases / application services
+  domain/            # entities, VOs, domain services, events, repo ports
+  infrastructure/    # Prisma repos, gateways, mappers
+  <context>.module.ts
+```
+
+## Do
+
+```typescript
+// ✅ Controller delegates
+@Post(':id/verify')
+verify(@Param('id') id: string, @CurrentUser() user: AuthUser) {
+  return this.verifyManualPayment.execute({ paymentId: id, actorId: user.id });
+}
+```
+
+## Don't
+
+```typescript
+// ❌ Business rules or Prisma in controllers
+@Post(':id/verify')
+async verify(@Param('id') id: string) {
+  const payment = await this.prisma.payment.findFirst({ where: { id } });
+  if (payment.amountKobo < 0) throw new Error('bad');
+  payment.status = 'succeeded';
+  await this.prisma.payment.update({ where: { id }, data: payment });
+}
+```
+
+- Domain must not import Nest, Prisma, or Paystack/R2 SDKs.
+- Presentation must not inject `PrismaClient` or repositories directly.
+- Cross-module writes go through another context’s application facade or domain events — never its Prisma models.

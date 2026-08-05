@@ -6,6 +6,7 @@ import 'cme_screen.dart';
 import 'dues_screen.dart';
 import 'notifications_screen.dart';
 import 'profile_screen.dart';
+import 'welcome_banner.dart';
 
 class HomeShell extends StatefulWidget {
   const HomeShell({super.key});
@@ -71,6 +72,7 @@ class _HomeTab extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.all(24),
       children: [
+        const WelcomeBanner(),
         Text('Welcome', style: Theme.of(context).textTheme.headlineSmall),
         const SizedBox(height: 8),
         Text(email, style: Theme.of(context).textTheme.titleMedium),

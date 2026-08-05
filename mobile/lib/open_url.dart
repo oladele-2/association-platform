@@ -21,6 +21,16 @@ Future<bool> openExternalUrl(String url) async {
       final result = await Process.run('xdg-open', [url]);
       return result.exitCode == 0;
     }
+    if (Platform.isAndroid) {
+      final result = await Process.run('am', [
+        'start',
+        '-a',
+        'android.intent.action.VIEW',
+        '-d',
+        url,
+      ]);
+      return result.exitCode == 0;
+    }
     debugPrint('openExternalUrl: unsupported platform for shell launch');
     return false;
   } catch (e) {

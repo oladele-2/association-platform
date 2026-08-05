@@ -2,6 +2,7 @@ import { Link, NavLink, Outlet, Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../lib/auth';
 import { useTenant } from '../lib/tenant';
 import { navFor, type ShellId } from '../lib/shells';
+import { WelcomeBanner } from './WelcomeBanner';
 
 export function RequireAuth({ children }: { children: React.ReactNode }) {
   const { ready, user } = useAuth();
@@ -61,6 +62,7 @@ export function ShellLayout({ shell }: { shell: ShellId }) {
           </div>
         </header>
         <main className="content">
+          {shell === 'member' ? <WelcomeBanner /> : null}
           <Outlet />
         </main>
       </div>

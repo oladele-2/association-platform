@@ -223,6 +223,7 @@ export class PrismaMemberRepository implements MemberRepository {
             joinedOn: input.joinedOn ?? null,
             metadata: (input.metadata ?? {}) as Prisma.InputJsonValue,
             status: input.status ?? 'draft',
+            activatedAt: input.status === 'active' ? new Date() : null,
           },
           include: { membershipType: true },
         });

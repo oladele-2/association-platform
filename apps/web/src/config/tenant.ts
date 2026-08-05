@@ -16,6 +16,8 @@ export const tenant = {
   phone: '+234 803 000 0000',
   address: "Doctors' House, Abeokuta, Ogun State, Nigeria",
   portalUrl: import.meta.env.PUBLIC_PORTAL_URL ?? 'http://localhost:5173',
+  /** Play Store / APK landing — optional; thank-you page hides CTA when empty. */
+  androidAppUrl: import.meta.env.PUBLIC_ANDROID_APP_URL ?? '',
   apiUrl: import.meta.env.PUBLIC_API_URL ?? 'http://localhost:3000',
   /**
    * When true, unreachable/empty public API responses fall back to `src/data/demo.ts`.

@@ -77,6 +77,7 @@ export function LoginPage() {
           </button>
         </form>
         <div className="muted-links">
+          <Link to="/register">Create an account</Link>
           <Link to="/forgot-password">Forgot password</Link>
           <Link to="/verify-email">Verify email</Link>
         </div>

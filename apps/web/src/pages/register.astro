@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import RegistrationForm from '../components/RegistrationForm';
+import { tenant } from '../config/tenant';
+---
+
+<BaseLayout
+  title="Register"
+  description={`Join ${tenant.displayName} as a member.`}
+  path="/register"
+>
+  <section class="page-hero">
+    <div class="container">
+      <span class="section__eyebrow">Membership</span>
+      <h1>Register</h1>
+      <p class="section__lead">
+        Create your member account in a few steps. Afterwards you can use the member portal or the
+        Android app.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container" style="max-width: 40rem;">
+      <RegistrationForm client:load />
+    </div>
+  </section>
+</BaseLayout>

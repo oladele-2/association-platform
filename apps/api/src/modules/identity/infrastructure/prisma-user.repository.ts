@@ -29,6 +29,22 @@ export class PrismaUserRepository implements UserRepository {
     });
   }
 
+  async create(user: AuthUser): Promise<void> {
+    await this.prisma.asTenant(user.organizationId, async (tx) => {
+      await tx.user.create({
+        data: {
+          id: user.id,
+          organizationId: user.organizationId,
+          email: user.email,
+          passwordHash: user.passwordHash,
+          status: user.status,
+          emailVerifiedAt: user.emailVerifiedAt,
+          mustResetPassword: user.mustResetPassword,
+        },
+      });
+    });
+  }
+
   async save(user: AuthUser): Promise<void> {
     await this.prisma.asTenant(user.organizationId, async (tx) => {
       await tx.user.update({

@@ -69,4 +69,21 @@ export class AuthUser {
       mustResetPassword: false,
     });
   }
+
+  static createActive(input: {
+    id: string;
+    organizationId: string;
+    email: string;
+    passwordHash: string;
+  }): AuthUser {
+    return AuthUser.restore({
+      id: input.id,
+      organizationId: input.organizationId,
+      email: input.email,
+      passwordHash: input.passwordHash,
+      status: 'active',
+      emailVerifiedAt: new Date(),
+      mustResetPassword: false,
+    });
+  }
 }

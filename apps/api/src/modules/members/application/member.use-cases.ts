@@ -299,7 +299,7 @@ export class UpdateMyProfileUseCase {
           ? (input.alternateEmail?.trim().toLowerCase() ?? null)
           : undefined,
       photographFileId: input.photographFileId,
-      metadata: input.metadata,
+      metadata: input.metadata ? { ...member.metadata, ...input.metadata } : undefined,
     });
   }
 }

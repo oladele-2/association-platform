@@ -21,7 +21,7 @@ Store **all durable binary objects in Cloudflare R2**.
 - Download of private objects: time-limited signed GET URLs
 - Public website assets may use public/CDN-accessible URLs after publish policy allows
 
-Local/dev may use MinIO or R2-compatible emulator behind the same port (Milestone 5).
+Local/dev uses the **mock** `ObjectStorage` adapter when R2 env is unset (Milestone 4). MinIO behind the same port remains optional later.
 
 ## Consequences
 

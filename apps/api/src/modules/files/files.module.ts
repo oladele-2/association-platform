@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { IdentityModule } from '../identity/identity.module';
 import { TenancyModule } from '../tenancy/tenancy.module';
+import { RbacModule } from '../rbac/rbac.module';
 import { FILE_REPOSITORY, OBJECT_STORAGE } from './application/ports/file.repository';
 import {
   ConfirmUploadUseCase,
@@ -16,7 +17,7 @@ import { FilesController } from './presentation/files.controller';
 import { MePhotographController } from './presentation/me-photograph.controller';
 
 @Module({
-  imports: [IdentityModule, TenancyModule],
+  imports: [IdentityModule, TenancyModule, RbacModule],
   controllers: [FilesController, MePhotographController],
   providers: [
     { provide: FILE_REPOSITORY, useClass: PrismaFileRepository },

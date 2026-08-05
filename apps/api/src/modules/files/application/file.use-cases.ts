@@ -1,11 +1,18 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { DomainError } from '@association/shared-kernel';
 import {
+  assertCanAccessOwnedOrManaged,
   assertCanConfirm,
+  assertChecksumSha256,
   assertFileReady,
   assertPurpose,
   assertUploadConstraints,
   buildObjectKey,
+  managePermissionForPurpose,
+  normalizeMimeType,
+  purposeFromObjectKey,
+  resolveVisibility,
+  uploadPermissionForPurpose,
   type FilePurpose,
   type FileVisibility,
 } from '../domain/file.rules';
@@ -13,9 +20,11 @@ import {
   FILE_REPOSITORY,
   OBJECT_STORAGE,
   type FileRepository,
+  type FileView,
   type ObjectStorage,
 } from './ports/file.repository';
 import { randomUUID } from 'node:crypto';
+import { AuthorizationService } from '../../rbac/application/rbac.use-cases';
 
 const UPLOAD_TTL = 15 * 60;
 const DOWNLOAD_TTL = 10 * 60;
@@ -25,6 +34,7 @@ export class CreateUploadUrlUseCase {
   constructor(
     @Inject(FILE_REPOSITORY) private readonly files: FileRepository,
     @Inject(OBJECT_STORAGE) private readonly storage: ObjectStorage,
+    private readonly authz: AuthorizationService,
   ) {}
 
   async execute(input: {
@@ -37,12 +47,30 @@ export class CreateUploadUrlUseCase {
     purpose?: string;
   }) {
     const purpose = assertPurpose(input.purpose ?? 'other');
+    const mimeType = normalizeMimeType(input.mimeType);
     const sizeBytes = parseSize(input.sizeBytes);
-    assertUploadConstraints({
-      purpose,
-      mimeType: input.mimeType,
-      sizeBytes,
-    });
+    assertUploadConstraints({ purpose, mimeType, sizeBytes });
+
+    const uploadPerm = uploadPermissionForPurpose(purpose);
+    if (uploadPerm) {
+      await this.authz.assertPermissions({
+        organizationId: input.organizationId,
+        userId: input.userId,
+        permissionKeys: [uploadPerm],
+      });
+    }
+
+    const visibility = resolveVisibility(purpose, input.visibility);
+    if (visibility === 'public') {
+      const manage = managePermissionForPurpose(purpose);
+      if (manage) {
+        await this.authz.assertPermissions({
+          organizationId: input.organizationId,
+          userId: input.userId,
+          permissionKeys: [manage],
+        });
+      }
+    }
 
     const fileId = randomUUID();
     const bucket = this.storage.defaultBucket();
@@ -58,10 +86,10 @@ export class CreateUploadUrlUseCase {
       organizationId: input.organizationId,
       bucket,
       objectKey,
-      originalFilename: input.originalFilename.trim(),
-      mimeType: input.mimeType.trim().toLowerCase(),
+      originalFilename: input.originalFilename.trim() || 'file',
+      mimeType,
       sizeBytes,
-      visibility: input.visibility ?? 'private',
+      visibility,
       uploadedByUserId: input.userId,
     });
 
@@ -102,6 +130,7 @@ export class ConfirmUploadUseCase {
       throw new DomainError('FORBIDDEN', 'Only the uploader can confirm this file');
     }
     assertCanConfirm(file.status);
+    const checksumSha256 = assertChecksumSha256(input.checksumSha256);
 
     const head = await this.storage.headObject({
       bucket: file.bucket,
@@ -110,12 +139,18 @@ export class ConfirmUploadUseCase {
     if (!head.exists) {
       throw new DomainError('UPLOAD_MISSING', 'Object not found in storage — upload first');
     }
-    if (head.sizeBytes != null && head.sizeBytes > BigInt(file.sizeBytes)) {
-      throw new DomainError('FILE_TOO_LARGE', 'Uploaded object exceeds declared size');
+    const declared = BigInt(file.sizeBytes);
+    if (head.sizeBytes != null) {
+      if (head.sizeBytes > declared) {
+        throw new DomainError('FILE_TOO_LARGE', 'Uploaded object exceeds declared size');
+      }
+      if (head.sizeBytes < declared) {
+        throw new DomainError('UPLOAD_INCOMPLETE', 'Uploaded object is smaller than declared size');
+      }
     }
-    if (head.mimeType && head.mimeType !== file.mimeType) {
-      // allow storage without content-type
-      if (this.storage.driver !== 'mock') {
+    if (head.mimeType && this.storage.driver !== 'mock') {
+      const headMime = normalizeMimeType(head.mimeType);
+      if (headMime && headMime !== file.mimeType) {
         throw new DomainError('INVALID_MIME_TYPE', 'Uploaded Content-Type mismatch');
       }
     }
@@ -124,8 +159,8 @@ export class ConfirmUploadUseCase {
       organizationId: input.organizationId,
       id: file.id,
       sizeBytes: head.sizeBytes,
-      mimeType: head.mimeType,
-      checksumSha256: input.checksumSha256 ?? null,
+      mimeType: head.mimeType ? normalizeMimeType(head.mimeType) : undefined,
+      checksumSha256,
     });
   }
 }
@@ -135,17 +170,17 @@ export class GetDownloadUrlUseCase {
   constructor(
     @Inject(FILE_REPOSITORY) private readonly files: FileRepository,
     @Inject(OBJECT_STORAGE) private readonly storage: ObjectStorage,
+    private readonly authz: AuthorizationService,
   ) {}
 
   async execute(input: {
     organizationId: string;
+    userId: string;
     fileId: string;
-    /** When false, only private signed URL; public may return CDN URL */
     preferPublic?: boolean;
   }) {
-    const file = await this.files.findById(input.organizationId, input.fileId);
-    if (!file) throw new DomainError('FILE_NOT_FOUND', 'File not found');
-    assertFileReady(file.status);
+    const file = await this.requireReady(input.organizationId, input.fileId);
+    await this.assertAccess(input.organizationId, input.userId, file, 'download');
 
     if (file.visibility === 'public' && input.preferPublic !== false) {
       const publicUrl = this.storage.publicUrl?.({
@@ -171,27 +206,109 @@ export class GetDownloadUrlUseCase {
       file,
     };
   }
+
+  private async requireReady(organizationId: string, fileId: string) {
+    const file = await this.files.findById(organizationId, fileId);
+    if (!file) throw new DomainError('FILE_NOT_FOUND', 'File not found');
+    assertFileReady(file.status);
+    return file;
+  }
+
+  private async assertAccess(
+    organizationId: string,
+    userId: string,
+    file: FileView,
+    action: 'download' | 'delete',
+  ) {
+    const purpose =
+      (file.purpose ? assertPurposeSafe(file.purpose) : null) ??
+      purposeFromObjectKey(file.objectKey);
+    const manageKey = purpose ? managePermissionForPurpose(purpose) : null;
+    const hasManagePermission = manageKey
+      ? await this.authz.hasPermission({
+          organizationId,
+          userId,
+          permissionKey: manageKey,
+        })
+      : false;
+    assertCanAccessOwnedOrManaged({
+      visibility: file.visibility,
+      uploadedByUserId: file.uploadedByUserId,
+      actorUserId: userId,
+      hasManagePermission,
+      action,
+    });
+  }
+}
+
+function assertPurposeSafe(purpose: string): FilePurpose | null {
+  try {
+    return assertPurpose(purpose);
+  } catch {
+    return null;
+  }
 }
 
 @Injectable()
 export class GetReadyFileUseCase {
   constructor(@Inject(FILE_REPOSITORY) private readonly files: FileRepository) {}
 
-  async execute(organizationId: string, fileId: string) {
+  async execute(
+    organizationId: string,
+    fileId: string,
+    options?: { purposes?: readonly FilePurpose[] },
+  ) {
     const file = await this.files.findById(organizationId, fileId);
     if (!file) throw new DomainError('FILE_NOT_FOUND', 'File not found');
     assertFileReady(file.status);
+
+    if (options?.purposes?.length) {
+      const purpose =
+        (file.purpose ? assertPurposeSafe(file.purpose) : null) ??
+        purposeFromObjectKey(file.objectKey);
+      if (!purpose || !options.purposes.includes(purpose)) {
+        throw new DomainError(
+          'INVALID_FILE_PURPOSE',
+          `File must have purpose: ${options.purposes.join(' | ')}`,
+        );
+      }
+    }
+
     return file;
   }
 }
 
 @Injectable()
 export class DeleteFileUseCase {
-  constructor(@Inject(FILE_REPOSITORY) private readonly files: FileRepository) {}
+  constructor(
+    @Inject(FILE_REPOSITORY) private readonly files: FileRepository,
+    private readonly authz: AuthorizationService,
+  ) {}
 
-  async execute(organizationId: string, fileId: string) {
+  async execute(organizationId: string, userId: string, fileId: string) {
     const file = await this.files.findById(organizationId, fileId);
     if (!file) throw new DomainError('FILE_NOT_FOUND', 'File not found');
+
+    const purpose =
+      (file.purpose ? assertPurposeSafe(file.purpose) : null) ??
+      purposeFromObjectKey(file.objectKey);
+    const manageKey = purpose ? managePermissionForPurpose(purpose) : null;
+    const hasManagePermission = manageKey
+      ? await this.authz.hasPermission({
+          organizationId,
+          userId,
+          permissionKey: manageKey,
+        })
+      : false;
+
+    assertCanAccessOwnedOrManaged({
+      visibility: file.visibility,
+      uploadedByUserId: file.uploadedByUserId,
+      actorUserId: userId,
+      hasManagePermission,
+      action: 'delete',
+    });
+
     await this.files.softDelete(organizationId, fileId);
     return { ok: true as const };
   }
@@ -201,7 +318,11 @@ function parseSize(value: string): bigint {
   if (!/^\d+$/.test(value.trim())) {
     throw new DomainError('INVALID_FILE_SIZE', 'sizeBytes must be an integer string');
   }
-  return BigInt(value.trim());
+  const size = BigInt(value.trim());
+  if (size <= 0n) {
+    throw new DomainError('INVALID_FILE_SIZE', 'sizeBytes must be greater than zero');
+  }
+  return size;
 }
 
 export type { FilePurpose };

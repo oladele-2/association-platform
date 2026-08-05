@@ -53,7 +53,9 @@ export class SubmitCmeUseCase {
     if (!memberId) {
       throw new DomainError('MEMBER_PROFILE_NOT_FOUND', 'No member profile linked');
     }
-    await this.getReadyFile.execute(input.organizationId, input.fileId);
+    await this.getReadyFile.execute(input.organizationId, input.fileId, {
+      purposes: ['cme'],
+    });
 
     return this.repo.create({
       organizationId: input.organizationId,

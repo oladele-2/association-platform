@@ -41,4 +41,23 @@ describe('validateEnv', () => {
       }),
     ).toThrow(/PLATFORM_BOOTSTRAP_SECRET/);
   });
+
+  it('rejects partial R2 configuration', () => {
+    expect(() =>
+      validateEnv({
+        ...base,
+        R2_ACCOUNT_ID: 'acct',
+        R2_BUCKET: 'bucket',
+      }),
+    ).toThrow(/Partial R2/);
+  });
+
+  it('requires R2 or ALLOW_MOCK_STORAGE in production', () => {
+    expect(() =>
+      validateEnv({
+        ...base,
+        NODE_ENV: 'production',
+      }),
+    ).toThrow(/ALLOW_MOCK_STORAGE/);
+  });
 });

@@ -71,15 +71,25 @@ export class FilesController {
 
   @Get(':id/download-url')
   @ApiOperation({ summary: 'Signed GET (private) or CDN URL (public)' })
-  download(@CurrentTenant() tenant: TenantContext, @Param('id', ParseUUIDPipe) id: string) {
+  download(
+    @CurrentTenant() tenant: TenantContext,
+    @CurrentAuthUser() auth: AuthenticatedRequestUser,
+    @Param('id', ParseUUIDPipe) id: string,
+  ) {
     return this.getDownloadUrl.execute({
       organizationId: tenant.organizationId,
+      userId: auth.userId,
       fileId: id,
     });
   }
 
   @Delete(':id')
-  softDelete(@CurrentTenant() tenant: TenantContext, @Param('id', ParseUUIDPipe) id: string) {
-    return this.deleteFile.execute(tenant.organizationId, id);
+  @ApiOperation({ summary: 'Soft-delete metadata (uploader or purpose manager)' })
+  softDelete(
+    @CurrentTenant() tenant: TenantContext,
+    @CurrentAuthUser() auth: AuthenticatedRequestUser,
+    @Param('id', ParseUUIDPipe) id: string,
+  ) {
+    return this.deleteFile.execute(tenant.organizationId, auth.userId, id);
   }
 }

@@ -8,6 +8,7 @@ import {
   type Sex,
 } from '../domain/member.rules';
 import { MEMBER_REPOSITORY, type MemberRepository } from './ports/member.repository';
+import { GetReadyFileUseCase } from '../../files/application/file.use-cases';
 
 @Injectable()
 export class ListMembershipTypesUseCase {
@@ -270,7 +271,10 @@ export class GetMyProfileUseCase {
 
 @Injectable()
 export class UpdateMyProfileUseCase {
-  constructor(@Inject(MEMBER_REPOSITORY) private readonly repo: MemberRepository) {}
+  constructor(
+    @Inject(MEMBER_REPOSITORY) private readonly repo: MemberRepository,
+    private readonly getReadyFile: GetReadyFileUseCase,
+  ) {}
   async execute(input: {
     organizationId: string;
     userId: string;
@@ -281,6 +285,11 @@ export class UpdateMyProfileUseCase {
   }) {
     const member = await this.repo.findMemberByUserId(input.organizationId, input.userId);
     if (!member) throw new DomainError('MEMBER_PROFILE_NOT_FOUND', 'No member profile linked');
+    if (input.photographFileId) {
+      await this.getReadyFile.execute(input.organizationId, input.photographFileId, {
+        purposes: ['member_photo'],
+      });
+    }
     return this.repo.updateMember({
       organizationId: input.organizationId,
       id: member.id,

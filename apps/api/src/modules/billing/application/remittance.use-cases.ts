@@ -277,7 +277,9 @@ export class SubmitBulkRemittanceEvidenceUseCase {
     }
 
     if (input.fileId) {
-      await this.getReadyFile.execute(input.organizationId, input.fileId);
+      await this.getReadyFile.execute(input.organizationId, input.fileId, {
+        purposes: ['payment_evidence'],
+      });
     }
 
     const matched = remittance.lines.filter((l) => l.matchStatus === 'matched' && l.invoiceId);

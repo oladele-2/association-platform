@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { IdentityModule } from '../identity/identity.module';
 import { TenancyModule } from '../tenancy/tenancy.module';
 import { RbacModule } from '../rbac/rbac.module';
+import { FilesModule } from '../files/files.module';
 import { MEMBER_REPOSITORY } from './application/ports/member.repository';
 import {
   ActivateMemberUseCase,
@@ -27,7 +28,7 @@ import { AdminMembersController } from './presentation/admin-members.controller'
 import { MeProfileController } from './presentation/me-profile.controller';
 
 @Module({
-  imports: [IdentityModule, TenancyModule, RbacModule],
+  imports: [IdentityModule, TenancyModule, RbacModule, FilesModule],
   controllers: [AdminMembersController, MeProfileController],
   providers: [
     { provide: MEMBER_REPOSITORY, useClass: PrismaMemberRepository },

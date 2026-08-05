@@ -32,13 +32,21 @@ const PURPOSE_LIMITS: Record<FilePurpose, { maxBytes: number; mimeTypes: readonl
   },
   branding: {
     maxBytes: 2 * 1024 * 1024,
-    mimeTypes: ['image/png', 'image/jpeg', 'image/webp', 'image/x-icon', 'image/svg+xml'],
+    // SVG omitted: XSS risk when served from a public CDN base URL
+    mimeTypes: ['image/png', 'image/jpeg', 'image/webp', 'image/x-icon'],
   },
   other: {
     maxBytes: 10 * 1024 * 1024,
     mimeTypes: ['image/jpeg', 'image/png', 'image/webp', 'application/pdf'],
   },
 };
+
+const ALWAYS_PRIVATE: ReadonlySet<FilePurpose> = new Set([
+  'member_photo',
+  'payment_evidence',
+  'receipt',
+  'cme',
+]);
 
 export function assertPurpose(purpose: string): FilePurpose {
   if (!(purpose in PURPOSE_LIMITS)) {
@@ -47,13 +55,17 @@ export function assertPurpose(purpose: string): FilePurpose {
   return purpose as FilePurpose;
 }
 
+export function normalizeMimeType(mimeType: string): string {
+  return mimeType.trim().toLowerCase().split(';')[0]?.trim() ?? '';
+}
+
 export function assertUploadConstraints(input: {
   purpose: FilePurpose;
   mimeType: string;
   sizeBytes: bigint;
 }): void {
   const limits = PURPOSE_LIMITS[input.purpose];
-  const mime = input.mimeType.trim().toLowerCase();
+  const mime = normalizeMimeType(input.mimeType);
   if (!limits.mimeTypes.includes(mime)) {
     throw new DomainError('INVALID_MIME_TYPE', `MIME type not allowed for ${input.purpose}`);
   }
@@ -75,6 +87,87 @@ export function assertFileReady(status: FileStatus): void {
   if (status !== 'ready') {
     throw new DomainError('FILE_NOT_READY', 'File is not ready');
   }
+}
+
+export function assertChecksumSha256(value: string | null | undefined): string | null {
+  if (value == null || value === '') return null;
+  const digest = value.trim().toLowerCase();
+  if (!/^[a-f0-9]{64}$/.test(digest)) {
+    throw new DomainError(
+      'INVALID_CHECKSUM',
+      'checksumSha256 must be a 64-character hex SHA-256 digest',
+    );
+  }
+  return digest;
+}
+
+export function resolveVisibility(
+  purpose: FilePurpose,
+  requested: FileVisibility | undefined,
+): FileVisibility {
+  if (ALWAYS_PRIVATE.has(purpose)) return 'private';
+  return requested ?? 'private';
+}
+
+/** Permission required to *create* an upload for admin-managed purposes. Null = any authenticated user. */
+export function uploadPermissionForPurpose(purpose: FilePurpose): string | null {
+  switch (purpose) {
+    case 'cms':
+      return 'cms.publish';
+    case 'event':
+      return 'events.manage';
+    case 'branding':
+      return 'org.settings';
+    default:
+      return null;
+  }
+}
+
+/** Permission that elevates download/delete beyond the uploader (org-level grants). */
+export function managePermissionForPurpose(purpose: FilePurpose): string | null {
+  switch (purpose) {
+    case 'cms':
+      return 'cms.publish';
+    case 'event':
+      return 'events.manage';
+    case 'branding':
+      return 'org.settings';
+    case 'payment_evidence':
+    case 'receipt':
+      return 'payments.verify';
+    case 'cme':
+      return 'cme.review';
+    case 'member_photo':
+      return 'members.write';
+    case 'other':
+      return 'org.settings';
+    default:
+      return null;
+  }
+}
+
+export function purposeFromObjectKey(objectKey: string): FilePurpose | null {
+  const parts = objectKey.split('/');
+  if (parts[0] !== 'orgs' || !parts[2]) return null;
+  try {
+    return assertPurpose(parts[2]);
+  } catch {
+    return null;
+  }
+}
+
+export function assertCanAccessOwnedOrManaged(input: {
+  visibility: FileVisibility;
+  uploadedByUserId: string | null;
+  actorUserId: string;
+  hasManagePermission: boolean;
+  /** Public downloads are allowed for any authenticated tenant user. */
+  action: 'download' | 'delete';
+}): void {
+  if (input.action === 'download' && input.visibility === 'public') return;
+  if (input.uploadedByUserId && input.uploadedByUserId === input.actorUserId) return;
+  if (input.hasManagePermission) return;
+  throw new DomainError('FORBIDDEN', 'Not allowed to access this file');
 }
 
 export function sanitizeFilename(name: string): string {

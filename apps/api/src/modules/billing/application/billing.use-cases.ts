@@ -477,7 +477,9 @@ export class SubmitManualPaymentUseCase {
     if (amount <= 0n) throw new DomainError('INVALID_MONEY', 'Amount must be greater than zero');
 
     if (input.fileId) {
-      await this.getReadyFile.execute(input.organizationId, input.fileId);
+      await this.getReadyFile.execute(input.organizationId, input.fileId, {
+        purposes: ['payment_evidence'],
+      });
     }
 
     const invoices = [];

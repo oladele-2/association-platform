@@ -10,6 +10,8 @@ export type AppEnv = {
   JWT_ACCESS_TTL_SECONDS: number;
   JWT_REFRESH_TTL_SECONDS: number;
   APP_PUBLIC_URL: string;
+  /** Comma-separated browser origins allowed for credentialed CORS. Empty → localhost portal/web defaults. */
+  CORS_ORIGINS: string | undefined;
   PLATFORM_BOOTSTRAP_SECRET: string | undefined;
 };
 
@@ -25,6 +27,8 @@ export function validateEnv(config: Record<string, unknown>): AppEnv {
   const accessTtl = Number(config.JWT_ACCESS_TTL_SECONDS ?? 900);
   const refreshTtl = Number(config.JWT_REFRESH_TTL_SECONDS ?? 60 * 60 * 24 * 30);
   const appPublicUrl = String(config.APP_PUBLIC_URL ?? 'http://localhost:3000');
+  const corsOriginsRaw = config.CORS_ORIGINS ? String(config.CORS_ORIGINS).trim() : '';
+  const corsOrigins = corsOriginsRaw.length > 0 ? corsOriginsRaw : undefined;
   const bootstrapSecret = config.PLATFORM_BOOTSTRAP_SECRET
     ? String(config.PLATFORM_BOOTSTRAP_SECRET)
     : undefined;
@@ -54,6 +58,7 @@ export function validateEnv(config: Record<string, unknown>): AppEnv {
     JWT_ACCESS_TTL_SECONDS: accessTtl,
     JWT_REFRESH_TTL_SECONDS: refreshTtl,
     APP_PUBLIC_URL: appPublicUrl,
+    CORS_ORIGINS: corsOrigins,
     PLATFORM_BOOTSTRAP_SECRET: bootstrapSecret,
   };
 }

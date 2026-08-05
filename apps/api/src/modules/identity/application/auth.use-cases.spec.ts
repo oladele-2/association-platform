@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { DomainError } from '@association/shared-kernel';
 import { AuthUser } from '../domain/auth-user';
 import { LoginUseCase } from './login.use-case';
+import { LogoutUseCase } from './logout.use-case';
 import { RefreshSessionUseCase } from './refresh-session.use-case';
 import type { UserRepository } from './ports/user.repository';
 import type { PasswordHasher } from './ports/password-hasher';
@@ -100,9 +101,93 @@ describe('LoginUseCase', () => {
       }),
     ).rejects.toMatchObject({ code: 'INVALID_CREDENTIALS' });
   });
+
+  it('throws INVALID_CREDENTIALS when email is unknown (no enumeration)', async () => {
+    const users: UserRepository = {
+      findByEmail: vi.fn().mockResolvedValue(null),
+      findById: vi.fn(),
+      save: vi.fn(),
+      touchLastLogin: vi.fn(),
+    };
+    const hasher: PasswordHasher = {
+      hash: vi.fn(),
+      verify: vi.fn(),
+    };
+    const usecase = new LoginUseCase(
+      users,
+      hasher,
+      { signAccessToken: vi.fn(), verifyAccessToken: vi.fn() },
+      {
+        issue: vi.fn(),
+        findByRawToken: vi.fn(),
+        rotate: vi.fn(),
+        revokeFamily: vi.fn(),
+        revokeByRawToken: vi.fn(),
+        revokeAllForUser: vi.fn(),
+      },
+    );
+
+    await expect(
+      usecase.execute({
+        organizationId: 'o',
+        email: 'nobody@example.com',
+        password: 'anything-long',
+        refreshTtlSeconds: 3600,
+      }),
+    ).rejects.toMatchObject({ code: 'INVALID_CREDENTIALS' });
+    expect(hasher.verify).not.toHaveBeenCalled();
+  });
 });
 
 describe('RefreshSessionUseCase', () => {
+  it('rotates refresh token and issues a new access token', async () => {
+    const user = buildUser();
+    const refresh: RefreshTokenRepository = {
+      issue: vi.fn(),
+      findByRawToken: vi.fn().mockResolvedValue({
+        id: 'cur',
+        organizationId: user.organizationId,
+        userId: user.id,
+        familyId: 'fam',
+        expiresAt: new Date('2030-01-01'),
+        revokedAt: null,
+        replacedById: null,
+      }),
+      rotate: vi.fn().mockResolvedValue({
+        id: 'new',
+        familyId: 'fam',
+        rawToken: 'refresh-rotated',
+        expiresAt: new Date('2030-02-01T00:00:00Z'),
+      }),
+      revokeFamily: vi.fn(),
+      revokeByRawToken: vi.fn(),
+      revokeAllForUser: vi.fn(),
+    };
+    const tokens: TokenService = {
+      signAccessToken: vi.fn().mockResolvedValue({ token: 'access-2', expiresInSeconds: 900 }),
+      verifyAccessToken: vi.fn(),
+    };
+    const usecase = new RefreshSessionUseCase(
+      {
+        findByEmail: vi.fn(),
+        findById: vi.fn().mockResolvedValue(user),
+        save: vi.fn(),
+        touchLastLogin: vi.fn(),
+      },
+      tokens,
+      refresh,
+    );
+
+    const result = await usecase.execute({
+      refreshToken: 'refresh-raw',
+      refreshTtlSeconds: 3600,
+    });
+
+    expect(result.accessToken).toBe('access-2');
+    expect(result.refreshToken).toBe('refresh-rotated');
+    expect(refresh.rotate).toHaveBeenCalled();
+  });
+
   it('revokes family on refresh token reuse', async () => {
     const refresh: RefreshTokenRepository = {
       issue: vi.fn(),
@@ -132,5 +217,35 @@ describe('RefreshSessionUseCase', () => {
     ).rejects.toBeInstanceOf(DomainError);
 
     expect(refresh.revokeFamily).toHaveBeenCalledWith('o1', 'fam', expect.any(Date));
+  });
+});
+
+describe('LogoutUseCase', () => {
+  it('revokes refresh token when provided', async () => {
+    const refresh: RefreshTokenRepository = {
+      issue: vi.fn(),
+      findByRawToken: vi.fn(),
+      rotate: vi.fn(),
+      revokeFamily: vi.fn(),
+      revokeByRawToken: vi.fn().mockResolvedValue(undefined),
+      revokeAllForUser: vi.fn(),
+    };
+    const usecase = new LogoutUseCase(refresh);
+    await expect(usecase.execute('refresh-raw')).resolves.toEqual({ ok: true });
+    expect(refresh.revokeByRawToken).toHaveBeenCalledWith('refresh-raw', expect.any(Date));
+  });
+
+  it('succeeds when refresh token is missing', async () => {
+    const refresh: RefreshTokenRepository = {
+      issue: vi.fn(),
+      findByRawToken: vi.fn(),
+      rotate: vi.fn(),
+      revokeFamily: vi.fn(),
+      revokeByRawToken: vi.fn(),
+      revokeAllForUser: vi.fn(),
+    };
+    const usecase = new LogoutUseCase(refresh);
+    await expect(usecase.execute(undefined)).resolves.toEqual({ ok: true });
+    expect(refresh.revokeByRawToken).not.toHaveBeenCalled();
   });
 });

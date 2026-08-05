@@ -1,10 +1,12 @@
 import 'reflect-metadata';
 import { ValidationPipe } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import cookieParser from 'cookie-parser';
 import { Logger } from 'nestjs-pino';
 import { AppModule } from './app.module';
+import type { AppEnv } from './config/env.validation';
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule, { bufferLogs: true, rawBody: true });
@@ -19,7 +21,8 @@ async function bootstrap(): Promise<void> {
     }),
   );
 
-  const corsOrigins = String(process.env.CORS_ORIGINS ?? '')
+  const config = app.get(ConfigService<AppEnv, true>);
+  const corsOrigins = String(config.get('CORS_ORIGINS', { infer: true }) ?? '')
     .split(',')
     .map((s) => s.trim())
     .filter(Boolean);

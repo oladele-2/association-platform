@@ -166,6 +166,9 @@ export class PrismaRbacRepository implements RbacRepository {
         where: { id: input.roleId, organizationId: input.organizationId },
       });
       if (!role) throw new DomainError('ROLE_NOT_FOUND', 'Role not found');
+      if (role.isSystem) {
+        throw new DomainError('SYSTEM_ROLE_LOCKED', 'System role permissions cannot be changed');
+      }
 
       const permissionIds = await resolvePermissionIds(tx, input.permissionKeys);
       await tx.rolePermission.deleteMany({ where: { roleId: role.id } });
@@ -192,8 +195,16 @@ export class PrismaRbacRepository implements RbacRepository {
     name: string;
   }): Promise<RoleView> {
     return this.prisma.asTenant(input.organizationId, async (tx) => {
-      await tx.role.updateMany({
+      const existing = await tx.role.findFirst({
         where: { id: input.roleId, organizationId: input.organizationId },
+      });
+      if (!existing) throw new DomainError('ROLE_NOT_FOUND', 'Role not found');
+      if (existing.isSystem) {
+        throw new DomainError('SYSTEM_ROLE_LOCKED', 'System role name cannot be changed');
+      }
+
+      await tx.role.updateMany({
+        where: { id: input.roleId, organizationId: input.organizationId, isSystem: false },
         data: { name: input.name },
       });
       const row = await tx.role.findFirst({
@@ -207,12 +218,12 @@ export class PrismaRbacRepository implements RbacRepository {
 
   async deleteRole(organizationId: string, roleId: string): Promise<void> {
     await this.prisma.asTenant(organizationId, async (tx) => {
-      const result = await tx.role.deleteMany({
-        where: { id: roleId, organizationId, isSystem: false },
-      });
-      if (result.count === 0) {
-        throw new DomainError('ROLE_NOT_FOUND', 'Role not found');
+      const role = await tx.role.findFirst({ where: { id: roleId, organizationId } });
+      if (!role) throw new DomainError('ROLE_NOT_FOUND', 'Role not found');
+      if (role.isSystem) {
+        throw new DomainError('SYSTEM_ROLE_LOCKED', 'System roles cannot be deleted');
       }
+      await tx.role.delete({ where: { id: roleId } });
     });
   }
 
@@ -266,10 +277,14 @@ export class PrismaRbacRepository implements RbacRepository {
     });
   }
 
-  async revokeUserRole(organizationId: string, assignmentId: string): Promise<void> {
+  async revokeUserRole(
+    organizationId: string,
+    userId: string,
+    assignmentId: string,
+  ): Promise<void> {
     await this.prisma.asTenant(organizationId, async (tx) => {
       const result = await tx.userRole.deleteMany({
-        where: { id: assignmentId, organizationId },
+        where: { id: assignmentId, organizationId, userId },
       });
       if (result.count === 0) {
         throw new DomainError('ASSIGNMENT_NOT_FOUND', 'Role assignment not found');

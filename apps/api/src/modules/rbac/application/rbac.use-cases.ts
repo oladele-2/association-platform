@@ -175,8 +175,8 @@ export class AssignUserRoleUseCase {
 export class RevokeUserRoleUseCase {
   constructor(@Inject(RBAC_REPOSITORY) private readonly rbac: RbacRepository) {}
 
-  async execute(organizationId: string, assignmentId: string) {
-    await this.rbac.revokeUserRole(organizationId, assignmentId);
+  async execute(organizationId: string, userId: string, assignmentId: string) {
+    await this.rbac.revokeUserRole(organizationId, userId, assignmentId);
     return { ok: true as const };
   }
 }

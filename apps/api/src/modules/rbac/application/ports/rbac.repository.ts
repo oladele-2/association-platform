@@ -61,7 +61,7 @@ export interface RbacRepository {
     scopeId?: string | null;
   }): Promise<UserRoleAssignmentView>;
 
-  revokeUserRole(organizationId: string, assignmentId: string): Promise<void>;
+  revokeUserRole(organizationId: string, userId: string, assignmentId: string): Promise<void>;
 
   loadEffectiveGrants(organizationId: string, userId: string): Promise<EffectiveGrant[]>;
 }

@@ -165,9 +165,9 @@ export class RbacAdminController {
   @ApiOperation({ summary: 'Revoke a role assignment' })
   revoke(
     @CurrentTenant() tenant: TenantContext,
-    @Param('userId', ParseUUIDPipe) _userId: string,
+    @Param('userId', ParseUUIDPipe) userId: string,
     @Param('assignmentId', ParseUUIDPipe) assignmentId: string,
   ) {
-    return this.revokeUserRole.execute(tenant.organizationId, assignmentId);
+    return this.revokeUserRole.execute(tenant.organizationId, userId, assignmentId);
   }
 }

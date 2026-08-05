@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { DomainError } from '@association/shared-kernel';
 import { AuthorizationPolicy, type EffectiveGrant } from './authorization.policy';
-import { PERMISSION_CATALOG } from './permission-catalog';
+import { ALL_PERMISSION_KEYS, PERMISSION_CATALOG } from './permission-catalog';
 import { resolveTemplatePermissionKeys, SYSTEM_ROLE_TEMPLATES } from './role-templates';
 
 describe('AuthorizationPolicy', () => {
@@ -16,8 +16,12 @@ describe('AuthorizationPolicy', () => {
     },
   ];
 
-  it('allows org-wide grants', () => {
+  it('allows org-wide grants on org-level checks', () => {
     expect(policy.hasPermission(grants, 'members.read')).toBe(true);
+  });
+
+  it('denies scoped grants on org-level checks (no escalation)', () => {
+    expect(policy.hasPermission(grants, 'institution.members.manage')).toBe(false);
   });
 
   it('allows scoped permission for matching scope', () => {
@@ -36,6 +40,18 @@ describe('AuthorizationPolicy', () => {
         scopeId: 'inst-2',
       }),
     ).toBe(false);
+  });
+
+  it('org-wide grant still satisfies a scoped check for the same key', () => {
+    const withOrgWide: EffectiveGrant[] = [
+      { permissionKey: 'institution.members.manage', scopeType: null, scopeId: null },
+    ];
+    expect(
+      policy.hasPermission(withOrgWide, 'institution.members.manage', {
+        scopeType: 'institution',
+        scopeId: 'inst-9',
+      }),
+    ).toBe(true);
   });
 
   it('throws FORBIDDEN listing missing keys', () => {
@@ -57,5 +73,27 @@ describe('role templates', () => {
   it('keeps member role empty (authenticated shell only)', () => {
     const member = SYSTEM_ROLE_TEMPLATES.find((t) => t.key === 'member')!;
     expect(resolveTemplatePermissionKeys(member)).toEqual([]);
+  });
+
+  it('seeds every system role key listed in the milestone', () => {
+    expect(SYSTEM_ROLE_TEMPLATES.map((t) => t.key).sort()).toEqual(
+      [
+        'financial_secretary',
+        'institution_admin',
+        'member',
+        'org_admin',
+        'secretariat',
+        'treasurer',
+      ].sort(),
+    );
+  });
+
+  it('keeps every template permission inside the catalog', () => {
+    const catalog = new Set(ALL_PERMISSION_KEYS);
+    for (const template of SYSTEM_ROLE_TEMPLATES) {
+      for (const key of resolveTemplatePermissionKeys(template)) {
+        expect(catalog.has(key)).toBe(true);
+      }
+    }
   });
 });

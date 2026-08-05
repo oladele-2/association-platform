@@ -9,10 +9,11 @@ export type EffectiveGrant = {
 
 export class AuthorizationPolicy {
   /**
-   * User has permission if any grant matches the key and either:
-   * - grant is org-wide (no scope), or
-   * - required scope is omitted (org-level check), or
-   * - grant scope matches required scopeType+scopeId
+   * Match a permission key against effective grants.
+   *
+   * - Org-wide grants (`scopeType` null) satisfy any check for that key.
+   * - Scoped grants only satisfy when `requiredScope` is provided and matches.
+   * - Org-level checks (no `requiredScope`) ignore scoped grants — they do not escalate.
    */
   hasPermission(
     grants: EffectiveGrant[],
@@ -22,7 +23,7 @@ export class AuthorizationPolicy {
     return grants.some((g) => {
       if (g.permissionKey !== requiredKey) return false;
       if (!g.scopeType) return true; // org-wide
-      if (!requiredScope?.scopeType) return true; // caller asked org-level; scoped also counts
+      if (!requiredScope?.scopeType) return false; // org-level check: scoped does not count
       return g.scopeType === requiredScope.scopeType && g.scopeId === requiredScope.scopeId;
     });
   }

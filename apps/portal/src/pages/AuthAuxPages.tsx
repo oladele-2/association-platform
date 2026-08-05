@@ -59,6 +59,7 @@ export function ForgotPasswordPage() {
 }
 
 export function ResetPasswordPage() {
+  const forced = new URLSearchParams(window.location.search).get('forced') === '1';
   const [token, setToken] = useState(
     () => new URLSearchParams(window.location.search).get('token') ?? '',
   );
@@ -75,6 +76,7 @@ export function ResetPasswordPage() {
       await apiFetch('/v1/auth/password-reset/confirm', {
         method: 'POST',
         body: JSON.stringify({ token, newPassword: password }),
+        skipAuthRetry: true,
       });
       setMessage('Password updated. You can sign in now.');
     } catch (err) {
@@ -88,6 +90,12 @@ export function ResetPasswordPage() {
     <div className="auth-screen">
       <div className="auth-card">
         <div className="auth-card__brand">Reset password</div>
+        {forced ? (
+          <p className="auth-card__sub">
+            Your account requires a password reset before you can use the portal. Use the token from
+            your email.
+          </p>
+        ) : null}
         <form className="form" onSubmit={onSubmit}>
           {error ? <div className="alert">{error}</div> : null}
           {message ? <div className="alert alert--ok">{message}</div> : null}
@@ -118,7 +126,8 @@ export function ResetPasswordPage() {
 }
 
 export function VerifyEmailPage() {
-  const { accessToken } = useAuth();
+  const { accessToken, refresh } = useAuth();
+  const required = new URLSearchParams(window.location.search).get('required') === '1';
   const [token, setToken] = useState(
     () => new URLSearchParams(window.location.search).get('token') ?? '',
   );
@@ -134,8 +143,10 @@ export function VerifyEmailPage() {
       await apiFetch('/v1/auth/email-verification/confirm', {
         method: 'POST',
         body: JSON.stringify({ token }),
+        skipAuthRetry: true,
       });
-      setMessage('Email verified.');
+      await refresh();
+      setMessage('Email verified. You can continue to the portal.');
     } catch (err) {
       setError((err as ApiError).message || 'Verification failed');
     } finally {
@@ -155,6 +166,7 @@ export function VerifyEmailPage() {
         method: 'POST',
         accessToken,
         body: '{}',
+        skipAuthRetry: true,
       });
       setMessage('Verification email requested.');
     } catch (err) {
@@ -168,6 +180,11 @@ export function VerifyEmailPage() {
     <div className="auth-screen">
       <div className="auth-card">
         <div className="auth-card__brand">Verify email</div>
+        {required ? (
+          <p className="auth-card__sub">
+            Verify your email before accessing member, institution, or admin shells.
+          </p>
+        ) : null}
         <form className="form" onSubmit={confirm}>
           {error ? <div className="alert">{error}</div> : null}
           {message ? <div className="alert alert--ok">{message}</div> : null}
@@ -188,6 +205,7 @@ export function VerifyEmailPage() {
           </button>
         </form>
         <div className="muted-links">
+          <Link to="/">Continue to portal</Link>
           <Link to="/login">Sign in</Link>
         </div>
       </div>

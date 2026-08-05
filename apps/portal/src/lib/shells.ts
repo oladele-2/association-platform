@@ -1,6 +1,6 @@
 export type ShellId = 'member' | 'institution' | 'admin';
 
-export type NavItem = { to: string; label: string };
+export type NavItem = { to: string; label: string; permissions?: readonly string[] };
 
 export const MEMBER_NAV: NavItem[] = [
   { to: '/member', label: 'Dashboard' },
@@ -27,29 +27,46 @@ export const INSTITUTION_NAV: NavItem[] = [
 
 export const ADMIN_NAV: NavItem[] = [
   { to: '/admin', label: 'Dashboard' },
-  { to: '/admin/members', label: 'Members' },
-  { to: '/admin/institutions', label: 'Institutions' },
-  { to: '/admin/membership-types', label: 'Membership Types' },
-  { to: '/admin/finance', label: 'Finance' },
-  { to: '/admin/cme', label: 'CME Review' },
-  { to: '/admin/events', label: 'Events Admin' },
-  { to: '/admin/cms', label: 'CMS' },
-  { to: '/admin/comms', label: 'Communications' },
-  { to: '/admin/roles', label: 'Roles & Users' },
-  { to: '/admin/settings', label: 'Org Settings' },
-  { to: '/admin/audit', label: 'Audit Log' },
+  { to: '/admin/members', label: 'Members', permissions: ['members.read', 'members.write'] },
+  {
+    to: '/admin/institutions',
+    label: 'Institutions',
+    permissions: ['institutions.read', 'institutions.write'],
+  },
+  {
+    to: '/admin/membership-types',
+    label: 'Membership Types',
+    permissions: ['members.read', 'members.write'],
+  },
+  {
+    to: '/admin/finance',
+    label: 'Finance',
+    permissions: ['payments.read', 'payments.verify', 'reports.finance'],
+  },
+  { to: '/admin/cme', label: 'CME Review', permissions: ['cme.review'] },
+  { to: '/admin/events', label: 'Events Admin', permissions: ['events.read', 'events.manage'] },
+  { to: '/admin/cms', label: 'CMS', permissions: ['cms.read', 'cms.publish'] },
+  { to: '/admin/comms', label: 'Communications', permissions: ['comms.campaign'] },
+  { to: '/admin/roles', label: 'Roles & Users', permissions: ['roles.manage'] },
+  { to: '/admin/settings', label: 'Org Settings', permissions: ['org.settings'] },
+  { to: '/admin/audit', label: 'Audit Log', permissions: ['audit.read'] },
 ];
 
-const ADMIN_PERMISSION_HINTS = [
+/** Any of these grants access to the admin shell (not role display names). */
+const ADMIN_SHELL_PERMISSIONS = [
   'members.read',
   'members.write',
   'institutions.read',
   'institutions.write',
+  'payments.read',
   'payments.verify',
+  'cms.read',
   'cms.publish',
   'reports.finance',
   'cme.review',
+  'events.read',
   'events.manage',
+  'comms.campaign',
   'roles.manage',
   'org.settings',
   'audit.read',
@@ -57,18 +74,13 @@ const ADMIN_PERMISSION_HINTS = [
 
 export function deriveShells(input: {
   permissions: string[];
-  roles: Array<{ key?: string; name?: string }>;
   institutionCount: number;
 }): ShellId[] {
   const shells: ShellId[] = ['member'];
   if (input.institutionCount > 0) shells.push('institution');
 
   const permSet = new Set(input.permissions);
-  const roleKeys = input.roles.map((r) => (r.key ?? r.name ?? '').toLowerCase());
-  const isAdmin =
-    ADMIN_PERMISSION_HINTS.some((p) => permSet.has(p)) ||
-    roleKeys.some((k) => k.includes('admin') || k.includes('secretary'));
-
+  const isAdmin = ADMIN_SHELL_PERMISSIONS.some((p) => permSet.has(p));
   if (isAdmin) shells.push('admin');
   return shells;
 }
@@ -79,8 +91,13 @@ export function defaultShell(shells: ShellId[]): ShellId {
   return 'member';
 }
 
-export function navFor(shell: ShellId): NavItem[] {
-  if (shell === 'admin') return ADMIN_NAV;
+export function navFor(shell: ShellId, permissions: string[] = []): NavItem[] {
+  if (shell === 'member') return MEMBER_NAV;
   if (shell === 'institution') return INSTITUTION_NAV;
-  return MEMBER_NAV;
+
+  const permSet = new Set(permissions);
+  return ADMIN_NAV.filter((item) => {
+    if (!item.permissions?.length) return true;
+    return item.permissions.some((p) => permSet.has(p));
+  });
 }

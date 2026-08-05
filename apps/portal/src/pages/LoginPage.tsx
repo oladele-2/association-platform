@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { Link, Navigate, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth, useDefaultShellPath } from '../lib/auth';
 import { useTenant } from '../lib/tenant';
-import type { ApiError } from '../lib/api';
+import { safeReturnUrl, type ApiError } from '../lib/api';
 
 export function LoginPage() {
   const { ready, user, login } = useAuth();
-  const { tenant } = useTenant();
+  const { tenant, error: tenantError } = useTenant();
   const defaultPath = useDefaultShellPath();
   const [params] = useSearchParams();
   const navigate = useNavigate();
@@ -16,8 +16,14 @@ export function LoginPage() {
   const [busy, setBusy] = useState(false);
 
   if (ready && user) {
-    const returnUrl = params.get('returnUrl');
-    return <Navigate to={returnUrl || defaultPath} replace />;
+    if (user.mustResetPassword) {
+      return <Navigate to="/reset-password?forced=1" replace />;
+    }
+    if (!user.emailVerified) {
+      return <Navigate to="/verify-email?required=1" replace />;
+    }
+    const returnUrl = safeReturnUrl(params.get('returnUrl'), defaultPath);
+    return <Navigate to={returnUrl} replace />;
   }
 
   async function onSubmit(e: { preventDefault(): void }) {
@@ -26,8 +32,8 @@ export function LoginPage() {
     setError(null);
     try {
       await login(email, password);
-      const returnUrl = params.get('returnUrl');
-      navigate(returnUrl || '/', { replace: true });
+      const returnUrl = safeReturnUrl(params.get('returnUrl'), '/');
+      navigate(returnUrl, { replace: true });
     } catch (err) {
       const apiErr = err as ApiError;
       setError(apiErr.message || 'Login failed');
@@ -43,6 +49,7 @@ export function LoginPage() {
           {tenant?.organization.displayName ?? 'Association Portal'}
         </div>
         <p className="auth-card__sub">Sign in to your member, institution, or admin shell.</p>
+        {tenantError ? <div className="alert">{tenantError}</div> : null}
         <form className="form" onSubmit={onSubmit}>
           {error ? <div className="alert">{error}</div> : null}
           <label>

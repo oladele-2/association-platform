@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
-import { apiFetch, ORG_SLUG } from './api';
+import { apiFetch, resolveOrgSlug } from './api';
 
 export type TenantPublic = {
   organization: {
@@ -22,15 +22,16 @@ type TenantContextValue = {
 
 const TenantContext = createContext<TenantContextValue | null>(null);
 
-const FALLBACK: TenantPublic = {
+/** Generic offline placeholder — never org-specific. */
+const OFFLINE_FALLBACK: TenantPublic = {
   organization: {
-    organizationId: 'local',
-    slug: ORG_SLUG,
-    displayName: 'NMA Ogun State',
+    organizationId: 'offline',
+    slug: 'local',
+    displayName: 'Association Portal',
   },
   branding: {
-    primaryColor: '#0b6b3a',
-    secondaryColor: '#c8102e',
+    primaryColor: null,
+    secondaryColor: null,
   },
   features: [],
 };
@@ -42,20 +43,35 @@ export function TenantProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     void (async () => {
+      const slug = resolveOrgSlug();
+      if (
+        !slug &&
+        typeof window !== 'undefined' &&
+        (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+      ) {
+        setTenant(OFFLINE_FALLBACK);
+        setError('Set VITE_ORG_SLUG for local development (required on localhost).');
+        setReady(true);
+        return;
+      }
+
       try {
-        const data = await apiFetch<TenantPublic>(
-          `/v1/tenancy/resolve?slug=${encodeURIComponent(ORG_SLUG)}`,
-        );
+        const path = slug
+          ? `/v1/tenancy/resolve?slug=${encodeURIComponent(slug)}`
+          : '/v1/tenancy/resolve';
+        const data = await apiFetch<TenantPublic>(path, { skipAuthRetry: true });
         setTenant(data);
-        const primary = data.branding?.primaryColor ?? '#0b6b3a';
-        const secondary = data.branding?.secondaryColor ?? '#c8102e';
-        document.documentElement.style.setProperty('--brand', primary);
-        document.documentElement.style.setProperty('--brand-deep', primary);
-        document.documentElement.style.setProperty('--accent', secondary);
+        if (data.branding?.primaryColor) {
+          document.documentElement.style.setProperty('--brand', data.branding.primaryColor);
+          document.documentElement.style.setProperty('--brand-deep', data.branding.primaryColor);
+        }
+        if (data.branding?.secondaryColor) {
+          document.documentElement.style.setProperty('--accent', data.branding.secondaryColor);
+        }
         document.title = `${data.organization.displayName} · Portal`;
       } catch {
-        setTenant(FALLBACK);
-        setError('Using offline branding defaults (API unreachable).');
+        setTenant(OFFLINE_FALLBACK);
+        setError('Using offline portal shell (API unreachable).');
       } finally {
         setReady(true);
       }

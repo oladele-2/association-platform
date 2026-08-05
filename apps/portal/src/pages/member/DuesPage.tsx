@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { apiFetch, type ApiError } from '../../lib/api';
 import { useAuth } from '../../lib/auth';
-import { formatDate, formatNairaFromKobo } from '../../lib/format';
+import { formatDate, formatMoneyFromKobo } from '../../lib/format';
 
 type Invoice = {
   id: string;
@@ -17,6 +17,7 @@ type Payment = {
   id: string;
   reference: string;
   amountKobo: string;
+  currency: string;
   status: string;
   channel: string;
   createdAt: string;
@@ -148,8 +149,8 @@ export function DuesPage() {
                     </td>
                     <td>{inv.invoiceNo}</td>
                     <td>{formatDate(inv.dueOn)}</td>
-                    <td>{formatNairaFromKobo(inv.amountDueKobo)}</td>
-                    <td>{formatNairaFromKobo(inv.amountPaidKobo)}</td>
+                    <td>{formatMoneyFromKobo(inv.amountDueKobo, inv.currency)}</td>
+                    <td>{formatMoneyFromKobo(inv.amountPaidKobo, inv.currency)}</td>
                     <td>{inv.status}</td>
                   </tr>
                 );
@@ -189,7 +190,7 @@ export function DuesPage() {
               {payments.map((p) => (
                 <tr key={p.id}>
                   <td>{p.reference}</td>
-                  <td>{formatNairaFromKobo(p.amountKobo)}</td>
+                  <td>{formatMoneyFromKobo(p.amountKobo, p.currency)}</td>
                   <td>{p.channel}</td>
                   <td>{p.status}</td>
                   <td>{formatDate(p.createdAt)}</td>

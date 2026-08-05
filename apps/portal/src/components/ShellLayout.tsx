@@ -11,13 +11,23 @@ export function RequireAuth({ children }: { children: React.ReactNode }) {
     const returnUrl = encodeURIComponent(location.pathname + location.search);
     return <Navigate to={`/login?returnUrl=${returnUrl}`} replace />;
   }
+  if (user.mustResetPassword && !location.pathname.startsWith('/reset-password')) {
+    return <Navigate to="/reset-password?forced=1" replace />;
+  }
+  if (
+    !user.emailVerified &&
+    !location.pathname.startsWith('/verify-email') &&
+    !location.pathname.startsWith('/reset-password')
+  ) {
+    return <Navigate to="/verify-email?required=1" replace />;
+  }
   return children;
 }
 
 export function ShellLayout({ shell }: { shell: ShellId }) {
-  const { user, shells, logout } = useAuth();
+  const { user, shells, permissions, logout } = useAuth();
   const { tenant } = useTenant();
-  const nav = navFor(shell);
+  const nav = navFor(shell, permissions);
 
   if (!shells.includes(shell)) {
     return <Navigate to={`/${shells[0] ?? 'member'}`} replace />;

@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { DomainError } from '@association/shared-kernel';
 import { assertEventSlug, assertEventWindow } from '../domain/event.rules';
 import { EVENT_REPOSITORY, type EventRepository } from './ports/event.repository';
+import { GetReadyFileUseCase } from '../../files/application/file.use-cases';
 
 @Injectable()
 export class ListEventsUseCase {
@@ -31,7 +32,10 @@ export class GetEventUseCase {
 
 @Injectable()
 export class CreateEventUseCase {
-  constructor(@Inject(EVENT_REPOSITORY) private readonly repo: EventRepository) {}
+  constructor(
+    @Inject(EVENT_REPOSITORY) private readonly repo: EventRepository,
+    private readonly getReadyFile: GetReadyFileUseCase,
+  ) {}
 
   async execute(input: {
     organizationId: string;
@@ -57,6 +61,12 @@ export class CreateEventUseCase {
     const existing = await this.repo.findBySlug(input.organizationId, slug);
     if (existing) throw new DomainError('SLUG_TAKEN', 'Event slug already exists');
 
+    if (input.coverFileId) {
+      await this.getReadyFile.execute(input.organizationId, input.coverFileId, {
+        purposes: ['event', 'cms'],
+      });
+    }
+
     return this.repo.create({
       organizationId: input.organizationId,
       slug,
@@ -77,7 +87,10 @@ export class CreateEventUseCase {
 
 @Injectable()
 export class UpdateEventUseCase {
-  constructor(@Inject(EVENT_REPOSITORY) private readonly repo: EventRepository) {}
+  constructor(
+    @Inject(EVENT_REPOSITORY) private readonly repo: EventRepository,
+    private readonly getReadyFile: GetReadyFileUseCase,
+  ) {}
 
   async execute(input: {
     organizationId: string;
@@ -114,6 +127,12 @@ export class UpdateEventUseCase {
           ? new Date(existing.endsAt)
           : null;
     assertEventWindow(startsAt, endsAt);
+
+    if (input.coverFileId) {
+      await this.getReadyFile.execute(input.organizationId, input.coverFileId, {
+        purposes: ['event', 'cms'],
+      });
+    }
 
     return this.repo.update({
       organizationId: input.organizationId,
@@ -181,7 +200,10 @@ export class CancelEventUseCase {
 
 @Injectable()
 export class ReplaceEventSpeakersUseCase {
-  constructor(@Inject(EVENT_REPOSITORY) private readonly repo: EventRepository) {}
+  constructor(
+    @Inject(EVENT_REPOSITORY) private readonly repo: EventRepository,
+    private readonly getReadyFile: GetReadyFileUseCase,
+  ) {}
 
   async execute(
     organizationId: string,
@@ -199,6 +221,11 @@ export class ReplaceEventSpeakersUseCase {
     for (const s of speakers) {
       if (!s.name.trim()) {
         throw new DomainError('INVALID_SPEAKER', 'Speaker name is required');
+      }
+      if (s.photoFileId) {
+        await this.getReadyFile.execute(organizationId, s.photoFileId, {
+          purposes: ['event', 'cms'],
+        });
       }
     }
     return this.repo.replaceSpeakers(organizationId, eventId, speakers);

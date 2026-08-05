@@ -12,6 +12,9 @@ import {
   type CreateContentInput,
   type UpdateContentInput,
 } from './ports/content.repository';
+import { GetReadyFileUseCase } from '../../files/application/file.use-cases';
+import { EMAIL_SENDER, type EmailSender } from '../../identity/application/ports/email.sender';
+import { PrismaService } from '../../../infrastructure/prisma/prisma.service';
 
 @Injectable()
 export class ListContentUseCase {
@@ -41,7 +44,10 @@ export class GetContentUseCase {
 
 @Injectable()
 export class CreateContentUseCase {
-  constructor(@Inject(CONTENT_REPOSITORY) private readonly repo: ContentRepository) {}
+  constructor(
+    @Inject(CONTENT_REPOSITORY) private readonly repo: ContentRepository,
+    private readonly getReadyFile: GetReadyFileUseCase,
+  ) {}
 
   async execute(input: CreateContentInput) {
     if (!input.title.trim()) {
@@ -55,6 +61,10 @@ export class CreateContentUseCase {
     if (existing) {
       throw new DomainError('SLUG_TAKEN', 'Slug already used for this content type');
     }
+    await assertCmsFiles(this.getReadyFile, input.organizationId, {
+      coverFileId: input.coverFileId,
+      ogImageFileId: input.ogImageFileId,
+    });
     return this.repo.create({
       ...input,
       slug,
@@ -65,7 +75,10 @@ export class CreateContentUseCase {
 
 @Injectable()
 export class UpdateContentUseCase {
-  constructor(@Inject(CONTENT_REPOSITORY) private readonly repo: ContentRepository) {}
+  constructor(
+    @Inject(CONTENT_REPOSITORY) private readonly repo: ContentRepository,
+    private readonly getReadyFile: GetReadyFileUseCase,
+  ) {}
 
   async execute(input: UpdateContentInput) {
     const existing = await this.repo.findById(input.organizationId, input.id);
@@ -79,6 +92,11 @@ export class UpdateContentUseCase {
         throw new DomainError('SLUG_TAKEN', 'Slug already used for this content type');
       }
     }
+
+    await assertCmsFiles(this.getReadyFile, input.organizationId, {
+      coverFileId: input.coverFileId,
+      ogImageFileId: input.ogImageFileId,
+    });
 
     return this.repo.update({
       ...input,
@@ -123,5 +141,66 @@ export class UnpublishContentUseCase {
       throw new DomainError('CONTENT_NOT_PUBLISHED', 'Content is not published');
     }
     return this.repo.unpublish(organizationId, id);
+  }
+}
+
+/** Accept public contact form; deliver via org branding inbox (console/provider). */
+@Injectable()
+export class SubmitPublicContactUseCase {
+  constructor(
+    @Inject(EMAIL_SENDER) private readonly email: EmailSender,
+    private readonly prisma: PrismaService,
+  ) {}
+
+  async execute(input: {
+    organizationId: string;
+    name: string;
+    email: string;
+    subject: string;
+    body: string;
+  }) {
+    const name = input.name.trim();
+    const email = input.email.trim();
+    const subject = input.subject.trim();
+    const body = input.body.trim();
+    if (!name || !email || !subject || !body) {
+      throw new DomainError('INVALID_CONTACT', 'Name, email, subject, and message are required');
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      throw new DomainError('INVALID_EMAIL', 'A valid email is required');
+    }
+
+    const inbox = await this.prisma.asPlatform(async (tx) => {
+      const branding = await tx.organizationBranding.findUnique({
+        where: { organizationId: input.organizationId },
+      });
+      return branding?.emailFromAddress?.trim() || null;
+    });
+
+    if (!inbox) {
+      throw new DomainError(
+        'CONTACT_NOT_CONFIGURED',
+        'This organization has not configured a contact inbox yet',
+      );
+    }
+
+    await this.email.send({
+      to: inbox,
+      subject: `[Website contact] ${subject}`,
+      text: [`From: ${name} <${email}>`, '', body].join('\n'),
+    });
+
+    return { ok: true as const };
+  }
+}
+
+async function assertCmsFiles(
+  getReadyFile: GetReadyFileUseCase,
+  organizationId: string,
+  files: { coverFileId?: string | null; ogImageFileId?: string | null },
+) {
+  for (const id of [files.coverFileId, files.ogImageFileId]) {
+    if (!id) continue;
+    await getReadyFile.execute(organizationId, id, { purposes: ['cms', 'branding'] });
   }
 }

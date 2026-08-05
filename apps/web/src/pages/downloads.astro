@@ -1,34 +1,41 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { demoDownloads } from '../data/demo';
+import { tenant } from '../config/tenant';
+import { getDownloads } from '../lib/api';
+
+const docs = await getDownloads();
 ---
 
 <BaseLayout
   title="Downloads"
-  description="Public documents from NMA Ogun State Branch."
+  description={`Public documents from ${tenant.displayName}.`}
   path="/downloads"
 >
   <section class="page-hero">
     <div class="container">
       <span class="section__eyebrow">Resources</span>
       <h1>Downloads</h1>
-      <p class="section__lead">
-        Public leaflets and programmes. Replace placeholders with CMS-published files when ready.
-      </p>
+      <p class="section__lead">Public leaflets and programmes published by the branch.</p>
     </div>
   </section>
 
   <section class="section" style="padding-top: 0;">
     <div class="container list-stack">
       {
-        demoDownloads.map((doc) => (
-          <div class="list-item" style="grid-template-columns: 1fr;">
-            <div>
-              <h2 class="list-item__title">{doc.title}</h2>
-              <p class="list-item__excerpt">{doc.note}</p>
+        docs.length === 0 ? (
+          <p class="section__lead">No downloads published yet.</p>
+        ) : (
+          docs.map((doc) => (
+            <div class="list-item" style="grid-template-columns: 1fr;">
+              <div>
+                <h2 class="list-item__title">
+                  {doc.href ? <a href={doc.href}>{doc.title}</a> : doc.title}
+                </h2>
+                {doc.note ? <p class="list-item__excerpt">{doc.note}</p> : null}
+              </div>
             </div>
-          </div>
-        ))
+          ))
+        )
       }
     </div>
   </section>

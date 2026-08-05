@@ -18,10 +18,19 @@ const {
 
 const pageTitle =
   title === tenant.displayName ? title : `${title} · ${tenant.displayName}`;
+
+const theme = {
+  green: tenant.colors.green,
+  greenDeep: tenant.colors.greenDeep,
+  greenSoft: tenant.colors.greenSoft,
+  red: tenant.colors.red,
+  ink: tenant.colors.ink,
+  mist: tenant.colors.mist,
+};
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" style={`--green:${theme.green};--green-deep:${theme.greenDeep};--green-soft:${theme.greenSoft};--red:${theme.red};--ink:${theme.ink};--mist:${theme.mist};`}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />

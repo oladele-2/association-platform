@@ -2,6 +2,14 @@ import { Inject, Injectable } from '@nestjs/common';
 import { DomainError } from '@association/shared-kernel';
 import { assertCommitteeSlug } from '../domain/committee.rules';
 import { COMMITTEE_REPOSITORY, type CommitteeRepository } from './ports/committee.repository';
+import {
+  CONTENT_REPOSITORY,
+  type ContentRepository,
+} from '../../cms/application/ports/content.repository';
+import {
+  MEMBER_REPOSITORY,
+  type MemberRepository,
+} from '../../members/application/ports/member.repository';
 
 @Injectable()
 export class ListCommitteesUseCase {
@@ -31,7 +39,10 @@ export class GetCommitteeUseCase {
 
 @Injectable()
 export class CreateCommitteeUseCase {
-  constructor(@Inject(COMMITTEE_REPOSITORY) private readonly repo: CommitteeRepository) {}
+  constructor(
+    @Inject(COMMITTEE_REPOSITORY) private readonly repo: CommitteeRepository,
+    @Inject(CONTENT_REPOSITORY) private readonly content: ContentRepository,
+  ) {}
 
   async execute(input: {
     organizationId: string;
@@ -46,6 +57,10 @@ export class CreateCommitteeUseCase {
     const slug = assertCommitteeSlug(input.slug);
     const existing = await this.repo.findBySlug(input.organizationId, slug);
     if (existing) throw new DomainError('SLUG_TAKEN', 'Committee slug already exists');
+    if (input.contentItemId) {
+      const item = await this.content.findById(input.organizationId, input.contentItemId);
+      if (!item) throw new DomainError('CONTENT_NOT_FOUND', 'Linked content item not found');
+    }
     return this.repo.create({
       organizationId: input.organizationId,
       name: input.name.trim(),
@@ -58,7 +73,10 @@ export class CreateCommitteeUseCase {
 
 @Injectable()
 export class UpdateCommitteeUseCase {
-  constructor(@Inject(COMMITTEE_REPOSITORY) private readonly repo: CommitteeRepository) {}
+  constructor(
+    @Inject(COMMITTEE_REPOSITORY) private readonly repo: CommitteeRepository,
+    @Inject(CONTENT_REPOSITORY) private readonly content: ContentRepository,
+  ) {}
 
   async execute(input: {
     organizationId: string;
@@ -76,6 +94,10 @@ export class UpdateCommitteeUseCase {
       if (clash && clash.id !== existing.id) {
         throw new DomainError('SLUG_TAKEN', 'Committee slug already exists');
       }
+    }
+    if (input.contentItemId) {
+      const item = await this.content.findById(input.organizationId, input.contentItemId);
+      if (!item) throw new DomainError('CONTENT_NOT_FOUND', 'Linked content item not found');
     }
     return this.repo.update({
       ...input,
@@ -99,7 +121,10 @@ export class DeleteCommitteeUseCase {
 
 @Injectable()
 export class ReplaceCommitteeMembersUseCase {
-  constructor(@Inject(COMMITTEE_REPOSITORY) private readonly repo: CommitteeRepository) {}
+  constructor(
+    @Inject(COMMITTEE_REPOSITORY) private readonly repo: CommitteeRepository,
+    @Inject(MEMBER_REPOSITORY) private readonly members: MemberRepository,
+  ) {}
 
   async execute(
     organizationId: string,
@@ -118,6 +143,12 @@ export class ReplaceCommitteeMembersUseCase {
     for (const m of members) {
       if (!m.displayName.trim()) {
         throw new DomainError('INVALID_MEMBER', 'displayName is required');
+      }
+      if (m.memberId) {
+        const member = await this.members.findMemberById(organizationId, m.memberId);
+        if (!member) {
+          throw new DomainError('MEMBER_NOT_FOUND', 'Committee roster member not found');
+        }
       }
     }
     return this.repo.replaceMembers(organizationId, committeeId, members);

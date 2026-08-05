@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { tenant } from '../../config/tenant';
 import { getCommittees } from '../../lib/api';
 
 const committees = await getCommittees();
@@ -7,7 +8,7 @@ const committees = await getCommittees();
 
 <BaseLayout
   title="Committees"
-  description="Standing committees of NMA Ogun State Branch."
+  description={`Standing committees of ${tenant.displayName}.`}
   path="/committees"
 >
   <section class="page-hero">

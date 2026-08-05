@@ -32,8 +32,8 @@ Each milestone must **compile**, **pass its tests**, include **documentation**, 
 | M4 | Approved (2026-08-05) | [M4-FILES.md](./milestones/M4-FILES.md) |
 | M5 | Approved (2026-08-05) | [M5-MEMBERS-INSTITUTIONS.md](./milestones/M5-MEMBERS-INSTITUTIONS.md) |
 | M6 | Approved (2026-08-05) | [M6-BILLING.md](./milestones/M6-BILLING.md) |
-| M7a | Complete — awaiting review | [M7-CMS-EVENTS-COMMITTEES-API.md](./milestones/M7-CMS-EVENTS-COMMITTEES-API.md) |
-| M7b | Complete — awaiting review | [M7-WEB.md](./milestones/M7-WEB.md) |
+| M7a | Approved (2026-08-05) | [M7-CMS-EVENTS-COMMITTEES-API.md](./milestones/M7-CMS-EVENTS-COMMITTEES-API.md) |
+| M7b | Approved (2026-08-05) | [M7-WEB.md](./milestones/M7-WEB.md) |
 | M8 | Complete — awaiting review | [M8-PORTAL.md](./milestones/M8-PORTAL.md) |
 | M9 | Complete — awaiting review (CME + Comms slice) | [M9-CME-COMMS.md](./milestones/M9-CME-COMMS.md) |
 | F1 | Complete — awaiting review | [F1-FLUTTER-SHELL.md](./milestones/F1-FLUTTER-SHELL.md) |

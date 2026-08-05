@@ -24,15 +24,15 @@ function formatDate(iso: string) {
     <div class="hero__media">
       <img
         src={tenant.images.hero}
-        alt="Doctors' House, NMA Ogun State secretariat in Abeokuta"
+        alt={`${tenant.displayName} secretariat`}
         width="1600"
         height="1000"
         fetchpriority="high"
       />
     </div>
     <div class="hero__content">
-      <h1 class="hero__brand">NMA Ogun</h1>
-      <p class="hero__headline">The professional home of doctors in Ogun State.</p>
+      <h1 class="hero__brand">{tenant.shortName}</h1>
+      <p class="hero__headline">{tenant.heroHeadline}</p>
       <p class="hero__support">{tenant.tagline}</p>
       <div class="btn-row">
         <a class="btn btn--primary" href={tenant.portalUrl}>Members portal</a>
@@ -55,7 +55,7 @@ function formatDate(iso: string) {
       <div class="media-plane reveal">
         <img
           src={tenant.images.about}
-          alt="NMA Ogun Doctors' House exterior"
+          alt={`${tenant.displayName} Doctors' House exterior`}
           width="900"
           height="720"
           loading="lazy"

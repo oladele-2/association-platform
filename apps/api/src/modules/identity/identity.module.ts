@@ -51,6 +51,6 @@ import { AccessJwtGuard } from './presentation/access-jwt.guard';
       useClass: PrismaEmailVerificationTokenRepository,
     },
   ],
-  exports: [TOKEN_SERVICE, AccessJwtGuard, USER_REPOSITORY, PASSWORD_HASHER],
+  exports: [TOKEN_SERVICE, AccessJwtGuard, USER_REPOSITORY, PASSWORD_HASHER, EMAIL_SENDER],
 })
 export class IdentityModule {}

@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { IdentityModule } from '../identity/identity.module';
 import { TenancyModule } from '../tenancy/tenancy.module';
 import { RbacModule } from '../rbac/rbac.module';
+import { FilesModule } from '../files/files.module';
 import { EVENT_REPOSITORY } from './application/ports/event.repository';
 import {
   CancelEventUseCase,
@@ -18,7 +19,7 @@ import { AdminEventsController } from './presentation/admin-events.controller';
 import { PublicEventsController } from './presentation/public-events.controller';
 
 @Module({
-  imports: [IdentityModule, TenancyModule, RbacModule],
+  imports: [IdentityModule, TenancyModule, RbacModule, FilesModule],
   controllers: [AdminEventsController, PublicEventsController],
   providers: [
     { provide: EVENT_REPOSITORY, useClass: PrismaEventRepository },

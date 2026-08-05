@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { tenant } from '../../config/tenant';
 import { getAllEvents } from '../../lib/api';
 
 const events = await getAllEvents();
@@ -17,7 +18,7 @@ function formatDate(iso: string) {
 }
 ---
 
-<BaseLayout title="Events" description="Upcoming NMA Ogun events." path="/events">
+<BaseLayout title="Events" description={`Upcoming ${tenant.displayName} events.`} path="/events">
   <section class="page-hero">
     <div class="container">
       <span class="section__eyebrow">Calendar</span>

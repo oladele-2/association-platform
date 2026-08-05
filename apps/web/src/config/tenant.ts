@@ -1,18 +1,30 @@
 /**
- * Demo tenant defaults for NMA Ogun (first client).
- * Production sites should resolve branding via GET /v1/tenancy/resolve.
+ * Demo tenant defaults (first client preview).
+ * Override branding fields via env where possible; keep org copy in this config
+ * only for local/demo builds with PUBLIC_USE_DEMO_FALLBACK=true.
  */
 export const tenant = {
-  slug: 'nma-ogun',
+  slug: import.meta.env.PUBLIC_ORG_SLUG ?? 'nma-ogun',
+  /** Short brand lockup used in chrome (hero / header / footer). */
+  shortName: 'NMA Ogun',
   displayName: 'NMA Ogun State',
   legalName: 'Nigerian Medical Association — Ogun State Branch',
   tagline: 'Advancing healthcare. Protecting members. Serving Ogun State.',
+  heroHeadline: 'The professional home of doctors in Ogun State.',
   established: '1960',
   email: 'info@nmaogun.com.ng',
   phone: '+234 803 000 0000',
   address: "Doctors' House, Abeokuta, Ogun State, Nigeria",
   portalUrl: import.meta.env.PUBLIC_PORTAL_URL ?? 'http://localhost:5173',
   apiUrl: import.meta.env.PUBLIC_API_URL ?? 'http://localhost:3000',
+  /**
+   * When true, unreachable/empty public API responses fall back to `src/data/demo.ts`.
+   * Production builds should leave this unset/false so empty CMS does not bake demo copy.
+   */
+  useDemoFallback:
+    String(import.meta.env.PUBLIC_USE_DEMO_FALLBACK ?? '')
+      .trim()
+      .toLowerCase() === 'true',
   social: {
     facebook: '#',
     twitter: '#',

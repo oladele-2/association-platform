@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { tenant } from '../../config/tenant';
 import { getAllNews } from '../../lib/api';
 
 const news = await getAllNews();
@@ -17,7 +18,7 @@ function formatDate(iso: string) {
 }
 ---
 
-<BaseLayout title="News" description="News and notices from NMA Ogun." path="/news">
+<BaseLayout title="News" description={`News and notices from ${tenant.displayName}.`} path="/news">
   <section class="page-hero">
     <div class="container">
       <span class="section__eyebrow">Updates</span>

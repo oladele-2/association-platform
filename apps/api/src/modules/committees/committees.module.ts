@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { IdentityModule } from '../identity/identity.module';
 import { TenancyModule } from '../tenancy/tenancy.module';
 import { RbacModule } from '../rbac/rbac.module';
+import { CmsModule } from '../cms/cms.module';
+import { MembersModule } from '../members/members.module';
 import { COMMITTEE_REPOSITORY } from './application/ports/committee.repository';
 import {
   CreateCommitteeUseCase,
@@ -16,7 +18,7 @@ import { AdminCommitteesController } from './presentation/admin-committees.contr
 import { PublicCommitteesController } from './presentation/public-committees.controller';
 
 @Module({
-  imports: [IdentityModule, TenancyModule, RbacModule],
+  imports: [IdentityModule, TenancyModule, RbacModule, CmsModule, MembersModule],
   controllers: [AdminCommitteesController, PublicCommitteesController],
   providers: [
     { provide: COMMITTEE_REPOSITORY, useClass: PrismaCommitteeRepository },

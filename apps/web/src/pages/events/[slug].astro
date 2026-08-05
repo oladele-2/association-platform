@@ -1,12 +1,10 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { demoEvents } from '../../data/demo';
 import { getAllEvents, getEventBySlug } from '../../lib/api';
 
 export async function getStaticPaths() {
   const all = await getAllEvents();
-  const slugs = new Set([...all.map((e) => e.slug), ...demoEvents.map((e) => e.slug)]);
-  return [...slugs].filter(Boolean).map((slug) => ({ params: { slug } }));
+  return all.filter((e) => e.slug).map((e) => ({ params: { slug: e.slug } }));
 }
 
 const { slug } = Astro.params;

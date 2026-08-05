@@ -38,16 +38,17 @@ export default function ContactForm() {
         form.reset();
         return;
       }
-    } catch {
-      /* fall through to soft success for demo when API is offline */
-    }
 
-    // Soft stub until POST /v1/public/contact ships
-    setStatus('sent');
-    setMessage(
-      `Thanks — for now please email ${tenant.email} directly if this is urgent. Your draft was recorded in this browser session.`,
-    );
-    form.reset();
+      const errBody = (await res.json().catch(() => null)) as { message?: string } | null;
+      setStatus('error');
+      setMessage(
+        errBody?.message ??
+          `We could not send your message. Please email ${tenant.email} directly.`,
+      );
+    } catch {
+      setStatus('error');
+      setMessage(`Network error — please email ${tenant.email} directly.`);
+    }
   }
 
   return (
@@ -71,7 +72,11 @@ export default function ContactForm() {
       <button className="btn btn--primary" type="submit" disabled={status === 'sending'}>
         {status === 'sending' ? 'Sending…' : 'Send message'}
       </button>
-      {message ? <p role="status">{message}</p> : null}
+      {message ? (
+        <p role="status" data-status={status}>
+          {message}
+        </p>
+      ) : null}
     </form>
   );
 }

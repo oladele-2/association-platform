@@ -13,7 +13,7 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiHeader, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsEnum, IsInt, IsOptional, Min } from 'class-validator';
+import { IsEnum, IsIn, IsInt, IsOptional, Min } from 'class-validator';
 import { DomainErrorFilter } from '../../identity/presentation/domain-error.filter';
 import { AccessJwtGuard } from '../../identity/presentation/access-jwt.guard';
 import { CurrentAuthUser } from '../../identity/presentation/current-auth-user.decorator';
@@ -41,6 +41,7 @@ class AdminContentQueryDto {
   type?: ContentTypeDto;
 
   @IsOptional()
+  @IsIn(['draft', 'scheduled', 'published', 'archived'])
   status?: ContentStatus;
 
   @IsOptional()

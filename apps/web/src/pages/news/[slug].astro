@@ -1,12 +1,10 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { demoNews } from '../../data/demo';
 import { getAllNews, getNewsBySlug } from '../../lib/api';
 
 export async function getStaticPaths() {
   const all = await getAllNews();
-  const slugs = new Set([...all.map((n) => n.slug), ...demoNews.map((n) => n.slug)]);
-  return [...slugs].filter(Boolean).map((slug) => ({ params: { slug } }));
+  return all.filter((n) => n.slug).map((n) => ({ params: { slug: n.slug } }));
 }
 
 const { slug } = Astro.params;

@@ -1,12 +1,10 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { demoCommittees } from '../../data/demo';
 import { getCommitteeBySlug, getCommittees } from '../../lib/api';
 
 export async function getStaticPaths() {
   const all = await getCommittees();
-  const slugs = new Set([...all.map((c) => c.slug), ...demoCommittees.map((c) => c.slug)]);
-  return [...slugs].map((slug) => ({ params: { slug } }));
+  return all.filter((c) => c.slug).map((c) => ({ params: { slug: c.slug } }));
 }
 
 const { slug } = Astro.params;

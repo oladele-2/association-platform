@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { tenant } from '../config/tenant';
 import { getExecutives } from '../lib/api';
 
 const executives = await getExecutives();
@@ -7,7 +8,7 @@ const executives = await getExecutives();
 
 <BaseLayout
   title="Executives"
-  description="Current executive officers of NMA Ogun State Branch."
+  description={`Current executive officers of ${tenant.displayName}.`}
   path="/executives"
 >
   <section class="page-hero">

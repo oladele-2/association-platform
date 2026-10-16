@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import Photo from '../../components/Photo.astro';
+import { articles, longDate } from '../../data/editorial';
+export function getStaticPaths() { return articles.map(article => ({ params: { slug: article.slug }, props: { article } })); }
+const { article } = Astro.props;
+---
+<BaseLayout title={`${article.title} — News — NMA Ogun`} description={article.summary} article={!article.reviewOnly} reviewNote={article.reviewOnly ? 'Article layout preview · This is not an issued statement or news report.' : undefined}>
+  <PageHero eyebrow="News & media" title={article.title} description={article.summary} parent={{ label: 'News', href: '/news' }} />
+  <section class="container page-section article-layout"><article class="prose">{article.reviewOnly && <div class="notice"><h2>Article format for review</h2><p>No official news article has been supplied. This example uses purpose and values copy; no publication date or personal attribution has been invented.</p></div>}{article.publishedAt && <div class="story-meta"><time datetime={article.publishedAt}>{longDate(article.publishedAt)}</time><span>{article.author}</span></div>}<Photo name="community-meeting" /><h2>A shared commitment</h2>{article.paragraphs.map(paragraph => <p>{paragraph}</p>)}<a class="text-link section-link" href="/news">Back to news <span aria-hidden="true">↗</span></a></article><aside class="article-sidebar"><h2>Our community</h2><p>Explore the association’s spaces and meeting life.</p><a class="text-link" href="/gallery">In pictures <span aria-hidden="true">↗</span></a></aside></section>
+</BaseLayout>

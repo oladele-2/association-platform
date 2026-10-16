@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Photo from '../components/Photo.astro';
+import Membership from '../components/Membership.astro';
+import { events, longDate } from '../data/editorial';
+import { reviewMode } from '../data/site';
+---
+<BaseLayout title="Programmes & professional learning — NMA Ogun" description="Explore professional learning, association activities and the shared purpose of NMA Ogun.">
+  <PageHero eyebrow="Programmes" title="Learning. Connection. Shared purpose." description="Professional development, knowledge sharing and public education are central to the association’s mission." />
+  <div class="container"><Photo name="meeting-life" class="feature-photo" loading="eager" sizes="100vw" /></div>
+  <section class="container page-section split-section"><div><p class="eyebrow">Learning &amp; service</p><h2>A profession<br />that <em>keeps growing.</em></h2></div><ol class="numbered-list"><li><span class="row-number">01</span><div><h3>Professional learning</h3><p>Continuing professional development and knowledge sharing support high standards of practice.</p></div></li><li><span class="row-number">02</span><div><h3>Association activities</h3><p>Connection and shared professional purpose give members’ interests a place in the association’s work.</p></div></li><li><span class="row-number">03</span><div><h3>Public education</h3><p>Advocacy, public education and collaboration are part of the association’s commitment to better healthcare.</p></div></li></ol></section>
+  {events.length > 0 && <section class="container page-section"><p class="eyebrow">{reviewMode ? 'Programme layout review' : 'Programmes & events'}</p><h2>{reviewMode ? 'Explore the event format.' : 'Coming together.'}</h2><ul class="story-list section-link">{events.map(event => <li><a class="story-row" href={`/events/${event.slug}`}><span class="story-date">{event.startDate ? longDate(event.startDate) : 'Editorial review'}</span><div>{event.reviewOnly && <span class="review-tag">Layout preview · Unconfirmed programme</span>}<h2>{event.title}</h2><p>{event.summary}</p></div><span class="story-arrow" aria-hidden="true">↗</span></a></li>)}</ul></section>}
+  <Membership />
+</BaseLayout>

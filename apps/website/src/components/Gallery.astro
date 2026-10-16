@@ -1,0 +1,9 @@
+---
+import { getImage } from 'astro:assets';
+import Photo from './Photo.astro';
+import { photos, type PhotoName } from '../data/media';
+interface Props { names: PhotoName[] }
+const { names } = Astro.props;
+const entries = await Promise.all(names.map(async name => ({ name, photo: photos[name], full: await getImage({ src: photos[name].image, width: 1280, format: 'webp', quality: 88 }) })));
+---
+<div class="gallery-grid">{entries.map(({ name, photo, full }) => <a class="gallery-item" href={full.src} data-photo={full.src} data-caption={photo.caption}><span class="gallery-photo"><Photo name={name} sizes="(max-width: 600px) 100vw, 33vw" /><span class="photo-expand" aria-hidden="true">↗</span></span><span class="gallery-caption"><strong>{photo.title}</strong><span>View photograph</span></span></a>)}</div>

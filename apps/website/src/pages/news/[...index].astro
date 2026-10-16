@@ -1,0 +1,10 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import { articles, longDate } from '../../data/editorial';
+export function getStaticPaths() { return articles.length ? [{ params: { index: undefined } }] : []; }
+---
+<BaseLayout title="News & media — NMA Ogun" description="Official updates, statements and stories from NMA Ogun." reviewNote={articles.every(article => article.reviewOnly) ? 'News layout preview · No official article has been approved for publication.' : undefined}>
+  <PageHero eyebrow="News & media" title="Stories from our community." description="Official updates, statements and stories from NMA Ogun." />
+  <section class="container page-section" aria-label="Articles"><ul class="story-list">{articles.map(article => <li><a class="story-row" href={`/news/${article.slug}`}><span class="story-date">{article.publishedAt ? longDate(article.publishedAt) : 'Layout specimen'}</span><div>{article.reviewOnly && <span class="review-tag">Editorial review · Not an issued article</span>}<h2>{article.title}</h2><p>{article.summary}</p></div><span class="story-arrow" aria-hidden="true">↗</span></a></li>)}</ul><a class="text-link section-link" href="/gallery">Explore the photo gallery <span aria-hidden="true">↗</span></a></section>
+</BaseLayout>

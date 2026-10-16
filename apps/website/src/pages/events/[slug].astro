@@ -1,0 +1,13 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import Photo from '../../components/Photo.astro';
+import { events, longDate } from '../../data/editorial';
+import { portalLinks } from '../../data/site';
+export function getStaticPaths() { return events.map(event => ({ params: { slug: event.slug }, props: { event } })); }
+const { event } = Astro.props;
+---
+<BaseLayout title={`${event.title} — Programmes — NMA Ogun`} description={event.summary} reviewNote={event.reviewOnly ? 'Event layout preview · Programme details are unconfirmed. This is not an announcement.' : undefined}>
+  <PageHero eyebrow="Programme" title={event.title} description={event.summary} parent={{ label: 'Programmes', href: '/programmes' }} />
+  <section class="container page-section article-layout"><article class="prose">{event.reviewOnly && <div class="notice"><h2>Programme candidate for review</h2><p>Dates, venue, audience and registration need confirmation. This specimen is excluded from the normal build.</p></div>}{event.startDate && <div class="story-meta"><time datetime={event.startDate}>{longDate(event.startDate)}</time><span>{event.venue}</span></div>}<Photo name="meeting-life" /><h2>About the programme</h2>{event.paragraphs.map(paragraph => <p>{paragraph}</p>)}<a class="text-link section-link" href="/programmes">Explore programmes <span aria-hidden="true">↗</span></a></article><aside class="article-sidebar"><h2>For members</h2><p>Access the member portal for your membership services.</p><a class="text-link" href={portalLinks.login}>Member portal <span aria-hidden="true">↗</span></a></aside></section>
+</BaseLayout>

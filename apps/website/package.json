@@ -1,0 +1,43 @@
+{
+  "name": "@association/website",
+  "version": "0.3.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev --config astro.review.config.mjs --host 127.0.0.1 --port 4322 --mode review",
+    "build": "node --experimental-strip-types scripts/publication-release.mjs check && astro build && node --experimental-strip-types scripts/publication-release.mjs assemble",
+    "build:review": "astro build --config astro.review.config.mjs --mode review --outDir dist-review",
+    "preview": "astro preview --config astro.review.config.mjs --host 127.0.0.1 --port 4322 --outDir dist-review --mode review",
+    "preview:design": "node scripts/preview.mjs",
+    "typecheck": "astro check && tsc --noEmit",
+    "test": "node --test scripts/site.test.mjs",
+    "verify": "node scripts/verify-build.mjs",
+    "verify:launch": "node scripts/verify-launch.mjs",
+    "audit:infrastructure": "node --use-env-proxy scripts/audit-infrastructure.mjs",
+    "dev:standalone": "wrangler dev --port 4324",
+    "dev:connected": "wrangler dev --config wrangler.connected.jsonc --port 4324",
+    "publication:import": "node --experimental-strip-types scripts/publication-release.mjs import",
+    "publication:export": "node --experimental-strip-types scripts/export-publication.mjs",
+    "test:release": "node --experimental-strip-types --test scripts/publication-release.test.mjs",
+    "test:standalone": "pnpm build && wrangler deploy --dry-run --outdir ../../tmp/website-worker-bundle && node scripts/test-standalone.mjs",
+    "deploy": "pnpm build && wrangler deploy",
+    "package:standalone": "pnpm build && wrangler deploy --dry-run --outdir .standalone && node scripts/package-standalone.mjs",
+    "cf-types": "wrangler types",
+    "test:connected": "pnpm build && wrangler deploy --config wrangler.connected.jsonc --dry-run --outdir ../../tmp/website-worker-bundle && node scripts/test-connected.mjs"
+  },
+  "dependencies": {
+    "@association/website-content": "workspace:*",
+    "astro": "7.1.6",
+    "sharp": "^0.35.5"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.10",
+    "@emnapi/runtime": "1.11.1",
+    "@types/node": "22.20.2",
+    "typescript": "^5.9.3",
+    "wrangler": "4.151.0"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

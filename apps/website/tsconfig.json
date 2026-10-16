@@ -1,0 +1,9 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": { "#review-portraits": ["src/data/portraits.empty.ts"] }
+  },
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": ["dist", "dist-review", "design"]
+}

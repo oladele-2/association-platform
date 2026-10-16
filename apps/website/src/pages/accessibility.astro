@@ -1,0 +1,8 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+---
+<BaseLayout title="Accessibility — NMA Ogun" description="Keyboard navigation, photograph viewing and accessibility information for the NMA Ogun website.">
+  <PageHero eyebrow="Accessibility" title="A website for our community." description="The website is designed for readable text, keyboard navigation and use across mobile and desktop screens." />
+  <section class="container page-section prose"><h2>Finding your way</h2><p>Use the Skip to content link to move past the main navigation. Keyboard focus is visible on links, buttons and expandable sections. The mobile menu can be closed with Escape.</p><h2>Photographs and motion</h2><p>Photographs have descriptive alternative text. Gallery images open in a dialog that can be closed with its Close button or Escape. The site respects your device’s reduced-motion preference.</p><h2>Reading and navigation without scripts</h2><p>Core pages and links work without JavaScript. The mobile navigation remains visible, and gallery links open the photographs directly. The enlarged photo dialog requires JavaScript.</p><h2>Checks and feedback</h2><p>The website has been checked with automated accessibility tools and keyboard navigation at mobile and desktop sizes. These checks do not establish certified conformance. If you have difficulty using a page, raise it with the NMA Ogun secretariat through your established association contact channel. Include the page address, the issue and any assistive technology you use; avoid including sensitive personal information.</p><a class="text-link" href="/about">Explore the association <span aria-hidden="true">↗</span></a></section>
+</BaseLayout>

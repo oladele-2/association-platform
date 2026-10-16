@@ -1,0 +1,85 @@
+.published-detail {
+  max-width: 900px;
+}
+.published-detail figure {
+  margin: 0 0 30px;
+}
+.published-detail figure img {
+  width: 100%;
+  max-height: 650px;
+  object-fit: contain;
+  background: #e9eee6;
+}
+.published-detail figcaption {
+  font-size: 12px;
+  color: #59665d;
+  padding-top: 14px;
+}
+.published-detail .prose p + p {
+  margin-top: 24px;
+}
+.published-officers,
+.published-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 36px;
+}
+.published-card,
+.published-profile {
+  border-top: 1px solid #d9ded4;
+  padding-block: 28px;
+  overflow-wrap: anywhere;
+}
+.published-card img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+.published-card h2,
+.published-profile h2 {
+  font-size: 30px;
+  margin-block: 20px;
+}
+.published-card p,
+.published-profile p {
+  font-size: 14px;
+  line-height: 1.8;
+}
+.published-profile figure {
+  margin: 20px 0;
+}
+.published-profile img {
+  width: 100%;
+  height: 320px;
+  object-fit: contain;
+  background: #e9eee6;
+}
+.published-profile figcaption {
+  font-size: 11px;
+  color: #59665d;
+}
+.published-profile .prose {
+  margin-top: 22px;
+}
+.published-profile .button,
+.published-card .text-link {
+  margin-top: 22px;
+}
+@media (max-width: 900px) {
+  .published-officers,
+  .published-list {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 600px) {
+  .published-officers,
+  .published-list {
+    grid-template-columns: 1fr;
+  }
+  .published-card img {
+    height: 280px;
+  }
+  .published-detail {
+    width: calc(100% - 40px);
+  }
+}

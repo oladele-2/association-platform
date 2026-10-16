@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import Gallery from '../../components/Gallery.astro';
+import { albums } from '../../data/media';
+export function getStaticPaths() { return albums.map(album => ({ params: { slug: album.slug }, props: { album } })); }
+const { album } = Astro.props;
+---
+<BaseLayout title={`${album.title} — Gallery — NMA Ogun`} description={album.description}>
+  <PageHero eyebrow={album.title} title={album.title} description={album.description} parent={{ label: 'Gallery', href: '/gallery' }} />
+  <section class="container page-section album-detail" aria-label={`${album.title} photographs`}><Gallery names={album.photos} /><a class="text-link section-link" href="/gallery">Back to all albums <span aria-hidden="true">↗</span></a></section>
+</BaseLayout>

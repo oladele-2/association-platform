@@ -1,0 +1,2 @@
+# Match the portal's WEBSITE_EXPORT_SECRET. Never commit a real secret.
+WEBSITE_EXPORT_SECRET=replace-with-a-random-secret-at-least-32-characters

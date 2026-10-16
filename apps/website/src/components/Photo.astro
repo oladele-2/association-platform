@@ -1,0 +1,15 @@
+---
+import { Image } from 'astro:assets';
+import { photos, type PhotoName } from '../data/media';
+interface Props {
+  name: PhotoName;
+  alt?: string;
+  loading?: 'eager' | 'lazy';
+  fetchpriority?: 'high' | 'low' | 'auto';
+  sizes?: string;
+  class?: string;
+}
+const { name, alt, loading = 'lazy', fetchpriority = 'auto', sizes = '(max-width: 600px) 100vw, 50vw', class: className } = Astro.props;
+const photo = photos[name];
+---
+<Image src={photo.image} alt={alt ?? photo.alt} widths={[400, 640, 960, 1280]} sizes={sizes} format="webp" quality={82} loading={loading} fetchpriority={fetchpriority} class={className} />

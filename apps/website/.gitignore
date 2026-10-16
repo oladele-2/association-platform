@@ -1,0 +1,11 @@
+.astro/
+dist/
+dist-review/
+node_modules/
+.wrangler/
+.standalone/
+.dev.vars
+.dev.vars.*
+!.dev.vars.example
+content/release.previous-*/
+content/release.stage-*/

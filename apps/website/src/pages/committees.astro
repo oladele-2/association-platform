@@ -1,0 +1,13 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { committees, executiveTerm } from '../data/leadership';
+import '../styles/leadership.css';
+---
+<BaseLayout title="NMA Ogun Committee Chairmen — 2026–2028" description="Meet the chairmen of NMA Ogun’s 19 committees for 2026–2028, covering training, welfare, ethics, research and more.">
+  <section class="people-hero container"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><span aria-current="page">Committee chairmen</span></nav>
+    <div class="people-intro"><div><p class="eyebrow">Committee chairmen · {executiveTerm}</p><h1>Focused work.<br /><em>Shared progress.</em></h1></div><div><p>NMA Ogun’s committees bring focused attention to the needs of doctors and the communities they serve. Meet the chairmen coordinating these areas of work for the {executiveTerm} term.</p><a class="text-link" href="/executives">Meet the executive team <span aria-hidden="true">↗</span></a></div></div>
+    <div class="people-summary"><span><strong>{committees.length}</strong> committees</span><span>Professional service across the Ogun State Branch.</span></div>
+  </section>
+  <section class="container people-section" aria-labelledby="committee-list"><div class="people-heading"><p class="eyebrow">People &amp; responsibilities</p><h2 id="committee-list">Our committee chairmen</h2></div><ol class="committee-list">{committees.map((committee, index) => <li><span class="committee-number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span><div><h3>{committee.name}</h3><p>{committee.focus}</p></div><div class="committee-chair"><span class="eyebrow">Chairman</span><p>{committee.chairman}</p></div></li>)}</ol></section>
+  <section class="people-callout container"><div><p class="eyebrow">Serving together</p><h2>Get to know<br /><em>your association.</em></h2><p>Discover the executive team and find out how to connect with the NMA Ogun community.</p></div><div class="people-actions"><a class="button" href="/executives">Meet our executives <span aria-hidden="true">↗</span></a><a class="text-link" href="/membership">Membership guidance <span aria-hidden="true">↗</span></a></div></section>
+</BaseLayout>

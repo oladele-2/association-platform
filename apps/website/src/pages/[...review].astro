@@ -8,7 +8,7 @@ import { reviewMode, portalLinks } from '../data/site';
 import { reviewSections, officers, committees, affiliates, history } from '../data/review';
 
 export function getStaticPaths() {
-  return reviewMode ? reviewSections.map(section => ({ params: { review: section }, props: { section } })) : [];
+  return reviewMode ? reviewSections.filter(section => section !== "committees").map(section => ({ params: { review: section }, props: { section } })) : [];
 }
 const { section } = Astro.props;
 const metadata = {

@@ -16,7 +16,7 @@ export const portalLinks = {
 
 export const mainLinks = [
   { href: '/about', label: 'About us' },
-  ...(reviewMode ? [{ href: '/leadership', label: 'Leadership' }] : []),
+  { href: '/executives', label: 'Executives' },
   { href: '/programmes', label: 'Programmes' },
   { href: '/gallery', label: 'Gallery' },
   { href: '/membership', label: 'Membership' },
@@ -26,6 +26,8 @@ export const mainLinks = [
 export const coreRoutes = [
   '/',
   '/about',
+  '/executives',
+  '/committees',
   '/programmes',
   '/gallery',
   '/gallery/meeting-life',

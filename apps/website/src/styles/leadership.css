@@ -1,0 +1,33 @@
+.people-hero { padding-top: 32px; }
+.people-intro { display: grid; grid-template-columns: 1.1fr 1fr; gap: 70px; align-items: end; padding: 48px 0; }
+.people-intro h1 { font-size: clamp(48px, 6vw, 84px); line-height: 1.06; margin-top: 20px; }
+.people-intro > div > p:not(.eyebrow) { color: var(--muted); font-size: 17px; max-width: 560px; }
+.people-intro .text-link { margin-top: 24px; display: inline-flex; gap: 18px; }
+.people-summary { display: flex; justify-content: space-between; gap: 24px; padding: 22px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); color: var(--muted); }
+.people-summary strong { font-size: 26px; color: var(--green); margin-right: 8px; }
+.people-section { padding-top: 60px; padding-bottom: 72px; }
+.people-heading { margin-bottom: 32px; }
+.people-heading h2 { font-size: clamp(30px, 4vw, 44px); margin-top: 8px; }
+.executive-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 36px 26px; }
+.executive-card { min-width: 0; background: #fff; border: 1px solid var(--line); }
+.executive-photo { overflow: hidden; background: var(--sage); aspect-ratio: 1; }
+.executive-photo img { width: 100%; height: 100%; object-fit: cover; }
+.executive-copy { padding: 24px; }
+.executive-copy .eyebrow { min-height: 38px; font-size: 11px; letter-spacing: .08em; line-height: 1.6; }
+.executive-copy h3 { font-family: var(--serif); font-size: 25px; font-weight: 400; line-height: 1.25; margin: 6px 0 12px; }
+.executive-copy > p:last-child { font-size: 14px; color: var(--muted); }
+.people-callout { background: var(--sage); padding: 44px; margin-bottom: 80px; display: flex; align-items: center; justify-content: space-between; gap: 32px; }
+.people-callout h2 { font-size: clamp(30px, 4vw, 44px); line-height: 1.2; margin: 12px 0 20px; }
+.people-callout p:not(.eyebrow) { max-width: 560px; color: var(--muted); }
+.people-callout .button { flex-shrink: 0; }
+.people-actions { display: flex; flex-direction: column; gap: 20px; }
+.committee-list { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--line); }
+.committee-list li { display: grid; grid-template-columns: 40px minmax(0, 1fr) minmax(190px, .55fr); gap: 24px; padding: 28px 0; border-bottom: 1px solid var(--line); align-items: start; }
+.committee-number { font-family: var(--serif); font-size: 24px; color: var(--gold); }
+.committee-list h3 { font-size: 20px; font-weight: 700; line-height: 1.4; margin-bottom: 6px; }
+.committee-list p { color: var(--muted); }
+.committee-chair > p { color: var(--green); font-size: 17px; margin-top: 6px; }
+.committee-chair .eyebrow { font-size: 10px; }
+@media (max-width: 1000px) { .people-intro { gap: 32px; } .executive-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 700px) { .people-intro { grid-template-columns: 1fr; padding: 32px 0; } .people-summary { flex-direction: column; gap: 6px; } .people-section { padding-top: 40px; padding-bottom: 44px; } .people-callout { flex-direction: column; align-items: start; padding: 28px; margin-bottom: 48px; } .committee-list li { grid-template-columns: 28px minmax(0, 1fr); gap: 12px; } .committee-chair { grid-column: 2; } }
+@media (max-width: 480px) { .executive-grid { grid-template-columns: 1fr; gap: 24px; } .executive-copy .eyebrow { min-height: 0; } }

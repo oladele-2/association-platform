@@ -1,0 +1,7 @@
+---
+import { bookPhoto } from '../data/photobook-content.mjs';
+interface Props { page: number; eager?: boolean; class?: string; }
+const { page, eager = false, class: className } = Astro.props;
+const photo = bookPhoto(page);
+---
+<img class={className} src={photo.src} srcset={`${photo.thumbnail} ${photo.thumbnailWidth}w, ${photo.src} ${photo.width}w`} sizes="(max-width: 700px) 92vw, 50vw" width={photo.width} height={photo.height} alt={photo.alt} loading={eager ? 'eager' : 'lazy'} decoding="async" fetchpriority={eager ? 'high' : 'auto'} />

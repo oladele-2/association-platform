@@ -1,9 +1,18 @@
+import { bookAlbums } from './photobook-content.mjs';
+import churchOne from '../assets/church/thanksgiving-congregation.jpeg';
+import churchTwo from '../assets/church/thanksgiving-front-row.jpeg';
+import churchThree from '../assets/church/thanksgiving-fellowship.jpeg';
+import churchFour from '../assets/church/thanksgiving-community.jpeg';
 import meeting from '../assets/community-meeting.jpg';
 import house from '../assets/doctors-house.jpg';
 import table from '../assets/meeting-life.jpg';
 import courtyard from '../assets/courtyard.jpg';
 
 export const photos = {
+  'thanksgiving-congregation': { image: churchOne, title: 'Together in thanksgiving', alt: 'Doctors and fellow worshippers seated at the thanksgiving church service', caption: 'Physicians’ Week thanksgiving church service · 18 October 2026. Photograph supplied by NMA Ogun.' },
+  'thanksgiving-front-row': { image: churchTwo, title: 'A shared spirit', alt: 'Four attendees seated in the front row at the thanksgiving service', caption: 'Physicians’ Week thanksgiving church service · 18 October 2026. Photograph supplied by NMA Ogun.' },
+  'thanksgiving-fellowship': { image: churchThree, title: 'Our professional community', alt: 'Rows of attendees gathered for the thanksgiving church service', caption: 'Physicians’ Week thanksgiving church service · 18 October 2026. Photograph supplied by NMA Ogun.' },
+  'thanksgiving-community': { image: churchFour, title: 'A week begins with gratitude', alt: 'A wide view of the thanksgiving church congregation', caption: 'Physicians’ Week thanksgiving church service · 18 October 2026. Photograph supplied by NMA Ogun.' },
   'community-meeting': {
     image: meeting,
     title: 'Shared purpose',
@@ -37,7 +46,11 @@ export const albums: {
   description: string;
   cover: PhotoName;
   photos: PhotoName[];
+  bookPages?: number[];
+  coverPage?: number;
 }[] = [
+  ...bookAlbums.map(album => ({ slug: album.slug, title: album.title, description: album.description, cover: 'doctors-house' as PhotoName, photos: [] as PhotoName[], bookPages: album.pages, coverPage: album.cover })),
+  { slug: 'physicians-week-thanksgiving-2026', title: 'Physicians’ Week: thanksgiving service', description: 'Doctors together at the church service opening Physicians’ Week on 18 October 2026.', cover: 'thanksgiving-congregation', photos: ['thanksgiving-congregation','thanksgiving-front-row','thanksgiving-fellowship','thanksgiving-community'] },
   {
     slug: 'meeting-life',
     title: 'Meeting life',

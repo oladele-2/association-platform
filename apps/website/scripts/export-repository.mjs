@@ -56,7 +56,7 @@ const pkg = JSON.parse(await readFile(join(app, 'package.json'), 'utf8'));
 pkg.name = 'nma-ogun-website';
 pkg.version = '1.0.0';
 pkg.packageManager = 'pnpm@9.15.0';
-pkg.dependencies['@association/website-content'] = 'file:vendor/website-content';
+pkg.dependencies['../vendor/website-content/index.ts'] = 'file:vendor/website-content';
 pkg.scripts = {
   dev: 'astro dev --host 127.0.0.1 --port 4322',
   build:

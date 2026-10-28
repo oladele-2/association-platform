@@ -1,0 +1,156 @@
+{
+  "checkedAt": "2026-10-16T07:42:22.327Z",
+  "dnsSource": "public DNS, normal TLS validation",
+  "results": [
+    {
+      "url": "https://nmaogun.com.ng/",
+      "status": 200
+    },
+    {
+      "url": "https://nmaogun.com.ng/_astro/nma-ogun-logo.Cj_WKXJo_1szmYT.webp",
+      "status": 200
+    },
+    {
+      "url": "https://nmaogun.com.ng/about",
+      "status": 200
+    },
+    {
+      "url": "https://nmaogun.com.ng/_astro/nma-ogun-logo.Cj_WKXJo_1szmYT.webp",
+      "status": 200
+    },
+    {
+      "url": "https://nmaogun.com.ng/membership",
+      "status": 200
+    },
+    {
+      "url": "https://nmaogun.com.ng/_astro/nma-ogun-logo.Cj_WKXJo_1szmYT.webp",
+      "status": 200
+    },
+    {
+      "url": "https://nmaogun.com.ng/programmes",
+      "status": 200
+    },
+    {
+      "url": "https://nmaogun.com.ng/_astro/nma-ogun-logo.Cj_WKXJo_1szmYT.webp",
+      "status": 200
+    },
+    {
+      "url": "https://nmaogun.com.ng/gallery",
+      "status": 200
+    },
+    {
+      "url": "https://nmaogun.com.ng/_astro/nma-ogun-logo.Cj_WKXJo_1szmYT.webp",
+      "status": 200
+    },
+    {
+      "url": "https://nmaogun.com.ng/gallery/meeting-life",
+      "status": 200
+    },
+    {
+      "url": "https://nmaogun.com.ng/_astro/nma-ogun-logo.Cj_WKXJo_1szmYT.webp",
+      "status": 200
+    },
+    {
+      "url": "https://nmaogun.com.ng/gallery/doctors-house",
+      "status": 200
+    },
+    {
+      "url": "https://nmaogun.com.ng/_astro/nma-ogun-logo.Cj_WKXJo_1szmYT.webp",
+      "status": 200
+    },
+    {
+      "url": "https://nmaogun.com.ng/privacy",
+      "status": 200
+    },
+    {
+      "url": "https://nmaogun.com.ng/_astro/nma-ogun-logo.Cj_WKXJo_1szmYT.webp",
+      "status": 200
+    },
+    {
+      "url": "https://nmaogun.com.ng/accessibility",
+      "status": 200
+    },
+    {
+      "url": "https://nmaogun.com.ng/_astro/nma-ogun-logo.Cj_WKXJo_1szmYT.webp",
+      "status": 200
+    },
+    {
+      "url": "https://nmaogun.com.ng/missing-launch-check",
+      "status": 404
+    },
+    {
+      "url": "https://nmaogun.com.ng/review",
+      "status": 404
+    },
+    {
+      "url": "https://nmaogun.com.ng/leadership",
+      "status": 404
+    },
+    {
+      "url": "https://nmaogun.com.ng/news",
+      "status": 404
+    },
+    {
+      "url": "https://nmaogun.com.ng/resources",
+      "status": 404
+    },
+    {
+      "url": "https://nmaogun.com.ng/publication-shell",
+      "status": 404
+    },
+    {
+      "url": "https://nmaogun.com.ng/_publication/blocked",
+      "status": 404
+    },
+    {
+      "url": "https://nmaogun.com.ng/api/website/export",
+      "status": 404
+    },
+    {
+      "url": "https://nmaogun.com.ng/home/?source=launch",
+      "status": 308
+    },
+    {
+      "url": "https://nmaogun.com.ng/about/?source=launch",
+      "status": 308
+    },
+    {
+      "url": "https://nmaogun.com.ng/gallery/meeting-life/?source=launch",
+      "status": 308
+    },
+    {
+      "url": "https://www.nmaogun.com.ng/about?source=launch",
+      "status": 308
+    },
+    {
+      "url": "http://nmaogun.com.ng/about?source=launch",
+      "status": 308
+    },
+    {
+      "url": "https://nmaogun.com.ng/sitemap.xml",
+      "status": 200
+    },
+    {
+      "url": "https://nmaogun.com.ng/",
+      "status": 200
+    },
+    {
+      "url": "https://nmaogun.com.ng/",
+      "status": 405
+    },
+    {
+      "url": "https://portal.nmaogun.com.ng/login",
+      "status": 200
+    },
+    {
+      "url": "https://portal.nmaogun.com.ng/register",
+      "status": 200
+    },
+    {
+      "url": "https://portal.nmaogun.com.ng/forgot-password",
+      "status": 200
+    }
+  ],
+  "authenticatedPortalJourneys": "not tested; no member test credentials supplied",
+  "enquiries": "withheld; no submission endpoint"
+}

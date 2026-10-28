@@ -1,7 +1,1457 @@
 {
   "schemaVersion": 1,
   "tenant": "nmaogun",
-  "generation": "0",
-  "entries": [],
-  "media": []
+  "generation": "2",
+  "entries": [
+    {
+      "id": "09590cbd-0fde-4d51-bab9-e82f4055ae7a",
+      "kind": "article",
+      "revision": 3,
+      "publishedAt": "2026-10-18T08:36:41.484643+00:00",
+      "content": {
+        "slug": "nma-ogun-state-digital-transformation",
+        "title": "NMA Ogun State Embraces a New Era of Digital Transformation",
+        "summary": "The Nigerian Medical Association (NMA), Ogun State Branch, takes a significant step towards modernising its operations with the introduction of its official digital platform. This initiative aims to strengthen communication, improve membership administration, promote transparency, and enhance professional collaboration among medical doctors across Ogun State.",
+        "paragraphs": [
+          "The Nigerian Medical Association (NMA), Ogun State Branch, is embracing a new era of digital transformation with the introduction of its official website and digital membership platform, accessible at https://nmaogun.com.ng.",
+          "This development represents an important milestone in the association's commitment to strengthening professional communication, improving administrative efficiency, and bringing medical practitioners across Ogun State closer together.",
+          "As technology continues to transform healthcare delivery and professional administration worldwide, NMA Ogun State recognises the importance of adopting innovative digital solutions to serve its members more effectively.",
+          "**Strengthening Communication Among Medical Professionals**",
+          "The Nigerian Medical Association plays a vital role in advancing the professional interests, welfare, and development of medical doctors while contributing to improvements in healthcare delivery.",
+          "With doctors working across public hospitals, private healthcare institutions, academic establishments, and other medical organisations, effective communication remains essential to building a united and responsive professional community.",
+          "The new digital platform provides a central location for members to access official announcements, association news, professional updates, and important information about NMA Ogun State activities.",
+          "**Modernising Membership and Administrative Services**",
+          "One of the major objectives of this digital initiative is to improve how association services are managed and delivered.",
+          "The platform supports structured membership administration, digital communication, payment record management, and improved access to relevant association information.",
+          "By reducing dependence on manual administrative processes, the association aims to improve operational efficiency, strengthen accountability, and make services more convenient for members.",
+          "**Promoting Professional Development and Collaboration**",
+          "Professional development remains an essential component of quality healthcare delivery.",
+          "Through the new website, members can stay informed about medical conferences, continuing professional development programmes, scientific meetings, professional activities, and other opportunities relevant to their careers.",
+          "The platform will also serve as an avenue for highlighting the association's activities, achievements, public health initiatives, and contributions to healthcare development within Ogun State.",
+          "**Encouraging Transparency and Active Participation**",
+          "A strong professional association thrives on accountability, effective leadership, and the participation of its members.",
+          "By embracing digital systems, NMA Ogun State is creating additional opportunities to improve the accessibility of association information, strengthen record management, and encourage greater engagement in professional activities.",
+          "Members are encouraged to take advantage of the platform, follow official communications, and participate actively in initiatives that promote the collective interests of medical practitioners.",
+          "**Looking Towards the Future**",
+          "The launch of the NMA Ogun State website is not merely the creation of an online presence. It represents a broader commitment to innovation, institutional development, and improved service delivery.",
+          "As the platform continues to evolve, it is expected to provide further opportunities for strengthening professional relationships, improving administrative processes, and supporting the association's objectives.",
+          "NMA Ogun State remains committed to promoting professional excellence, protecting the welfare of medical practitioners, encouraging collaboration, and contributing positively to healthcare delivery across the state.",
+          "Together, we can build a stronger, more connected, and forward-looking medical community.",
+          "Welcome to the digital home of the Nigerian Medical Association, Ogun State Branch.",
+          "Visit https://nmaogun.com.ng to explore the platform and stay connected with the association."
+        ],
+        "author": "Dr. Oluseye Olufunso",
+        "date": "2026-10-18",
+        "venue": "",
+        "office": "",
+        "term": "",
+        "group": "current",
+        "mediaIds": [],
+        "sortOrder": 1
+      }
+    },
+    {
+      "id": "b861b7d0-bac8-4f84-bab6-df56953f7a13",
+      "kind": "officer",
+      "revision": 1,
+      "publishedAt": "2026-10-17T18:51:24.440Z",
+      "content": {
+        "slug": "enimola-sunday",
+        "title": "Dr Enimola Sunday",
+        "summary": "Leading the Ogun State Branch in service of the profession and the public.",
+        "paragraphs": [],
+        "author": "",
+        "date": "",
+        "venue": "",
+        "office": "Chairman",
+        "term": "2026–2028",
+        "group": "current",
+        "mediaIds": ["0e66982b-bb8b-4834-8da8-3325b277071b"],
+        "sortOrder": 0
+      }
+    },
+    {
+      "id": "7bf395c0-c6ea-4acc-bc76-c669b47affd4",
+      "kind": "officer",
+      "revision": 1,
+      "publishedAt": "2026-10-17T18:51:24.447Z",
+      "content": {
+        "slug": "bajomo-olutope-grace",
+        "title": "Dr Bajomo Olutope Grace",
+        "summary": "Supporting branch leadership and the work of the State Officers’ Committee.",
+        "paragraphs": [],
+        "author": "",
+        "date": "",
+        "venue": "",
+        "office": "Vice Chairman",
+        "term": "2026–2028",
+        "group": "current",
+        "mediaIds": ["33beebc2-1b01-4a8d-8d54-fe7f253eaf5f"],
+        "sortOrder": 1
+      }
+    },
+    {
+      "id": "ca4a26fa-9e6b-4e45-8b2e-9cd2c65d7af1",
+      "kind": "officer",
+      "revision": 1,
+      "publishedAt": "2026-10-17T18:51:24.458Z",
+      "content": {
+        "slug": "oluseye-abiodun-olufunso",
+        "title": "Dr Oluseye Abiodun Olufunso",
+        "summary": "Coordinating the secretariat and the association’s administrative work.",
+        "paragraphs": [],
+        "author": "",
+        "date": "",
+        "venue": "",
+        "office": "General Secretary",
+        "term": "2026–2028",
+        "group": "current",
+        "mediaIds": ["23b28849-ce13-4b64-b683-8e7dda7ddd66"],
+        "sortOrder": 2
+      }
+    },
+    {
+      "id": "dfe067fa-8177-4e2e-8b09-215721beda0a",
+      "kind": "officer",
+      "revision": 1,
+      "publishedAt": "2026-10-17T18:51:24.462Z",
+      "content": {
+        "slug": "ayokunle-oluwaseun-adeleye",
+        "title": "Dr Ayokunle Oluwaseun Adeleye",
+        "summary": "Supporting the secretariat and coordination of branch activities.",
+        "paragraphs": [],
+        "author": "",
+        "date": "",
+        "venue": "",
+        "office": "Deputy General Secretary",
+        "term": "2026–2028",
+        "group": "current",
+        "mediaIds": ["cabcbcfe-144e-47fd-9335-3c31873c3972"],
+        "sortOrder": 3
+      }
+    },
+    {
+      "id": "40df9ca8-da37-4857-a8b4-b22b0d9c4424",
+      "kind": "officer",
+      "revision": 1,
+      "publishedAt": "2026-10-17T18:51:24.467Z",
+      "content": {
+        "slug": "bitto-msoo-immanuel",
+        "title": "Dr Bitto Msoo Immanuel",
+        "summary": "Supporting the General Secretariat and its service to members.",
+        "paragraphs": [],
+        "author": "",
+        "date": "",
+        "venue": "",
+        "office": "Assistant General Secretary I",
+        "term": "2026–2028",
+        "group": "current",
+        "mediaIds": ["a3013870-bdc1-46c5-ac41-6fa866692623"],
+        "sortOrder": 4
+      }
+    },
+    {
+      "id": "c88a2f8e-c2bd-48d5-bf7c-a5520bfa3a7b",
+      "kind": "officer",
+      "revision": 1,
+      "publishedAt": "2026-10-17T18:51:24.473Z",
+      "content": {
+        "slug": "fagbenro-olugbenga-alabi",
+        "title": "Dr Fagbenro Olugbenga Alabi",
+        "summary": "Supporting the General Secretariat and its service to members.",
+        "paragraphs": [],
+        "author": "",
+        "date": "",
+        "venue": "",
+        "office": "Assistant General Secretary II",
+        "term": "2026–2028",
+        "group": "current",
+        "mediaIds": ["05ca82b7-2fb0-493e-8a8f-af71cd3799c5"],
+        "sortOrder": 5
+      }
+    },
+    {
+      "id": "d0ab750e-4753-49e4-89a6-e68952da78f6",
+      "kind": "officer",
+      "revision": 1,
+      "publishedAt": "2026-10-17T18:51:24.478Z",
+      "content": {
+        "slug": "damilola-jeremiah-ayowole",
+        "title": "Dr Damilola Jeremiah Ayowole",
+        "summary": "Supporting the General Secretariat and its service to members.",
+        "paragraphs": [],
+        "author": "",
+        "date": "",
+        "venue": "",
+        "office": "Assistant General Secretary III",
+        "term": "2026–2028",
+        "group": "current",
+        "mediaIds": ["83eda0b5-70e2-49ae-8477-316b3b2589cb"],
+        "sortOrder": 6
+      }
+    },
+    {
+      "id": "efd7c19c-e428-4faf-810b-0048a1d6220b",
+      "kind": "officer",
+      "revision": 1,
+      "publishedAt": "2026-10-17T18:51:24.483Z",
+      "content": {
+        "slug": "soneye-islamiat",
+        "title": "Dr Soneye Islamiat",
+        "summary": "Serving the association through its treasury office.",
+        "paragraphs": [],
+        "author": "",
+        "date": "",
+        "venue": "",
+        "office": "Treasurer",
+        "term": "2026–2028",
+        "group": "current",
+        "mediaIds": ["87f5d97d-17e6-49d5-be24-279079b0a6f0"],
+        "sortOrder": 7
+      }
+    },
+    {
+      "id": "10fcda4b-eac9-4ac7-8945-ce998b677a3d",
+      "kind": "officer",
+      "revision": 1,
+      "publishedAt": "2026-10-17T18:51:24.488Z",
+      "content": {
+        "slug": "akintunde-rotimi-richard",
+        "title": "Dr Akintunde Rotimi Richard",
+        "summary": "Connecting the association with members and the wider public.",
+        "paragraphs": [],
+        "author": "",
+        "date": "",
+        "venue": "",
+        "office": "Public Relations Officer",
+        "term": "2026–2028",
+        "group": "current",
+        "mediaIds": ["4e775c5f-e89b-49f2-8ff9-3ccafc9a6da2"],
+        "sortOrder": 8
+      }
+    },
+    {
+      "id": "cf144682-5789-4b87-a379-5b4d91c61b8c",
+      "kind": "officer",
+      "revision": 1,
+      "publishedAt": "2026-10-17T18:51:24.493Z",
+      "content": {
+        "slug": "kareem-yesiru",
+        "title": "Dr Kareem Yesiru A.",
+        "summary": "Supporting the association’s editorial and publication work.",
+        "paragraphs": [],
+        "author": "",
+        "date": "",
+        "venue": "",
+        "office": "Editor-in-Chief",
+        "term": "2026–2028",
+        "group": "current",
+        "mediaIds": ["e6a9769a-5550-448f-9dab-e8d0abf35a84"],
+        "sortOrder": 9
+      }
+    },
+    {
+      "id": "15972292-697e-49f8-abe8-f34d53097479",
+      "kind": "officer",
+      "revision": 1,
+      "publishedAt": "2026-10-17T18:51:24.498Z",
+      "content": {
+        "slug": "luqman-ogunjimi",
+        "title": "Dr Luqman Ogunjimi",
+        "summary": "Bringing continuity and experience from the previous administration.",
+        "paragraphs": [],
+        "author": "",
+        "date": "",
+        "venue": "",
+        "office": "Immediate Past Chairman",
+        "term": "2026–2028",
+        "group": "past",
+        "mediaIds": ["f2e522e7-37fb-4c9d-add4-12793109d0b4"],
+        "sortOrder": 10
+      }
+    },
+    {
+      "id": "d23de49b-f488-48ca-a666-81a801505ab8",
+      "kind": "officer",
+      "revision": 1,
+      "publishedAt": "2026-10-17T18:51:24.503Z",
+      "content": {
+        "slug": "osikoya-oludotun-jonathan",
+        "title": "Dr Osikoya Oludotun Jonathan",
+        "summary": "Supporting continuity in the work of the General Secretariat.",
+        "paragraphs": [],
+        "author": "",
+        "date": "",
+        "venue": "",
+        "office": "Immediate Past Secretary",
+        "term": "2026–2028",
+        "group": "past",
+        "mediaIds": ["0c80e08c-ec96-49a5-9d0d-edc9dd4319e2"],
+        "sortOrder": 11
+      }
+    },
+    {
+      "id": "bbb4d3ae-e151-4f27-a9e9-8d021939c0dc",
+      "kind": "article",
+      "revision": 1,
+      "publishedAt": "2026-10-18T08:06:14.965Z",
+      "content": {
+        "slug": "consent-documentation-safer-practice",
+        "title": "Before the signature: consent, clear records and safer practice",
+        "summary": "The year ahead · October 2026. Consent conversations, clear records and dependable follow-up in everyday clinical practice. Part of the proposed October 2026–September 2027 learning programme.",
+        "paragraphs": [
+          "A patient signs a consent form before a procedure. The paperwork appears complete, but an important question remains: did the patient understand the proposed treatment, the alternatives and the possible consequences? In a busy clinic, it is easy for a meaningful conversation to become a hurried administrative step. That gap can affect trust, continuity of care and the handling of a later complaint.",
+          "Consent deserves attention as an ongoing clinical conversation. Patients need explanations they can understand, an opportunity to ask questions and space to express what matters to them. A doctor may believe an option is clearly preferable while the patient is worried about recovery time, fertility, costs or returning to work. Bringing those concerns into the discussion helps both people understand the decision being made.",
+          "Understanding should be checked, rather than assumed. Asking a patient to describe the plan in their own words can reveal uncertainties that a simple “Do you understand?” misses. Language, distress, pain and unfamiliar medical terms can all complicate communication. Where capacity, children, substitute decision-making or an emergency creates uncertainty, clinicians should use the applicable Nigerian legal framework, professional guidance and institutional escalation arrangements. A single form cannot resolve every circumstance.",
+          "Documentation gives that conversation a durable clinical record. Useful notes describe the presenting problem, relevant findings, assessment, options discussed, the patient's decision and the follow-up plan. They should also make clear what the patient was advised to do if symptoms change. A colleague reviewing the record should be able to understand the reasoning behind the plan, including uncertainty and any decision to seek help or refer.",
+          "Consider a patient discharged after assessment for abdominal pain. “Stable, reassured” tells the next clinician very little. A clearer record explains the findings that informed the assessment, investigations considered or performed, the explanation offered, and the warning symptoms discussed. This does not require an essay after every consultation. It requires enough accurate, relevant detail to support safe care and explain what actually happened.",
+          "Avoidable problems often develop between encounters: a result is filed without review, a referral is sent without confirmation, or a telephone instruction is never recorded. Practices can examine who owns each follow-up task and how completion is checked. Records should be made promptly and corrected transparently through an approved process. Retrospective entries must be identifiable; changing a record to make an earlier decision look better creates a different and serious problem.",
+          "The proposed October webinar would provide a useful setting for working through these everyday situations. Case discussions could examine a consent conversation, an incomplete clinical note and a referral that loses momentum. The focus should be habits that improve care: checking understanding, recording reasoning, allocating follow-up responsibility and seeking advice early when a situation becomes difficult. Nigerian professional context should be grounded in guidance from the Medical and Dental Council of Nigeria (https://mdcn.gov.ng/).",
+          "Before the session, choose one ordinary consultation and ask whether another doctor could safely continue the patient's care from the notes alone. That small exercise can identify a practical improvement for the following week. October's programme remains proposed. Exact dates and registration arrangements should be checked through the association's official announcements when confirmed."
+        ],
+        "author": "NMA Ogun",
+        "date": "2026-10-18",
+        "venue": "",
+        "office": "",
+        "term": "",
+        "group": "current",
+        "mediaIds": [],
+        "sortOrder": 0
+      }
+    },
+    {
+      "id": "e3f9c0ee-0e30-4a4f-91a9-cdf2c5f75ab4",
+      "kind": "article",
+      "revision": 1,
+      "publishedAt": "2026-10-18T08:06:14.968Z",
+      "content": {
+        "slug": "research-methods-busy-clinicians",
+        "title": "From everyday clinical questions to useful research",
+        "summary": "The year ahead · November 2026. Turn a clinical question into a focused, ethical and manageable research project. Part of the proposed October 2026–September 2027 learning programme.",
+        "paragraphs": [
+          "Most doctors encounter research questions long before they have time to write a protocol. Why do patients miss follow-up appointments? Which part of a referral pathway causes the longest delay? Are discharge instructions understood? Clinical work generates questions every day. The difficulty is turning one of them into a focused, ethical and manageable project alongside an already demanding service commitment.",
+          "A useful starting point is a question small enough to answer well. “How can we improve diabetes care?” is important, but too broad for many first projects. Asking which factors are associated with missed appointments in a defined clinic over a specified period gives the work boundaries. A clear question helps determine the population, information required, study design and outcome that will matter when the results are available.",
+          "The next step is to establish what is already known. A focused literature search can identify relevant definitions, existing questionnaires and weaknesses in previous studies. It may also show that a proposed project needs a different approach. Research becomes more useful when it addresses a genuine uncertainty rather than repeating a familiar exercise simply because data appear easy to obtain. Local relevance should be explained, not taken for granted.",
+          "Choosing a design means matching the method to the question. A cross-sectional survey may describe a pattern, but it cannot automatically establish what caused it. A review of records depends on what was documented and which records are available. Interviews can explore experiences that a spreadsheet does not capture. The strongest design for a busy clinician is one that is appropriate, feasible and honestly described, with limitations understood from the beginning.",
+          "Ethics and data protection belong in the initial plan. Access to patient records for care does not automatically settle whether they may be used for research. Investigators should obtain the appropriate ethics determination, approvals and permissions before starting relevant activities. Whether work is research, audit or service evaluation should be established through the responsible institutional process. Nigeria's National Health Research Ethics Committee (https://nhrec.gov.ng/) provides the national point of reference for research ethics oversight.",
+          "A manageable project also needs a realistic workflow. Define each variable before collection, prepare a simple data dictionary and test the collection form on an appropriate sample. Plan secure storage, restricted access and responsibility for checking errors. Discuss analysis with someone who understands the proposed method before collecting the full dataset. These early conversations can prevent a common disappointment: discovering that an important outcome was never measured or that a question cannot be answered with the available information.",
+          "The proposed November workshop could help participants develop one clinical question into a short research outline. A useful exercise would connect the question, design, sample, ethical requirements and analysis plan on a single page. Colleagues could then identify what is essential, what is unrealistic and where collaboration would improve the work. The aim would be a credible next step that fits the clinician's setting and available support.",
+          "Bring a question from your own service, without patient identifiers or confidential records. It may be the beginning of a worthwhile project and a more thoughtful way of examining daily practice. November's programme remains proposed; exact dates, participation requirements and registration details should follow through official association announcements once confirmed."
+        ],
+        "author": "NMA Ogun",
+        "date": "2026-10-18",
+        "venue": "",
+        "office": "",
+        "term": "",
+        "group": "current",
+        "mediaIds": [],
+        "sortOrder": 1
+      }
+    },
+    {
+      "id": "8528f38f-9154-4963-ab60-41b9aae5f799",
+      "kind": "article",
+      "revision": 1,
+      "publishedAt": "2026-10-18T08:06:14.968Z",
+      "content": {
+        "slug": "doctors-wellbeing-burnout-mental-health",
+        "title": "Making room for the doctor behind the work",
+        "summary": "The year ahead · December 2026. Make room for personal health, confidential support and healthier working conditions. Part of the proposed October 2026–September 2027 learning programme.",
+        "paragraphs": [
+          "At the end of a demanding shift, a doctor may have enough energy to finish the notes and little left for anything else. Meals are postponed, sleep is interrupted and conversations at home become shorter. When this pattern becomes normal, recognising a need for support can be difficult. Medicine teaches responsibility for other people's health; making room for our own requires equal seriousness.",
+          "Doctors' wellbeing involves more than surviving the next call. It includes physical health, emotional life, relationships, professional satisfaction and the conditions in which care is delivered. A colleague may continue arriving on time and completing tasks while struggling considerably. Productivity alone is therefore a poor measure of how someone is doing. Useful conversations leave space for honesty without demanding a public disclosure of personal difficulties.",
+          "Burnout is often discussed alongside exhaustion, detachment from work and a reduced sense of professional effectiveness. These experiences deserve attention, but they should not become a label for every difficulty. Depression, anxiety, grief, substance-related problems, sleep disorders and physical illness may also need assessment. A blog or webinar cannot determine which explanation applies to an individual. Persistent or worsening symptoms deserve a confidential conversation with an appropriately qualified professional.",
+          "Personal habits still matter. Regular meals, movement, restorative sleep where possible and protected time with supportive people can help make life more sustainable. The practical question is how to make a habit achievable within a real rota. A short walk after work, preparing food ahead of a call or keeping one routine medical appointment may be a more useful beginning than an ambitious plan that collapses after three days.",
+          "Workplace conditions need equal attention. A department cannot compensate for an unsafe workload simply by encouraging staff to become more resilient. Predictable rotas, reasonable opportunities for rest, respectful supervision and clear responses to bullying or harassment belong in a serious wellbeing conversation. The WHO guidelines on mental health at work (https://www.who.int/publications-detail-redirect/9789240053052) include organisational measures alongside support for individuals. That balance matters when designing a programme for doctors.",
+          "Colleagues can help by noticing changes and offering a private, specific conversation. “You have seemed very withdrawn after calls lately; how are you managing?” may open a door more effectively than a general instruction to cheer up. Listening should come before advice. Respect confidentiality, recognise the limits of peer support and help someone reach professional care when needed. If a person is in immediate danger or considering self-harm, urgent local emergency support is appropriate.",
+          "The proposed December webinar could explore practical boundaries, recognising distress and building a more supportive working culture. Discussion should include both personal choices and the decisions made by team leaders. Participants might identify one habit to protect and one workplace issue to raise constructively. The purpose would be to make support easier to seek and healthier working arrangements easier to discuss, without turning colleagues' private experiences into teaching material.",
+          "As the calendar year ends, consider the medical appointment, rest period or supportive conversation you have repeatedly postponed. Giving it a place in your diary is a reasonable professional decision. December's programme remains proposed, with exact dates and registration details to be announced through official association channels when confirmed."
+        ],
+        "author": "NMA Ogun",
+        "date": "2026-10-18",
+        "venue": "",
+        "office": "",
+        "term": "",
+        "group": "current",
+        "mediaIds": [],
+        "sortOrder": 2
+      }
+    },
+    {
+      "id": "0108f7b2-cca8-489b-a851-d28d2da64465",
+      "kind": "article",
+      "revision": 1,
+      "publishedAt": "2026-10-18T08:06:14.969Z",
+      "content": {
+        "slug": "personal-finance-tax-planning-doctors",
+        "title": "A clearer financial plan for the year ahead",
+        "summary": "The year ahead · January 2027. Organise cash flow, financial records and the questions to ask about current tax obligations. Part of the proposed October 2026–September 2027 learning programme.",
+        "paragraphs": [
+          "A new year often brings financial intentions: save more, reduce debt, support family and prepare for the future. For doctors, those intentions may sit alongside examination fees, relocation plans, unpredictable locum income or the costs of running a practice. A useful financial plan begins by making those competing demands visible. Income matters, but so does understanding where the money goes and what commitments are approaching.",
+          "Start with a clear picture of cash flow. List reliable income separately from occasional earnings, then identify essential spending, debt repayments and periodic costs. Professional subscriptions and annual expenses can easily disappear from a monthly budget until payment becomes urgent. Setting money aside gradually for known commitments can make the year less reactive. A plan should reflect actual obligations rather than a percentage copied from someone with different circumstances.",
+          "An emergency reserve serves a different purpose from money earmarked for an examination or investment. It provides accessible funds when income stops unexpectedly or an urgent expense arises. The appropriate amount depends on employment stability, dependants and other available support. Likewise, debt decisions deserve attention to interest, repayment terms and consequences of missed payments. A larger salary does not necessarily resolve a borrowing pattern whose costs remain poorly understood.",
+          "Tax is another part of financial organisation. Doctors may earn through employment, locum work, consultations, teaching or a business, and those arrangements can require different treatment. Nigeria's Tax Administration Act 2025 (https://www.nrs.gov.ng/uploads/NIGERIA_TAX_ADMINISTRATION_ACT_2025_8c945071a7.pdf) took effect on 1 January 2026. For a January 2027 discussion, applicable rules and official guidance must be checked again against the individual's circumstances. A general webinar should not assume that one filing route or calculation applies to everyone.",
+          "Good records make professional advice more useful. Keep payslips, income statements, evidence of deductions, receipts and relevant business records in an organised system. If you receive income from several sources, maintain a complete list rather than assuming the main employer's deductions settle every obligation. Ask a qualified adviser which authority handles each matter, what records are required and which current deadlines apply. Specific questions are more productive than a last-minute request to “sort out tax.”",
+          "Financial planning should also consider risks beyond this year's spending. Depending on personal circumstances, that may include appropriate insurance, pension arrangements, succession planning and provision for dependants. Investment opportunities deserve careful scrutiny of risk, liquidity, fees and the organisation offering them. Pressure to act immediately or promises of unusually high, guaranteed returns should prompt closer examination. Professional status and clinical expertise do not remove the need to understand a financial product before committing money.",
+          "The proposed January webinar could use fictional examples of a salaried doctor, a doctor with additional locum earnings and a practice owner. Each example would illustrate the questions to ask, rather than offer a universal tax answer or investment prescription. Participants could leave with a personal recordkeeping checklist and a short list of issues to resolve with a regulated adviser or the appropriate tax authority.",
+          "Before the session, review one month of spending and gather the documents you find difficult to locate. That preparation can turn a broad intention into a practical plan. January's programme remains proposed. Exact dates, speakers and registration arrangements should be confirmed through official association announcements before booking."
+        ],
+        "author": "NMA Ogun",
+        "date": "2026-10-18",
+        "venue": "",
+        "office": "",
+        "term": "",
+        "group": "current",
+        "mediaIds": [],
+        "sortOrder": 3
+      }
+    },
+    {
+      "id": "53ae9876-21b4-4c1d-be82-a937763ab12f",
+      "kind": "article",
+      "revision": 1,
+      "publishedAt": "2026-10-18T08:06:14.969Z",
+      "content": {
+        "slug": "leadership-teamwork-clinical-services",
+        "title": "Leading a service people can rely on",
+        "summary": "The year ahead · February 2027. Build clearer responsibilities, safer communication and dependable clinical teams. Part of the proposed October 2026–September 2027 learning programme.",
+        "paragraphs": [
+          "Leadership becomes visible in ordinary moments: a delayed ward round, an unresolved handover or a junior colleague deciding whether it feels safe to ask for help. A service may have experienced clinicians and still struggle because responsibilities are unclear or important information does not move between teams. Improving those conditions is part of clinical leadership, whether or not a doctor holds a formal management title.",
+          "A useful starting point is shared purpose. Teams need to understand what they are trying to improve and why it matters to patients. “Work harder” offers little direction. A clearer goal might be ensuring that every discharged patient leaves with an understandable medication and follow-up plan. Once the goal is specific, the team can examine the work required, the obstacles involved and the people who need to participate in changing it.",
+          "Role clarity helps translate intention into action. Who reviews outstanding results? Who informs relatives about a change in the care plan? Who coordinates a referral when the usual contact is unavailable? Assumptions about these tasks can leave gaps between otherwise diligent professionals. Leaders can make responsibilities explicit, check that staff have the authority and resources to fulfil them, and provide a dependable route for escalation when the plan breaks down.",
+          "Communication deserves the same discipline as other clinical processes. Short briefings can establish priorities; structured handovers can make unresolved concerns visible; a clear read-back can help check that an important instruction has been understood. These approaches work best when the team understands their purpose. Adding a form without improving the conversation may simply create another task. Leaders should ask whether the information needed for safe decisions is actually reaching the right person.",
+          "A dependable team also makes it possible to raise concerns. Respectful challenge should be welcomed, including from colleagues who are younger or less senior. When an error or near miss occurs, the response should examine both individual actions and the circumstances around them. WHO identifies communication failures, ineffective teamwork and poorly designed processes among contributors to patient harm in its patient safety overview (https://www.who.int/news-room/fact-sheets/detail/patient-safety/). That supports a thoughtful approach to learning and accountability.",
+          "Conflict is another leadership task. Differences about workload, rota arrangements or clinical decisions should be addressed early and fairly. Listen to the people involved, establish the relevant facts and distinguish immediate safety concerns from longer-term relationship problems. Feedback is more useful when it describes an observed behaviour and its effect, followed by an achievable expectation. Public humiliation can close down the very communication a clinical service needs in order to improve.",
+          "The proposed February hybrid seminar could bring these ideas into a realistic service scenario. Participants might map a difficult handover, identify unclear ownership and agree how to test a change. A useful discussion would include medical, nursing, administrative and other relevant perspectives. Managing a clinical service requires understanding the whole patient journey and recognising that no professional group sees every part of it. Progress should be judged through a small number of meaningful measures and staff feedback.",
+          "Before the seminar, identify one recurring frustration in your service and describe it without blaming a person. What is happening, who is affected and what would better look like? February's programme remains proposed. Exact dates, venue, online arrangements and registration details should be checked through official association announcements when confirmed."
+        ],
+        "author": "NMA Ogun",
+        "date": "2026-10-18",
+        "venue": "",
+        "office": "",
+        "term": "",
+        "group": "current",
+        "mediaIds": [],
+        "sortOrder": 4
+      }
+    },
+    {
+      "id": "b6bfb407-7ace-471d-bad6-4c4ff7211a24",
+      "kind": "article",
+      "revision": 1,
+      "publishedAt": "2026-10-18T08:06:14.971Z",
+      "content": {
+        "slug": "first-response-emergencies-trauma-triage",
+        "title": "Preparing for the first minutes of an emergency",
+        "summary": "The year ahead · March 2027. Prepare clinicians, equipment and teams for the first minutes of acute illness and injury. Part of the proposed October 2026–September 2027 learning programme.",
+        "paragraphs": [
+          "An emergency rarely arrives when a team has spare time. A patient collapses in a waiting area, a severely injured person reaches a small facility or an apparently stable patient deteriorates during observation. In those first minutes, knowledge must translate into organised action. Preparation involves the clinician, the team, the environment and a shared understanding of how to call for help.",
+          "The first challenge is recognising urgency. Triage asks how quickly someone needs assessment and intervention, rather than simply who arrived first. A systematic initial assessment helps clinicians identify immediate threats while a fuller diagnosis is still developing. The WHO–ICRC Basic Emergency Care programme (https://www.who.int/teams/integrated-health-services/clinical-services-and-systems/emergency-and-critical-care/bec) teaches a structured approach for first-contact health workers caring for acute illness and injury. It provides a useful educational reference for discussing emergency readiness.",
+          "Preparation must fit the facility. A well-rehearsed plan should make clear how help is summoned, where emergency equipment is located and who checks that it functions. Oxygen availability, a working suction system, accessible supplies and reliable contact numbers can matter as much as a clinician remembering the right sequence. Responsibility for these checks should be assigned and documented. Equipment discovered to be missing during a resuscitation cannot be replaced by confidence alone.",
+          "Resuscitation is a team activity. Clear leadership, allocated roles and concise communication help prevent duplicated work and missed tasks. Team members should be able to confirm instructions, report changes and raise concerns. A person should record important times and interventions where staffing allows. Communication with the patient and relatives also needs an owner. Even in a time-critical situation, uncertainty and next steps should be explained as clearly as circumstances permit.",
+          "Trauma adds practical questions about scene safety, mechanism of injury, early priorities and onward care. Clinicians need to recognise the limits of their setting and arrange appropriate support or transfer while providing care within their competence and available resources. Transfer planning includes communicating with the receiving facility, preparing a useful handover and considering what support is needed during the journey. A referral note by itself does not ensure continuity of emergency care.",
+          "Hands-on learning creates an opportunity to practise these behaviours before a real crisis. Simulated scenarios can reveal whether a team knows how to find equipment, request assistance and communicate under pressure. Debriefing should examine what happened and what could be improved without turning the exercise into humiliation. A participant who hesitates during a scenario has identified a learning need in a setting designed for learning. That is valuable information for both the individual and the service.",
+          "The proposed March workshop should emphasise supervised practice, feedback and the appropriate use of current, recognised protocols. It should distinguish clearly between attendance, assessed competence and any formal certification offered. A short session cannot automatically establish proficiency in every emergency skill. Participants should seek clarity about learning objectives and continue refreshing skills afterwards. The association's event should not be described as WHO-accredited or as a recognised provider course unless that specific status has been independently confirmed.",
+          "Before the workshop, walk through your facility's emergency response arrangements and identify one gap that could be corrected now. Bring the question rather than confidential patient details. March's programme remains proposed. Exact dates, practical requirements, venue and registration arrangements should be confirmed through official association announcements before booking."
+        ],
+        "author": "NMA Ogun",
+        "date": "2026-10-18",
+        "venue": "",
+        "office": "",
+        "term": "",
+        "group": "current",
+        "mediaIds": [],
+        "sortOrder": 5
+      }
+    },
+    {
+      "id": "7e951eec-e0c3-47a6-89fb-94f5231e60af",
+      "kind": "article",
+      "revision": 1,
+      "publishedAt": "2026-10-18T08:06:14.972Z",
+      "content": {
+        "slug": "managing-medical-practice",
+        "title": "Building a practice that works for patients and staff",
+        "summary": "The year ahead · April 2027. Connect clinical quality, clear billing, staff support and the patient journey. Part of the proposed October 2026–September 2027 learning programme.",
+        "paragraphs": [
+          "A medical practice can deliver thoughtful consultations and still frustrate patients through long waits, unclear charges or missing follow-up messages. Staff may work hard while repeatedly solving the same avoidable problems. Managing a practice means looking beyond the consulting room to the processes that support it. Clinical quality, financial organisation, people management and patient experience are closely connected parts of the same service.",
+          "Begin by following a patient's journey. What happens when someone tries to book, arrives at reception, waits, sees a clinician, pays and returns for review? At each stage, ask what the patient needs to know and who is responsible for helping. This exercise can reveal confusing instructions, duplicated paperwork and points where patients are left to coordinate their own care. Improvements are easier to design when the problem is described from the patient's perspective.",
+          "Quality should be examined through observable practice. Are abnormal results reviewed and communicated? Are medicines stored appropriately? Are complaints investigated and acted on? WHO describes quality services as effective, safe and centred on people, alongside other dimensions including timeliness and efficiency in its quality of care guidance (https://www.who.int/health-topics/quality-of-care). For an individual practice, those broad aims need to become a manageable set of routines, responsibilities and checks.",
+          "Billing deserves clarity and consistency. Patients should be able to understand what they are being charged for and whom to contact when something appears wrong. Practices need reliable records of services, receipts, outstanding payments and any agreed adjustments. Clinical decisions should remain clinically justified. A billing process that creates pressure for unnecessary care damages trust and professional integrity, even if it appears to improve revenue in the short term.",
+          "People management is equally practical. Staff need understandable job descriptions, induction, supervision and a fair way to raise concerns. Rota decisions, leave arrangements and performance expectations should not depend entirely on informal memory. When performance is poor, establish whether the cause involves training, unclear instructions, workload or behaviour before deciding what response is appropriate. Employment arrangements and disciplinary processes should be reviewed with competent advice and in line with applicable requirements.",
+          "Patient experience is often shaped by communication during uncertainty. A delay is easier to navigate when someone explains it and offers a realistic next step. A complaint may reveal a service weakness even when the original clinical decision was reasonable. Practices should provide an accessible route for feedback and protect patient confidentiality during responses. Thanking someone for raising a concern means little unless the practice can explain how it considered the issue and what followed.",
+          "The proposed April workshop could use a fictional practice to connect these elements. Participants might map a patient journey, examine an unclear bill and identify a staffing problem that affects care. A useful improvement plan would name a responsible person, choose a measure and set a review date. For example, a practice could test a clearer results-notification process before investing in a larger operational change. The aim would be reliable work that staff can sustain.",
+          "Before the session, ask your team which repeated problem wastes the most time and ask patients where communication feels least clear. Their answers may point to the same gap from different directions. April's programme remains proposed. Exact dates, venue, online access and registration details should follow through official association announcements once confirmed."
+        ],
+        "author": "NMA Ogun",
+        "date": "2026-10-18",
+        "venue": "",
+        "office": "",
+        "term": "",
+        "group": "current",
+        "mediaIds": [],
+        "sortOrder": 6
+      }
+    },
+    {
+      "id": "5550af65-33c8-4a37-83a9-c44fb763455a",
+      "kind": "article",
+      "revision": 1,
+      "publishedAt": "2026-10-18T08:06:14.972Z",
+      "content": {
+        "slug": "digital-health-emrs-privacy-clinical-ai",
+        "title": "Better digital tools, with patient trust built in",
+        "summary": "The year ahead · May 2027. Choose digital tools with careful attention to clinical workflow, privacy and accountability. Part of the proposed October 2026–September 2027 learning programme.",
+        "paragraphs": [
+          "A digital tool can make clinical work easier while introducing a problem that was not obvious at purchase. An electronic record may improve access to information but expose it through shared passwords. An AI-generated summary may read smoothly while omitting an important finding. The useful question for a medical practice is how a tool changes care, responsibility and risk in the setting where it will actually be used.",
+          "Electronic medical records work best when they support a clear clinical workflow. Clinicians need to find the right patient, record relevant information, review results and understand what another team member has done. Templates should assist reasoning without encouraging unchecked copying. A populated field is not evidence that a finding was examined. Systems should also make corrections, authorship and the history of important changes understandable to authorised users.",
+          "Privacy starts with everyday decisions about access. A receptionist, clinician and accounts officer may need different information to perform their roles. Individual accounts, appropriate permissions and prompt removal of access when staff leave are practical controls worth examining. Practices should know where data are stored, who processes them and what contractual safeguards apply. Nigeria's data protection framework should inform these decisions; the Nigeria Data Protection Commission's Act page (https://www.ndpc.gov.ng/ndp-act-2023/) provides an official starting point.",
+          "Continuity matters as much as convenience. What happens when the internet fails, a device is stolen or a vendor becomes unavailable? A practice needs a workable downtime process, recoverable backups and a clear route for responding to suspected data incidents. Staff should know whom to notify and how to preserve relevant information. Buying software does not transfer every responsibility to the vendor, and a backup that has never been tested may provide false reassurance.",
+          "AI tools require particular care because plausible language can disguise uncertainty or error. They may suggest a summary, help organise a draft or support another defined task, but their output needs appropriate human checking. Clinicians should verify relevant facts, references and clinical statements before relying on them. WHO's guidance on large multimodal models in health (https://www.who.int/publications/b/70584) offers a framework for considering the ethical and governance issues. Use should be matched to a clearly assessed purpose.",
+          "Patient information should not be pasted into an unapproved consumer tool simply because the service is convenient. Removing a name does not necessarily remove all identifying information. Before adopting a tool, examine its data handling, retention, access arrangements and suitability for the intended use. Consent should not be treated as a shortcut around other obligations. Where clinical decisions are involved, accountability, professional judgement and the need to evaluate safety remain central.",
+          "The proposed May webinar could compare several practical scenarios: choosing an EMR, responding to a misplaced device and checking an AI-generated clinical summary. Discussion should ask what the tool is meant to improve, how errors would be detected and who can stop its use if problems emerge. A small, supervised evaluation with clear limits may produce more useful evidence than immediate adoption across a whole practice. Staff training and patient communication belong in that evaluation.",
+          "Before the session, identify one digital task that consumes time and one privacy weakness that deserves attention. Both can inform a better technology decision. May's programme remains proposed. Exact dates and registration arrangements should be confirmed through official association announcements; specific technologies and guidance should be reviewed again ahead of the May 2027 programme."
+        ],
+        "author": "NMA Ogun",
+        "date": "2026-10-18",
+        "venue": "",
+        "office": "",
+        "term": "",
+        "group": "current",
+        "mediaIds": [],
+        "sortOrder": 7
+      }
+    },
+    {
+      "id": "0fd7cee7-4da3-4e01-b22f-b7c21edfa128",
+      "kind": "article",
+      "revision": 1,
+      "publishedAt": "2026-10-18T08:06:14.972Z",
+      "content": {
+        "slug": "cross-specialty-urgent-presentations",
+        "title": "Seeing beyond the specialty in urgent care",
+        "summary": "The year ahead · June 2027. Improve first-contact decisions and referral across specialty boundaries. Part of the proposed October 2026–September 2027 learning programme.",
+        "paragraphs": [
+          "A patient arrives with breathlessness, weakness or sudden pain before anyone knows which specialty will ultimately take responsibility. The first clinician must recognise the immediate problem, make an initial assessment and decide what help is needed. Cross-specialty learning is valuable because urgent presentations rarely respect departmental boundaries. A shared language can improve the movement from first contact to appropriate specialist care.",
+          "Consider breathlessness as an example. The patient's age, history, examination and setting all matter, and the possibilities extend across several specialties. The immediate task is to assess severity, identify threats and begin appropriate care while the diagnosis is clarified. The same principle applies to altered mental state, significant bleeding, acute neurological symptoms or severe pain. A confident early label should not prevent reconsideration when the patient's condition or available evidence changes.",
+          "A cross-specialty update should therefore concentrate on decisions that clinicians actually face. What information changes the urgency? Which findings justify immediate senior involvement? What can be done safely at the presenting facility, and what requires transfer? An educational session is more useful when it explains the reasoning behind those decisions and acknowledges uncertainty. Lists of rare diagnoses may be memorable, but they should not displace the common problems encountered during ordinary calls.",
+          "Age and context can change the assessment. Children, pregnant patients, older adults and people with several long-term conditions may require different thresholds and pathways. Medication history, recent procedures and relevant social circumstances can also influence interpretation. A clinician working outside a usual specialty needs a dependable way to access current local guidance and experienced advice. Recognising the limits of one's expertise is part of good first-contact care.",
+          "Referral is a clinical process that requires communication. The receiving team needs a concise account of the presentation, relevant findings, interventions, response and outstanding concerns. The sending team needs to know what happens next and who remains responsible while arrangements are made. WHO's Emergency Care Toolkit (https://www.who.int/teams/integrated-health-services/clinical-services-and-systems/emergency-and-critical-care/emergency-care-toolkit) includes tools intended to support emergency care processes and referral. That broader view helps connect assessment with continuity.",
+          "Common cognitive traps deserve discussion too. An earlier diagnosis can become an anchor even when new findings challenge it. A familiar patient may be assumed to have the same problem as before. A reassuring investigation may be given more weight than continuing deterioration. Case-based learning can examine these moments without pretending that every difficult outcome was obvious in advance. The useful question is what information and safeguards could improve the next decision.",
+          "The proposed June mini-symposium could bring clinicians from relevant specialties together around a small number of fictional cases. Each contributor could explain the first decisions, the reason for escalation and the information needed for an effective referral. Participants would benefit from comparing how the same presentation looks from different clinical settings. Any resulting learning notes should identify current protocols and local referral arrangements rather than present an isolated lecture as a universal treatment pathway.",
+          "Before the programme, think of a recurring urgent presentation that leaves your team uncertain about the next step. Submit a general question without patient identifiers. June's programme remains proposed. Exact dates, the final specialty mix, venue, online arrangements and registration details should be confirmed through official association announcements before booking."
+        ],
+        "author": "NMA Ogun",
+        "date": "2026-10-18",
+        "venue": "",
+        "office": "",
+        "term": "",
+        "group": "current",
+        "mediaIds": [],
+        "sortOrder": 8
+      }
+    },
+    {
+      "id": "59c994c6-5f78-4367-be4a-3e647831aa57",
+      "kind": "article",
+      "revision": 1,
+      "publishedAt": "2026-10-18T08:06:14.972Z",
+      "content": {
+        "slug": "medical-ethics-discipline-expert-testimony",
+        "title": "Professional judgement when the questions become difficult",
+        "summary": "The year ahead · July 2027. Approach confidentiality, complaints and expert reports with careful professional judgement. Part of the proposed October 2026–September 2027 learning programme.",
+        "paragraphs": [
+          "Some of the hardest questions in medicine arise after the examination is complete. A relative asks for information the patient has not agreed to share. A colleague requests a report that goes beyond what the records support. A complaint arrives about a consultation remembered differently by everyone involved. These moments call for clear ethical reasoning, careful communication and an understanding of professional responsibility.",
+          "Ethics begins in routine practice. Respecting patients, maintaining appropriate boundaries, explaining options and recognising conflicts of interest are habits developed over time. Difficult cases become easier to approach when a doctor can identify the competing considerations rather than rely on instinct alone. What does the patient want? Who may be affected? What professional guidance applies? What information is missing, and who can provide appropriate advice before a decision is made?",
+          "Confidentiality illustrates the importance of context. Clinical information should be handled with care, but difficult circumstances can raise questions about lawful or justified disclosure. The appropriate response depends on the facts and applicable requirements. Doctors should seek timely professional or legal advice when uncertainty is significant and record the reasoning behind a decision. Nigeria's professional framework should be checked against current Medical and Dental Council of Nigeria guidance (https://mdcn.gov.ng/), rather than informal recollection alone.",
+          "A complaint or disciplinary inquiry requires a measured response. Preserve relevant records, follow the applicable process and obtain appropriate advice. A factual account should distinguish what the clinician recalls from what contemporaneous documentation establishes. Avoid speculation about another person's motives and resist the temptation to fill gaps with certainty. Respect for confidentiality continues when a complaint becomes public; an online argument can create further problems without resolving the original concern.",
+          "Writing a report introduces another responsibility: understanding the role being performed. A treating doctor's factual account is different from an expert opinion on a disputed clinical issue. A doctor asked to act as an expert should consider whether the question falls within their relevant expertise, whether conflicts exist and what instructions govern the work. Qualifications and experience should be represented accurately. Seniority in one area does not automatically establish expertise in another.",
+          "An expert opinion should explain the material considered, the reasoning used and the limits of the conclusion. Where information is incomplete or credible professional views differ, that should be made clear. The obligation is to provide an independent, supportable opinion within the applicable legal process. A favourable outcome for the person requesting the report cannot justify overstating evidence. Questions about testimony and court procedure should be reviewed with qualified Nigerian legal expertise.",
+          "The proposed July webinar could use scenarios involving a confidentiality request, a professional complaint and a request for an expert report. Each case would invite participants to separate facts, assumptions, ethical considerations and procedural requirements. Discussion should also address when to pause and seek help. Preparing an appropriate response is often a collaborative task involving professional advisers, institutional leadership or legal counsel, depending on the circumstances. Asking for advice early can prevent an uncertain situation becoming harder to manage.",
+          "Before the programme, consider one ethical question that arises repeatedly in your setting and frame it without identifying a patient or colleague. July's programme remains proposed. Exact dates, speakers and registration arrangements should be confirmed through official association announcements, and legal references should be reviewed again ahead of the July 2027 programme."
+        ],
+        "author": "NMA Ogun",
+        "date": "2026-10-18",
+        "venue": "",
+        "office": "",
+        "term": "",
+        "group": "current",
+        "mediaIds": [],
+        "sortOrder": 9
+      }
+    },
+    {
+      "id": "c93a3619-9efa-4085-9cfc-2cadb7022cd7",
+      "kind": "article",
+      "revision": 1,
+      "publishedAt": "2026-10-18T08:06:14.972Z",
+      "content": {
+        "slug": "health-insurance-sustainable-care",
+        "title": "Paying for care without losing sight of the patient",
+        "summary": "The year ahead · August 2027. Understand care financing, patient access and the practical costs of sustainable services. Part of the proposed October 2026–September 2027 learning programme.",
+        "paragraphs": [
+          "A treatment plan can be clinically appropriate and still remain out of reach for the person who needs it. The patient may struggle with immediate payment, uncertainty about insurance benefits or the cost of returning for follow-up. For clinicians, understanding how care is financed helps explain why apparently simple plans sometimes fail. It also helps practices examine whether their own services can remain dependable over time.",
+          "Health insurance provides a way to organise financial protection, but the practical experience depends on the scheme and its rules. Patients and providers need clarity about eligibility, covered services, referral requirements and the process for resolving questions. Nigeria's National Health Insurance Authority Act (https://www.nhia.gov.ng/nhia-act/) provides an important part of the national framework. A programme taking place in August 2027 should review the current implementation context and relevant state arrangements before making detailed claims.",
+          "Doctors do not need to become insurance administrators, but they should understand the pathways affecting their patients. A patient told that a service is “covered” may still need an explanation of the applicable authorisation or referral process. Practices should make responsibility for checking benefits and communicating decisions clear. Clinical recommendations should remain based on need, while discussions about practical access should be accurate, respectful and free from promises the provider cannot guarantee.",
+          "Health economics adds a way of examining choices when resources are limited. The least expensive option is not always the most sensible, and a more expensive intervention is not automatically more valuable. Decisions should consider outcomes, the resources used and what must be forgone elsewhere. At practice level, this may mean asking whether repeated low-value investigations are consuming funds that could support reliable follow-up, essential supplies or earlier access to appropriate treatment.",
+          "Provider payment arrangements can influence behaviour and deserve thoughtful scrutiny. Different models allocate financial risk and reward in different ways. A practice should understand its agreements, documentation requirements and the process for resolving rejected or delayed claims. Contracts should be assessed with appropriate professional advice. Whatever the payment model, incentives should be examined for their effect on necessary care, unnecessary services and the experience of patients whose needs are complex.",
+          "Financial sustainability also depends on ordinary operational discipline. Know the cost of delivering a service, maintain accurate records and understand how long payment takes to arrive. A practice cannot plan confidently if it confuses billed income with money actually received. At the same time, responding to financial pressure by obscuring charges or compromising care undermines trust. Responsible management seeks a service that can meet its commitments while treating patients and staff fairly.",
+          "The proposed August webinar could explore a fictional patient journey alongside a simplified practice cash-flow example. Participants might examine how benefit information, authorisation delays, clinical choices and payment processes affect one another. A useful discussion would include the perspectives of clinicians, patients and those administering care financing. The goal should be better questions, clearer communication and more informed service decisions, with scheme-specific details checked against current official information.",
+          "Before the session, identify one recurring insurance question and one service whose true delivery cost is poorly understood. These are practical starting points for improving access and planning. August's programme remains proposed. Exact dates, speakers and registration details should be confirmed through official association announcements before booking."
+        ],
+        "author": "NMA Ogun",
+        "date": "2026-10-18",
+        "venue": "",
+        "office": "",
+        "term": "",
+        "group": "current",
+        "mediaIds": [],
+        "sortOrder": 10
+      }
+    },
+    {
+      "id": "9cd1d1e2-ae18-4cdb-9d11-a287e856efe9",
+      "kind": "article",
+      "revision": 1,
+      "publishedAt": "2026-10-18T08:06:14.973Z",
+      "content": {
+        "slug": "scientific-writing-peer-review-grants",
+        "title": "Helping good clinical ideas reach the page",
+        "summary": "The year ahead · September 2027. Move unfinished research towards a clear manuscript, constructive review or credible grant proposal. Part of the proposed October 2026–September 2027 learning programme.",
+        "paragraphs": [
+          "A completed project does not speak for itself. Its value depends partly on whether other people can understand the question, assess the methods and judge what the findings mean. For busy clinicians, writing often becomes the stage that is repeatedly postponed. A collection of results remains on a laptop while the next service demand arrives. A workable writing process can help turn that unfinished work into a useful contribution.",
+          "Begin with the message the evidence can support. What did the project ask, what did it find and why should a reader care? Those questions help create a structure before polished sentences are attempted. The methods need enough detail for readers to understand what was done. Results should answer the stated question without hiding inconvenient findings. Discussion should explain meaning and limitations without claiming that a small or observational study proves more than it can.",
+          "Choosing a journal is part of planning. Read its scope, author instructions and recent publications before adapting the manuscript. Check submission requirements, charges and the journal's editorial arrangements. An invitation promising effortless acceptance deserves careful scrutiny. Formatting matters, but it should come after the argument, reporting and supporting material are sound. A beautifully prepared manuscript cannot compensate for unclear methods or a conclusion that exceeds the evidence.",
+          "Authorship should be discussed early and revisited as contributions develop. Credit and responsibility need to be understood by everyone named on the paper. The ICMJE recommendations on authors and contributors (https://www.icmje.org/recommendations/browse/roles-and-responsibilities/defining-the-role-of-authors-and-contributors.html) provide a widely used reference. Where AI tools assist writing or analysis, authors must check the relevant journal's policy, verify the output and make required disclosures. The people submitting the work remain responsible for its accuracy and integrity.",
+          "Peer review is another form of professional service. A useful review considers whether the question matters, the methods support the conclusions and the reporting allows fair assessment. Comments should be specific, respectful and directed at improving or evaluating the work. Reviewers must also recognise conflicts of interest and protect confidentiality. ICMJE's guidance on AI in publishing (https://www.icmje.org/recommendations/browse/artificial-intelligence/) highlights the confidentiality concerns involved in uploading submitted manuscripts to AI systems where protection cannot be assured.",
+          "Receiving criticism requires a similar discipline. Separate comments that reveal a genuine weakness from those that need clarification or a reasoned disagreement. A response to reviewers should address each point clearly, explain changes and identify where they appear. When a requested analysis is inappropriate or impossible, explain why. The purpose is to help the editor assess the work, rather than win an argument or defend every sentence of the original submission.",
+          "Grant applications require a different kind of clarity. A compelling idea needs an achievable plan, a justified budget, appropriate expertise and a credible explanation of its value. Applicants should connect the question to the funder's stated priorities without distorting the project. Timelines should include approvals, procurement, recruitment and reporting where relevant. A concise concept note can reveal weaknesses early, while there is still time to seek collaborators and revise the design.",
+          "The proposed September programme could help participants bring an abstract, manuscript outline or short project concept to a more reviewable stage. Its delivery format remains to be confirmed. Before taking part, choose one piece of unfinished work and identify the next decision holding it back. Exact dates, format, participation requirements and registration details should be announced through official association channels once confirmed."
+        ],
+        "author": "NMA Ogun",
+        "date": "2026-10-18",
+        "venue": "",
+        "office": "",
+        "term": "",
+        "group": "current",
+        "mediaIds": [],
+        "sortOrder": 11
+      }
+    },
+    {
+      "id": "c1a9e788-9e85-4baf-a27f-76badba8dcb6",
+      "kind": "article",
+      "revision": 1,
+      "publishedAt": "2026-10-20T09:00:00.000Z",
+      "content": {
+        "slug": "nma-ogun-healthcare-agenda-2027-2031",
+        "title": "NMA Ogun calls for a measurable healthcare agenda for 2027–2031",
+        "summary": "At the Physicians’ Week press conference, NMA Ogun urged political aspirants to make healthcare a funded and measurable priority.",
+        "paragraphs": [
+          "NMA Ogun has outlined healthcare priorities for the administration taking office in 2027. According to a News Agency of Nigeria report published by Peoples Gazette on 19 October 2026, the proposals were presented during the Physicians’ Week press conference in Abeokuta.",
+          "The report identifies reliable funding, better conditions for health workers, safer workplaces, hospital improvements and stronger primary care among the association’s priorities. It also highlights wider insurance coverage, digital services, research and readiness for health emergencies.",
+          "Political aspirants were asked to explain how they would fund and deliver their healthcare commitments, with outcomes and deadlines that can be assessed. The association also proposed a government–NMA compact covering 2027–2031 and continuing dialogue to address workforce concerns.",
+          "The proposals form part of the association’s Physicians’ Week advocacy for doctors and the communities they serve.",
+          "Source: News Agency of Nigeria, via Peoples Gazette, 19 October 2026. Read the original report:",
+          "https://gazettengr.com/ogun-nma-proposes-10-point-healthcare-agenda-for-incoming-govt/"
+        ],
+        "author": "NMA Ogun State Secretariat · News summary",
+        "date": "2026-10-19",
+        "venue": "",
+        "office": "",
+        "term": "",
+        "group": "current",
+        "mediaIds": [],
+        "sortOrder": 0
+      }
+    },
+    {
+      "id": "f2909c7e-7db2-4947-8eff-b2a3023f8891",
+      "kind": "article",
+      "revision": 1,
+      "publishedAt": "2026-10-20T10:19:07.524Z",
+      "content": {
+        "slug": "nma-ogun-healthcare-funding-universal-coverage",
+        "title": "NMA Ogun urges funded health policies and wider access to care",
+        "summary": "Tribune coverage of Physicians’ Week highlights the association’s call for practical health policies, workforce support and wider insurance coverage.",
+        "paragraphs": [
+          "NMA Ogun has urged political leaders to place healthcare at the centre of public policy, according to Nigerian Tribune’s report of the association’s Physicians’ Week news conference on 19 October 2026.",
+          "The report describes a call for commitments backed by funding, delivery schedules and outcomes that citizens can assess. It links better access to care with investment in health workers and stronger services at community level.",
+          "Areas highlighted include primary care, maternal and child health, disease surveillance and broader insurance coverage. The association also called for better pay, working conditions and professional development to help retain healthcare personnel.",
+          "Tribune reported that digital records, telemedicine and connected health information systems were among the proposed tools for improving care and informing decisions.",
+          "The message places affordable care and a supported workforce within the same conversation about the future of medicine in Nigeria.",
+          "Source: Olayinka Olukoya, Nigerian Tribune, 19 October 2026. This is an original news summary; read the full report below.",
+          "https://tribuneonlineng.com/nigeria-needs-adequately-funded-healthcare-policies-to-address-challenges-nma/"
+        ],
+        "author": "NMA Ogun State Secretariat · News summary",
+        "date": "2026-10-20",
+        "venue": "",
+        "office": "",
+        "term": "",
+        "group": "current",
+        "mediaIds": [],
+        "sortOrder": 0
+      }
+    },
+    {
+      "id": "b4ffece6-c2d7-413f-b510-a5779a0a0684",
+      "kind": "article",
+      "revision": 1,
+      "publishedAt": "2026-10-20T10:19:07.524Z",
+      "content": {
+        "slug": "nma-ogun-safer-hospitals-protection-health-workers",
+        "title": "NMA Ogun calls for safer hospitals and protection for health workers",
+        "summary": "Physicians’ Week reporting highlights NMA Ogun’s concern about workplace violence and the need for practical protection for healthcare teams and patients.",
+        "paragraphs": [
+          "NMA Ogun has called for stronger protection for healthcare workers as part of its 2026 Physicians’ Week advocacy. Platform Times reported the association’s concerns following a press conference in Abeokuta on 19 October.",
+          "The report describes the association’s condemnation of threats, intimidation and assaults against health personnel. It records a call for governments, hospital managers, employers and security agencies to establish practical measures that can be enforced.",
+          "The association’s message connects safe workplaces with the ability of doctors and their colleagues to provide care. Hospitals should be places where patients can receive treatment and healthcare teams can perform their duties safely.",
+          "Workplace protection was discussed alongside staffing pressures, working conditions and doctors’ wellbeing. The report presents these concerns as connected parts of the effort to sustain the medical workforce.",
+          "Source: Daud Olatunji, Platform Times, 19 October 2026. Read the corroborating report:",
+          "https://platformtimes.com.ng/doctors-exodus-nma-ogun-demands-competitive-salaries-warns-of-burnout/",
+          "Related coverage shared by NMA Ogun: The Nation — “NMA raises alarm over rising attacks on doctors, health workers in Ogun hospitals”.",
+          "https://thenationonlineng.net/nma-raises-alarm-over-rising-attacks-on-doctors-health-workers-in-ogun-hospitals/"
+        ],
+        "author": "NMA Ogun State Secretariat · News summary",
+        "date": "2026-10-20",
+        "venue": "",
+        "office": "",
+        "term": "",
+        "group": "current",
+        "mediaIds": [],
+        "sortOrder": 1
+      }
+    },
+    {
+      "id": "c4045e97-9fc3-416c-8ff7-d415f0d540f3",
+      "kind": "resource",
+      "revision": 1,
+      "publishedAt": "2026-10-21T12:38:36.468Z",
+      "content": {
+        "slug": "nma-ogun-newsletter-third-edition-2026",
+        "title": "NMA Ogun Newsletter — Third Edition, 2026 · Biannual",
+        "summary": "The complete 52-page edition: professional features, the Sacred Heart Hospital interview, association photonews and affiliate reports. Optimised for online reading, with bookmarks.",
+        "paragraphs": [
+          "A biannual publication of the Nigerian Medical Association, Ogun State Branch. This web edition preserves the newsletter’s text and page sequence, optimises photographs and standardises the visible publication-frequency headers to biannual.",
+          "Clinical and research contributions are published as the authors’ professional reading and discussion in the context of the 2026 edition. Consult current guidance and appropriate professional advice before applying them in practice."
+        ],
+        "author": "",
+        "date": "",
+        "venue": "",
+        "office": "",
+        "term": "",
+        "group": "current",
+        "mediaIds": ["bb14b087-f7f7-4063-8910-a92943b9bfae"],
+        "sortOrder": 0
+      }
+    },
+    {
+      "id": "edf82c46-e917-4772-bd1e-f4e7ac251ce9",
+      "kind": "gallery",
+      "revision": 1,
+      "publishedAt": "2026-10-21T12:38:36.468Z",
+      "content": {
+        "slug": "newsletter-2026-association-photonews",
+        "title": "Association photonews: visits and engagement",
+        "summary": "Courtesy visits and an October 2026 SEC meeting, documented in the biannual newsletter.",
+        "paragraphs": [
+          "Selected photographs from NMA Ogun Newsletter, Third Edition, 2026. Captions retain the publication’s event context; they are not presented as photographs of today’s activities.",
+          "Explore the complete edition and further reading at https://nmaogun.com.ng/newsletter/2026-third-edition."
+        ],
+        "author": "",
+        "date": "",
+        "venue": "",
+        "office": "",
+        "term": "",
+        "group": "current",
+        "mediaIds": [
+          "d8decb80-5886-4f00-b50a-35e8dbf01d95",
+          "f22769f4-8d00-44f6-823e-9494553c63a2",
+          "b3158580-a7d8-4904-8700-8c6c0666fb92",
+          "d787ffe1-d85d-4c42-962a-055357beeac0"
+        ],
+        "sortOrder": 10
+      }
+    },
+    {
+      "id": "fed886d0-22c5-408c-b2a8-ef1cc330aa4a",
+      "kind": "gallery",
+      "revision": 1,
+      "publishedAt": "2026-10-21T12:38:36.468Z",
+      "content": {
+        "slug": "newsletter-2026-affiliate-activities",
+        "title": "Affiliate life: meetings, advocacy and professional learning",
+        "summary": "Photographs selected from the affiliate reports in the Third Edition, 2026 newsletter.",
+        "paragraphs": [
+          "Selected photographs from NMA Ogun Newsletter, Third Edition, 2026. Captions retain the publication’s event context; they are not presented as photographs of today’s activities.",
+          "Explore the complete edition and further reading at https://nmaogun.com.ng/newsletter/2026-third-edition."
+        ],
+        "author": "",
+        "date": "",
+        "venue": "",
+        "office": "",
+        "term": "",
+        "group": "current",
+        "mediaIds": [
+          "343f07ee-2f91-44b7-af22-b2b91c63ce5c",
+          "5f53834b-8ce7-4451-b10d-1a25c1a23831",
+          "c04939ba-f63b-4ef9-ae7f-391eb8df5843",
+          "e4842710-4b9c-496f-b1a4-cc198d9e7640",
+          "214b330a-4ddd-43c3-b72e-2ae962a16c80",
+          "29df3657-d43d-482e-988e-feec3da89192",
+          "a5b897b0-52e1-4c5e-92bb-e2e26d016664"
+        ],
+        "sortOrder": 10
+      }
+    },
+    {
+      "id": "9196179f-3e9e-48d4-b5c2-ee0117aa885d",
+      "kind": "article",
+      "revision": 1,
+      "publishedAt": "2026-10-21T12:38:36.468Z",
+      "content": {
+        "slug": "newsletter-securing-future-medicine-nigeria",
+        "title": "Securing the future of medicine in Nigeria",
+        "summary": "A newsletter perspective on financing, clinical governance, workforce retention and the shared work of building a stronger health system.",
+        "paragraphs": [
+          "Editorial adaptation of Dr Azim ‘Kunle Ashimi’s contribution to NMA Ogun Newsletter, Third Edition, 2026, printed pages 7–8. The original text and any references are available in the complete edition.",
+          "The future of medicine depends on the conditions in which care is delivered. In his contribution to the NMA Ogun Newsletter, Dr Azim ‘Kunle Ashimi brings together the challenges of healthcare financing, workforce migration, infrastructure and unequal access to services. His central argument is that identifying these problems must lead to coordinated action rather than another cycle of discussion.",
+          "A health system is more than its buildings. Facilities need people, functioning equipment, reliable supplies and processes that help patients move safely between different levels of care. Investment in one part of that system can have limited value if the surrounding services remain weak. The article therefore considers financing, staffing and clinical governance as connected responsibilities.",
+          "Healthcare financing receives particular attention. The contribution discusses the difficulty of relying heavily on payments made by households when they need treatment, and the importance of making budget commitments meaningful through implementation. The full article includes a financing table; its figures and comparisons belong to the context of the original publication and should be read alongside that source.",
+          "Insurance expansion is presented as part of a wider effort to make healthcare more dependable and accessible. The discussion is also concerned with the practical organisation of services: the systems through which care is planned, standards are maintained and patients are referred. Financing reform and improvements in everyday delivery need to reinforce one another.",
+          "The workforce is another essential part of the argument. Nigeria’s medical expertise cannot sustain services without conditions that encourage professionals to remain, develop their skills and work effectively. Workforce retention is consequently a health-system issue as well as a matter of members’ welfare.",
+          "The author identifies a role for the Nigerian Medical Association that reaches beyond representing doctors’ immediate interests. Professional advocacy can connect clinical experience with policy decisions, encourage sound governance and keep equitable access to care in public discussion. The contribution invites the profession to help shape reforms rather than stand apart from them.",
+          "For readers, the article offers a way to see several familiar challenges as parts of the same task. A more resilient system requires sustained attention to its people, funding, organisation and professional standards. Its progress depends on turning shared priorities into work that continues beyond a single meeting, campaign or administration.",
+          "Read the original contribution in the biannual newsletter (PDF page 9):",
+          "https://nmaogun.com.ng/media/bb14b087-f7f7-4063-8910-a92943b9bfae#page=9"
+        ],
+        "author": "Dr Azim ‘Kunle Ashimi · Newsletter adaptation",
+        "date": "2026-10-21",
+        "venue": "",
+        "office": "",
+        "term": "",
+        "group": "current",
+        "mediaIds": [],
+        "sortOrder": 10
+      }
+    },
+    {
+      "id": "7b3f8950-4643-432e-9159-3988b810bed7",
+      "kind": "article",
+      "revision": 1,
+      "publishedAt": "2026-10-21T12:38:36.468Z",
+      "content": {
+        "slug": "newsletter-physicians-wellbeing-burnout",
+        "title": "Physicians’ wellbeing: caring for the people who provide care",
+        "summary": "A reading of Dr Egbetayo’s contribution on workload, burnout and the institutional conditions that support doctors’ health.",
+        "paragraphs": [
+          "Editorial adaptation of Dr Damilola Egbetayo’s contribution to NMA Ogun Newsletter, Third Edition, 2026, printed pages 9–10. The original text and any references are available in the complete edition.",
+          "Doctors’ commitment to patients can make it difficult to acknowledge their own need for rest, support and healthcare. Dr Damilola Egbetayo’s newsletter contribution examines that tension through the pressures experienced by doctors working in overstretched services. It asks readers to look beyond individual endurance and consider the conditions that make a healthy professional life possible.",
+          "The article connects workload, staffing and occupational stress with the wellbeing of medical professionals. When services depend on repeated personal sacrifice, the strain can become normalised. The contribution challenges the idea that exhaustion is proof of professional dedication and treats doctors’ health as a matter that institutions must take seriously.",
+          "Its discussion moves between the personal and organisational dimensions of the problem. A doctor may recognise the importance of seeking help while still facing a workplace in which leave, time away from duties or confidential support is difficult to obtain. Advice directed only at individuals cannot resolve every feature of that environment.",
+          "The author sets out an occupational-health framework in the complete article. Its themes include working arrangements, access to health assessment, support for mental wellbeing and the responsibilities of employers and professional bodies. Readers considering a workplace programme should consult the original article, its references and the applicable institutional and professional guidance.",
+          "For departments and training programmes, the contribution creates an opportunity for practical conversation. How are duties distributed? Can colleagues raise concerns without being dismissed? Does seeking help carry an unnecessary professional stigma? Are the people providing care able to use appropriate services themselves? These questions concern the culture of a workplace as much as its formal policies.",
+          "The newsletter’s wider message is that care for clinicians and care for patients are connected. Supporting doctors’ wellbeing is part of sustaining the teams on which healthcare services rely. It calls for attention to the realities of practice, rather than expecting personal resilience to compensate indefinitely for organisational problems.",
+          "Read the original contribution in the biannual newsletter (PDF page 11):",
+          "https://nmaogun.com.ng/media/bb14b087-f7f7-4063-8910-a92943b9bfae#page=11"
+        ],
+        "author": "Dr Damilola Egbetayo · Newsletter adaptation",
+        "date": "2026-10-21",
+        "venue": "",
+        "office": "",
+        "term": "",
+        "group": "current",
+        "mediaIds": [],
+        "sortOrder": 10
+      }
+    },
+    {
+      "id": "3933807b-4665-4aef-9d1b-e65999315034",
+      "kind": "article",
+      "revision": 1,
+      "publishedAt": "2026-10-21T12:38:36.468Z",
+      "content": {
+        "slug": "newsletter-digital-health-future-ready-education",
+        "title": "Digital health, innovation and future-ready medical education",
+        "summary": "Technology should serve medicine: a newsletter contribution on local needs, professional judgement and the education of future doctors.",
+        "paragraphs": [
+          "Editorial adaptation of Dr Abdulquddus Ajibade’s contribution to NMA Ogun Newsletter, Third Edition, 2026, printed pages 11–12. The original text and any references are available in the complete edition.",
+          "Medicine has always developed alongside its tools. Dr Abdulquddus Ajibade’s contribution asks how the profession can guide the next stage of that development as digital health, artificial intelligence and connected information systems become more prominent. The starting point is a clinical and educational purpose, rather than the appeal of a new product.",
+          "The article argues that innovation should respond to the circumstances in which people receive care. Health facilities differ in connectivity, equipment, staffing and resources. A tool that is useful in one setting may need substantial adaptation in another. Understanding those differences is part of deciding whether a proposed technology is appropriate.",
+          "Artificial intelligence illustrates both the opportunity and the responsibility. The contribution discusses possible support for organising information, recognising patterns, research, administration and learning. It also stresses the limitations of systems that can produce incorrect information, reproduce bias or encourage unwarranted confidence. Professional judgement and accountability remain central.",
+          "Privacy, cybersecurity, clinical validation and the needs of local communities are therefore part of responsible adoption. The article refers to World Health Organization guidance on the ethics and governance of AI in health. Those references are retained in the complete newsletter contribution, where readers can follow the author’s source material.",
+          "Medical education is a major part of the discussion. Digital competence does not replace knowledge of anatomy, pathology, pharmacology or clinical reasoning. Those foundations help a doctor judge whether the output of a digital system is reasonable. The article proposes extending professional learning to include health data, digital systems, research methods and the responsible use of new tools.",
+          "Interdisciplinary collaboration is equally important. Doctors, nurses, pharmacists, engineers, researchers and other professionals bring different expertise to the development and evaluation of healthcare technologies. Medical training can help future clinicians participate in those conversations and question the assumptions behind a system’s design.",
+          "The author’s conclusion gives the profession an active role. Medical organisations and educators can support digital literacy and evidence-informed innovation while ensuring that clinicians remain involved in decisions about implementation. The aim is not to adopt technology for its own sake, but to identify where it adds value and use it in ways that continue to serve patients.",
+          "Read the original contribution in the biannual newsletter (PDF page 13):",
+          "https://nmaogun.com.ng/media/bb14b087-f7f7-4063-8910-a92943b9bfae#page=13"
+        ],
+        "author": "Dr Abdulquddus Ajibade · Newsletter adaptation",
+        "date": "2026-10-21",
+        "venue": "",
+        "office": "",
+        "term": "",
+        "group": "current",
+        "mediaIds": [],
+        "sortOrder": 10
+      }
+    },
+    {
+      "id": "ef3c508d-3c9d-41f9-ae11-49b77e0da26b",
+      "kind": "article",
+      "revision": 1,
+      "publishedAt": "2026-10-21T12:38:36.468Z",
+      "content": {
+        "slug": "newsletter-digital-pathology-readiness",
+        "title": "Is Nigeria ready for the future of digital pathology?",
+        "summary": "A specialist perspective on remote expertise, shared learning and the foundations needed for digital pathology.",
+        "paragraphs": [
+          "Editorial adaptation of Dr Damilare T. Ogunyemi’s contribution to NMA Ogun Newsletter, Third Edition, 2026, printed pages 31–32. The original text and any references are available in the complete edition.",
+          "What changes when a difficult pathology case can be reviewed without moving a glass slide to another institution? Dr Damilare T. Ogunyemi’s article explores how digital pathology could connect specialist expertise across distances and open new opportunities for teaching and collaboration.",
+          "The contribution considers the value of shared digital slide libraries and remote second opinions. Trainees in different institutions could learn from a wider collection of cases, while specialists could discuss difficult findings without being in the same building. These possibilities depend on the quality and organisation of the underlying services.",
+          "The article does not present digitisation as a replacement for good laboratory practice. Specimen handling, preparation, professional interpretation, infrastructure and training remain important. A digital image cannot correct every problem that occurred before the slide was scanned.",
+          "For Nigerian institutions, the question is therefore one of preparation as well as equipment. Teams need to consider how digital and conventional workflows fit together, how people will be trained and how shared expertise will be used responsibly. The full contribution develops these questions in the context of pathology practice and education.",
+          "Read the original contribution in the biannual newsletter (PDF page 33):",
+          "https://nmaogun.com.ng/media/bb14b087-f7f7-4063-8910-a92943b9bfae#page=33"
+        ],
+        "author": "Dr Damilare T. Ogunyemi · Newsletter adaptation",
+        "date": "2026-10-21",
+        "venue": "",
+        "office": "",
+        "term": "",
+        "group": "current",
+        "mediaIds": [],
+        "sortOrder": 10
+      }
+    },
+    {
+      "id": "1d79b90f-f87a-4339-b87d-5fad4d223af2",
+      "kind": "article",
+      "revision": 1,
+      "publishedAt": "2026-10-21T12:38:36.468Z",
+      "content": {
+        "slug": "newsletter-doctors-social-media-professionalism",
+        "title": "Doctors and social media: professional tool or professional trap?",
+        "summary": "A reflection on how professional responsibility follows doctors into their online lives.",
+        "paragraphs": [
+          "Editorial adaptation of Dr Omitade Tolulope’s contribution to NMA Ogun Newsletter, Third Edition, 2026, printed pages 33. The original text and any references are available in the complete edition.",
+          "Social media allows doctors to take part in public education, professional discussion and community life beyond the consulting room. Dr Omitade Tolulope’s contribution asks how that opportunity can be used without losing sight of the responsibilities attached to a medical identity.",
+          "The article considers the professional meaning of a digital footprint. A post may reach people outside its intended audience, remain available after the original conversation has ended or affect how patients understand the profession. Familiarity with a platform is not the same as careful judgement about what belongs in public.",
+          "The contribution invites doctors to think about the boundary between public communication and clinical practice. Confidentiality, the dignity of patients and the reliability of information deserve attention when a professional uses an online channel. The discussion is a reflection on professional conduct, not a substitute for the rules that apply to an individual’s practice.",
+          "The author’s closing idea is that professionalism extends beyond hospital walls. Digital tools can support the work of the profession when they are used with care, awareness of their limitations and respect for the people who may be affected by a post.",
+          "Read the original contribution in the biannual newsletter (PDF page 35):",
+          "https://nmaogun.com.ng/media/bb14b087-f7f7-4063-8910-a92943b9bfae#page=35"
+        ],
+        "author": "Dr Omitade Tolulope · Newsletter adaptation",
+        "date": "2026-10-21",
+        "venue": "",
+        "office": "",
+        "term": "",
+        "group": "current",
+        "mediaIds": [],
+        "sortOrder": 10
+      }
+    },
+    {
+      "id": "f9abb662-b2c9-4c4d-a432-f897ba45f552",
+      "kind": "article",
+      "revision": 1,
+      "publishedAt": "2026-10-21T12:38:36.468Z",
+      "content": {
+        "slug": "newsletter-quackery-patient-safety",
+        "title": "Quackery, access to care and patient safety",
+        "summary": "A dental officer’s perspective on the relationship between qualified care, public understanding and patient protection.",
+        "paragraphs": [
+          "Editorial adaptation of Dr Peace Ugbodaga’s contribution to NMA Ogun Newsletter, Third Edition, 2026, printed pages 34. The original text and any references are available in the complete edition.",
+          "Dr Peace Ugbodaga’s newsletter contribution examines quackery through the experience of a dental officer at Sacred Heart Hospital, Lantoro, Abeokuta. It considers the harm that can arise when people receive care from individuals who lack the appropriate training or qualifications.",
+          "The article treats the problem as more than a professional boundary dispute. It connects patient safety with public understanding, access to legitimate services and the ability of institutions to uphold standards. People need reliable ways to seek qualified care, while healthcare professionals have a role in explaining why those standards matter.",
+          "The author calls for attention to regulation, enforcement, public education and the circumstances that lead people to seek unsuitable care. The contribution does not suggest that a single intervention can resolve every part of the problem.",
+          "Its wider message is one of prevention and professional responsibility. Advocacy and clear communication can help place patient protection alongside the work of providing treatment. The full article presents the author’s perspective and remains available in the newsletter.",
+          "Read the original contribution in the biannual newsletter (PDF page 36):",
+          "https://nmaogun.com.ng/media/bb14b087-f7f7-4063-8910-a92943b9bfae#page=36"
+        ],
+        "author": "Dr Peace Ugbodaga · Newsletter adaptation",
+        "date": "2026-10-21",
+        "venue": "",
+        "office": "",
+        "term": "",
+        "group": "current",
+        "mediaIds": [],
+        "sortOrder": 10
+      }
+    },
+    {
+      "id": "6d3166ce-0f77-4ff4-b4c8-1308db6200bc",
+      "kind": "article",
+      "revision": 1,
+      "publishedAt": "2026-10-21T12:38:36.468Z",
+      "content": {
+        "slug": "newsletter-when-doctor-becomes-patient",
+        "title": "When the doctor becomes the patient",
+        "summary": "A reflection on confidentiality, professional culture and the difficulty healthcare workers can face in seeking care.",
+        "paragraphs": [
+          "Editorial adaptation of Dr Omitade Tolulope’s contribution to NMA Ogun Newsletter, Third Edition, 2026, printed pages 35–36. The original text and any references are available in the complete edition.",
+          "Knowing the importance of healthcare does not make it easy to become a patient. Dr Omitade Tolulope’s contribution explores the discomfort that can arise when healthcare workers need the services they ordinarily provide to others.",
+          "The article describes how professional identity, workload and concerns about privacy can discourage people from seeking help. Receiving care from a colleague may bring its own awkwardness: the patient may minimise a concern, while the treating professional may hesitate to ask difficult questions.",
+          "The contribution argues for attention to both personal choices and institutional conditions. Confidential services, supportive workplaces and a culture that allows colleagues to acknowledge illness are connected parts of the discussion. The author challenges the idea that seeking care should be regarded as a weakness.",
+          "This reflection sits alongside the edition’s wider focus on physicians’ wellbeing. Its central message is that healthcare workers deserve systems in which caring for themselves is possible, private and compatible with their professional lives.",
+          "Read the original contribution in the biannual newsletter (PDF page 37):",
+          "https://nmaogun.com.ng/media/bb14b087-f7f7-4063-8910-a92943b9bfae#page=37"
+        ],
+        "author": "Dr Omitade Tolulope · Newsletter adaptation",
+        "date": "2026-10-21",
+        "venue": "",
+        "office": "",
+        "term": "",
+        "group": "current",
+        "mediaIds": [],
+        "sortOrder": 10
+      }
+    },
+    {
+      "id": "5c4090fd-41f8-4e39-ae1d-b1db1359a3ab",
+      "kind": "article",
+      "revision": 1,
+      "publishedAt": "2026-10-21T12:38:36.468Z",
+      "content": {
+        "slug": "newsletter-ai-infectious-disease-surveillance",
+        "title": "Artificial intelligence and infectious-disease surveillance in Africa",
+        "summary": "A newsletter discussion of how digital tools could support surveillance, preparedness and public-health teams.",
+        "paragraphs": [
+          "Editorial adaptation of Dr Lanre-Aremo Babajide’s contribution to NMA Ogun Newsletter, Third Edition, 2026, printed pages 29–30. The original text and any references are available in the complete edition.",
+          "Dr Lanre-Aremo Babajide’s contribution considers the possible place of artificial intelligence in African infectious-disease surveillance. Its focus is the work of noticing unusual patterns, understanding how events develop and helping public-health services organise a response.",
+          "The article discusses potential uses in analysing information, planning resources and supporting outbreak investigation. It places these possibilities alongside existing laboratories, community health workers, mobile technologies and public-health systems rather than presenting AI as a separate replacement for them.",
+          "The contribution also recognises practical requirements. The usefulness of an analytical tool depends on the information available to it, the people interpreting its outputs and the resources needed to keep it working. Governance, trust, training and sustained funding matter beyond an initial pilot project.",
+          "Readers can use the article as an introduction to questions about responsible adoption. Its proposed applications require appropriate evaluation and professional oversight; the newsletter contribution is a discussion of possibilities, not a validated surveillance or diagnostic protocol.",
+          "Read the original contribution in the biannual newsletter (PDF page 31):",
+          "https://nmaogun.com.ng/media/bb14b087-f7f7-4063-8910-a92943b9bfae#page=31"
+        ],
+        "author": "Dr Lanre-Aremo Babajide · Newsletter adaptation",
+        "date": "2026-10-21",
+        "venue": "",
+        "office": "",
+        "term": "",
+        "group": "current",
+        "mediaIds": [],
+        "sortOrder": 10
+      }
+    },
+    {
+      "id": "cdde5200-fa5b-460c-a151-55bd689736a4",
+      "kind": "article",
+      "revision": 1,
+      "publishedAt": "2026-10-21T12:38:36.468Z",
+      "content": {
+        "slug": "newsletter-sacred-heart-hospital-interview",
+        "title": "Service, training and leadership at Sacred Heart Hospital",
+        "summary": "Selected questions and complete answers from the newsletter’s interview with Sacred Heart Hospital’s Medical Director.",
+        "paragraphs": [
+          "Selected questions and complete answers from the interview with Dr Gregory Arifalo, Medical Director of Sacred Heart Hospital, Lantoro, Abeokuta. Interviewers: Dr Peace Ugbodaga, Dr Temitope Joseph and Dr Tolulope Omitade. Published in NMA Ogun Newsletter, Third Edition, 2026, printed pages 13–17.",
+          "The following selection reproduces four questions and their answers. Other questions are omitted; the complete interview is available in the newsletter. Statements about the hospital’s services and training describe the interview’s 2026 context.",
+          "Question: Sir, in your few years in oﬃce, you have continued to uphold the remarkable goodwill and legacy of this hospital. Could you kindly share with us the core values that inspired its establishment?",
+          "Dr Gregory Arifalo: The hospital was formally established in 1895, so it is 131 years old this year. But its story began even earlier. The founding fathers, the SMA Fathers, came to Nigeria around 1880 and started treating patients here. Their colleagues, the OLA Sisters, the Sisters of Our Lady of Apostles—arrived in 1886 and also began caring for patients. Around that time, leprosy was a major concern, so they were given this area for a camp and built a leper colony here. The ﬁrst hospital itself was built close to the palace, where the main hospital was located at the time. That is why, when you drive past the old School of Nursing, you can still recognise what used to be the German Hospital. So, by 1895, the hospital was oﬃcially established there, while the leper colony was here. The two sites operated at the same time. Now, this is a Catholic facility; the hospital belongs to the Catholic Church. Some people visiting for the ﬁrst time assume it is a government hospital because of its size and age, but it is not. Apart from spreading the Gospel of Christ, the Catholic Church also believes strongly in the healing ministry. The hospital was therefore established to contribute to that ministry by treating patients and preventing illness. The founders came as missionaries, and healing was part of their missionary work. That is the foundation on which the hospital has continued to build.",
+          "Question: What about residency training? Which specialties currently oﬀer residency programmes at Sacred Heart Hospital?",
+          "Dr Gregory Arifalo: Up to the present, because we have mainly been a secondary-care facility, we have only been doing residency training in Family Medicine. There was a time we tried to introduce residency training in Obstetrics and Gynaecology, but we were not able to meet the requirements. We hope that, as things move forward, we will be able to meet those requirements. For now, we do residency training in Family Medicine. We also provide other forms of training for our healthcare colleagues. We do internship training in nursing, pharmacy and laboratory services, and we have students coming from diﬀerent institutions for training here. We also have a collaboration with Babcock University; their anaesthetic residents come here to increase their exposure. We collaborate with FMC as well, and there was a time some of their Family Medicine residents came here to do their rotations. These are the training programmes we are running for now. But if things move forward, most likely we will be able to introduce residency training in more specialties.",
+          "Question: How have you sustained professional development through training and retraining, while ensuring that staﬀ have the skills and capacity required to discharge their duties eﬀectively?",
+          "Dr Gregory Arifalo: With regard to the japa syndrome, it is a major issue, and maintaining clinical standards is also a signiﬁcant challenge. For the doctors, what we have learnt so far is that we must give ourselves a ﬁghting chance. As I mentioned earlier, the salary was poor and it is still not where we want it to be, but we have made some improvements. The diﬀerence between our salaries and those in government hospitals remains quite large, but we have tried to narrow the gap so that we can compete. We may be attracting doctors from other private institutions, but government hospitals are still attracting doctors from us because they pay a little more. We also provide some incentives for our doctors. Unlike many other facilities, we try to oﬀer most of them accommodation within the hospital at little or no cost. Many of us live within the hospital, and that is part of what we have done. They also enjoy some utility beneﬁts. Once you live within the hospital, you do not have to pay for security, electricity or water. So, even if the salary is not as high as what they may earn elsewhere, they can make some savings on those expenses. With regard to training, we learnt over time that one way to retain doctors is to run a residency training programme. That was why the Family Medicine residency programme was started, and we have been trying to keep it going. It helps to keep doctors on the ground because a resident doctor, even if he or she eventually changes location, usually stays longer than a medical oﬃcer. A medical oﬃcer often wants to move elsewhere to begin a residency programme, and that creates instability. So, we try to invest more in residents, even though it is becoming more costly to do so. For the nurses, it has been diﬃcult. As I said, changes in the country's training system have made the traditional",
+          "School of Nursing route less attractive, as everyone now wants to obtain a BSc to remain relevant. So, even when nurses qualify and we employ them as registered nurses or midwives, many leave within a year. That makes it diﬃcult to build a stable workforce. They may come in today for training, but by tomorrow, they will be gone. It can be discouraging. What we still have are some senior nurses who are willing to remain. For other members of staﬀ, training has not gone as planned, but we hope to improve it. It is one of the areas we want to work on. Even if we cannot send them elsewhere for training, we can arrange in-house training for them. That is the plan and what we hope to do. The only challenge is that it can be painful when you train a group of people and they leave soon afterwards.",
+          "Question: Thank you for that insightful response, sir. As we bring this conversation to a close, what guiding advice would you oﬀer the younger generation of doctors and other healthcare professionals aspiring to become eﬀective leaders?",
+          "Dr Gregory Arifalo: Okay, my advice to the younger generation is that people should understand what medicine involves. If you do not have a passion for it, do not bother studying medicine. Some people enter the profession for the wrong reasons or for the money, but medicine is demanding. As I said, if you do not have that passion, do not bother, because along the line, it can become frustrating and diﬃcult. There is money in medicine, but not the kind of money some people expect. As a doctor, you can live comfortably. But if your aim is to make a huge amount of money, you may forget the essence of medicine, which is to care for the sick and the less privileged. That does not mean doctors should not be well cared for, but the goal should not be excessive wealth. Some people want to become millionaires through medicine, but if that is your focus, you may end up compromising on many fronts. Number two, as leaders of the healthcare team, in a family, not all the children will decide to do what their father does. As their father, I will still care for all of them, including the one who chooses farming. So, doctors who are going to become leaders should learn to carry everyone along. Once people see that you have their interests at heart and are concerned about their well-being, they will work with you, and the system will run more smoothly. If you are a doctor who collaborates well with nurses, especially as a medical oﬃcer, your work will be much easier. So, collaborate with them and carry them along. If you do that, people will be less likely to challenge you for the leadership seat. Leadership is diﬃcult, and not everyone truly wants that responsibility.",
+          "Read the complete interview in the biannual newsletter:",
+          "https://nmaogun.com.ng/media/bb14b087-f7f7-4063-8910-a92943b9bfae#page=15"
+        ],
+        "author": "NMA Ogun Newsletter interview team",
+        "date": "2026-10-21",
+        "venue": "",
+        "office": "",
+        "term": "",
+        "group": "current",
+        "mediaIds": ["8cc90a07-5a9f-4614-a6c1-050266579a1d"],
+        "sortOrder": 0
+      }
+    },
+    {
+      "id": "ebb05f0d-a34e-4eb0-8d92-21101bad1915",
+      "kind": "article",
+      "revision": 2,
+      "publishedAt": "2026-10-21T17:20:38.507341+00:00",
+      "content": {
+        "slug": "electronic-medical-records-nigeria-doctors-digital-clinical-practice",
+        "title": "Electronic Medical Records in Nigeria: What Doctors Should Know About Digital Clinical Practice",
+        "summary": "What electronic medical records mean for doctors in Nigeria, including clinical documentation, patient safety, privacy, continuity of care and responsible digital-health adoption.",
+        "paragraphs": [
+          "Electronic medical records are becoming an increasingly important part of healthcare delivery in Nigeria. For doctors, the transition from paper to digital systems is more than an administrative or technology project. It changes how clinical information is recorded, retrieved, reviewed, shared and protected throughout a patient’s care.",
+          "Nigeria’s Digital in Health Initiative identifies electronic records and health-information exchange as elements of its digital-health direction. Its official resources include a national digital-health architecture for an interoperable ecosystem. For medical practitioners, this makes it important to understand both what an EMR can do and what responsible clinical use requires.",
+          "An EMR should support clinical care, not merely replace paper",
+          "At its simplest, an electronic medical record provides a digital representation of a patient’s clinical record. A hospital system may extend beyond consultation notes to registration, investigations, prescriptions, laboratory results, pharmacy, admissions and billing. The important question is whether it helps authorised professionals find accurate information and complete clinical work safely. A useful record should communicate the patient’s history, current problems, medications, allergies, investigations, treatment decisions and follow-up. Digitising an inefficient process does not automatically improve it: hospitals still need clear responsibilities for capturing, reviewing and correcting information.",
+          "Good documentation remains a professional responsibility",
+          "Templates, structured fields and previous records do not remove the clinician’s responsibility for accuracy. Documentation should communicate the presenting complaint and relevant history; significant examination findings; assessment and diagnosis; investigations ordered and results reviewed; medication and treatment decisions; allergies and important risks; follow-up and referrals; and subsequent corrections. Templates should support clinical reasoning rather than indiscriminate copying. A detailed note is not necessarily a useful note. The objective remains an understandable record that another authorised professional can interpret appropriately.",
+          "Patient identification is fundamental to digital safety",
+          "Information attached to the wrong patient can create serious clinical risk. Hospitals need reliable identification and duplicate-record procedures. Similar names, spelling differences, incomplete demographics and repeat registrations can fragment a patient’s history. Before relying on earlier diagnoses, medications or results, clinicians should be confident that the record belongs to the correct person. Matching tools and warnings can help, but identification remains a combination of system design and professional practice.",
+          "Electronic ordering should improve the clinical hand-off",
+          "A laboratory request should be traceable through collection, processing, result validation and clinical review. A prescription should move clearly from prescriber to pharmacy. An inpatient order should reach the appropriate ward team without depending on an undocumented verbal hand-off. The value comes from connecting these steps. An electronic consultation screen alongside separate paper processes may be useful, but it should not be confused with a fully connected clinical workflow.",
+          "Doctors need to understand what happens when technology fails",
+          "Cloud-based records may depend on internet access, local networks, workstations and power. Locally hosted systems also depend on servers, storage, backups and maintenance. Facilities need tested downtime procedures: how urgent care will be documented, how orders will be communicated and how information will later be reconciled. Cloud, web-based, PWA and offline are not interchangeable terms. Browser caching does not necessarily allow every clinical transaction to be created and synchronised safely without connectivity. Downtime behaviour should be demonstrated and rehearsed before it is needed during care.",
+          "Patient privacy must remain central to digital practice",
+          "Electronic records contain sensitive personal and health information. Nigeria’s Data Protection Act 2023 provides the statutory framework for personal-data protection, with the Nigeria Data Protection Commission responsible for its implementation. Responsible use requires more than passwords. Relevant controls include role-based access, individual accounts, audit trails, secure authentication, access reviews, recovery procedures and incident response. Shared accounts obscure who viewed or changed a record. Access should be reviewed when staff transfer, leave or change responsibilities. Institutions should obtain appropriate advice on their obligations and document responsibilities with their service providers.",
+          "Interoperability should be demonstrated, not assumed",
+          "Nigeria’s Digital in Health Initiative and national digital-health architecture place emphasis on data exchange and a more connected health system. For a hospital, interoperability should be defined through practical use cases: what information must move, between which systems, in which direction and under whose responsibility? FHIR, HL7 and DICOM may be relevant to particular integrations, but naming a standard in a brochure does not demonstrate a working connection. Ask the supplier to show the required exchange, including how patient identity, errors and access permissions are handled.",
+          "Doctors should participate in EMR selection and implementation",
+          "Doctors, nurses, health-information professionals, laboratory teams and pharmacists understand different parts of the patient journey. Their participation can expose problems that management or IT teams may not see during a presentation. Before adoption, clinicians should test realistic scenarios: finding a returning patient, recording an encounter, reviewing history, ordering investigations, receiving results, prescribing, correcting information and handling lost connectivity. Implementation, migration, training, support, privacy, data export and long-term responsibilities deserve attention alongside product features.",
+          "Choosing a system requires evidence rather than a popularity contest",
+          "No single EMR automatically suits every Nigerian hospital. Specialist clinics, private hospitals, public facilities and teaching hospitals have different workflows, resources and integration needs. Compare systems against the facility’s own requirements. For readers examining product and implementation approaches, AjirMed publishes a comparison of EMR systems for Nigerian hospitals covering vendor-supported, open-source and enterprise approaches. The comparison is vendor-published and should be used as one research resource rather than as an endorsement by NMA Ogun.",
+          "https://ajirmed.com/the-best-7-electronic-medical-records-emr-for-nigerian-hospitals.electronic-medical-records-emr-nigeria",
+          "Digital records should strengthen clinical care",
+          "Technology should make important information easier to find, support continuity between departments and improve accountability for changes. It should not create unnecessary barriers between clinicians and patients or encourage documentation merely to fill fields. Digital transformation is an ongoing professional and organisational process: users need further training, access needs review and workflows need refinement. The medium may change from paper to digital, but the obligation to maintain accurate, confidential and clinically useful records remains. Medical professionals’ participation is essential to ensuring that digital change supports care.",
+          "Editorial note: This article is intended for professional education and does not constitute an endorsement of any electronic medical record vendor or product.",
+          "References and further reading",
+          "https://www.digitalhealth.gov.ng/relevant-documents",
+          "https://www.ndpc.gov.ng/ndp-act-2023/"
+        ],
+        "author": "Ajirdiipo Limited — contributed article",
+        "date": "2026-10-21",
+        "venue": "",
+        "office": "",
+        "term": "",
+        "group": "current",
+        "mediaIds": [],
+        "sortOrder": 0
+      }
+    },
+    {
+      "id": "0a976ca0-ab5f-53ad-9be9-5a402916b99c",
+      "kind": "article",
+      "revision": 1,
+      "publishedAt": "2026-10-28T12:00:00.000Z",
+      "content": {
+        "slug": "a-new-chapter-nma-ogun-leadership-2026",
+        "title": "A new chapter: elections, handover and the first executive meetings",
+        "summary": "The photobook follows NMA Ogun from the AGM and election into the opening meetings of the 2026–2028 administration.",
+        "paragraphs": [
+          "NMA Ogun’s 2026 photobook opens with a sequence of photographs from the AGM and election, followed by the declaration of results. The captions identify the AGM and election day as 31 July. Together, the images introduce a new chapter in the association’s photographic record.",
+          "The record then moves to NMA House, Abeokuta. A group photograph is captioned as the inaugural State Officers Committee meeting on 4 August 2026. Another photograph records a handover by the past executive, associated with that inaugural meeting; the source explicitly marks the photograph date as provisional. That qualification is retained in the online album.",
+          "A later photograph documents the first State Executive Council meeting with the newly elected SOC on 6 October 2026. Read together, these images record the progression from the election gathering to the early working meetings of the new administration. They offer members a way to revisit the people and settings connected with the transition.",
+          "This photo report accompanies the association’s leadership information. The current executives page remains the place to consult the published officer profiles, while the photobook preserves moments from the transition and meetings. Names, appointments and responsibilities should be read from the association’s published records rather than inferred from a person’s position in a group photograph.",
+          "Source: NMA Ogun Photobook 2026–2028, working edition, pages 2–4, 7–8 and 42. The accompanying album retains the original caption qualifications."
+        ],
+        "author": "NMA Ogun State Secretariat",
+        "date": "2026-10-28",
+        "venue": "",
+        "office": "",
+        "term": "",
+        "group": "current",
+        "mediaIds": [],
+        "sortOrder": 0
+      }
+    },
+    {
+      "id": "7e255a22-2e68-5fe5-b763-4522c53571e8",
+      "kind": "article",
+      "revision": 1,
+      "publishedAt": "2026-10-28T12:00:00.000Z",
+      "content": {
+        "slug": "nma-ogun-police-courtesy-visit-august-2026",
+        "title": "NMA Ogun’s courtesy visit to the Commissioner of Police, in pictures",
+        "summary": "Photographs document the association’s delegation at Eleweran, Abeokuta, on 14 August 2026.",
+        "paragraphs": [
+          "The NMA Ogun photobook records a courtesy visit to the Ogun State Commissioner of Police at Eleweran, Abeokuta, on 14 August 2026. The two photographs provide complementary views of the engagement: a group photograph and a discussion around the meeting table.",
+          "Presented together, the photographs place the visit within the administration’s wider record of stakeholder engagements. The group image records the delegation at the venue; the meeting image captures the setting in which the discussion took place. The online album preserves the date and location given in the source captions.",
+          "For members following the association’s activities, a dated photographic record provides a useful point of reference. It identifies the occasion and makes it easier to connect a future formal report or communiqué with the event that it describes. It also helps preserve the association’s institutional memory beyond a single social-media update.",
+          "This article is a photographic account of the visit. Any detailed policy positions, undertakings or subsequent actions should be attributed to a corresponding published statement when available. Members seeking further information about the engagement can contact NMA Ogun State Secretariat.",
+          "Source: NMA Ogun Photobook 2026–2028, working edition, pages 11–12. Explore the advocacy and engagement album for other documented visits."
+        ],
+        "author": "NMA Ogun State Secretariat",
+        "date": "2026-10-28",
+        "venue": "",
+        "office": "",
+        "term": "",
+        "group": "current",
+        "mediaIds": [],
+        "sortOrder": 1
+      }
+    },
+    {
+      "id": "bdfe7d21-4f58-5e13-8adf-1af077642637",
+      "kind": "article",
+      "revision": 1,
+      "publishedAt": "2026-10-28T12:00:00.000Z",
+      "content": {
+        "slug": "nma-ogun-stakeholder-engagements-2026",
+        "title": "Across institutions: a photographic record of NMA Ogun’s engagements",
+        "summary": "The working photobook brings together visits to government offices, health institutions and professional colleagues from August to October 2026.",
+        "paragraphs": [
+          "NMA Ogun’s working photobook records a series of engagements across government offices, health institutions and the wider medical community. Rather than presenting these photographs as isolated images, the online collection brings them together as a dated visual record of the administration’s activities.",
+          "Photographs captioned 31 August 2026 include meetings with directors in the Ministry of Health and Hospital Management Board, and an engagement at the House of Assembly. The record continues with a visit to the Ogun State Head of Service on 9 September and photographs at the Medical Director’s office, Federal Medical Centre, Abeokuta, on 15 September.",
+          "The September sequence includes visits connected with the Ministry of Works and Neuropsychiatric Hospital, Aro, on 23 September. Photographs also document visits to senior professional colleagues and former NMA chairmen. Some individual photograph days are unconfirmed in the source; those captions remain qualified in the album.",
+          "The October record includes the visit to Senator Salisu on 6 October and photographs with the Commissioner for Health, Dr Tomi Coker, dated 16 October 2026. These images sit alongside the association’s internal meetings and community activities, giving members a broader view of the occasions represented in the photobook.",
+          "The captions establish the occasions, people and dates recorded by the source. Formal outcomes or commitments should be read alongside an official report when one is published. This collection serves as a photographic record and a starting point for exploring the association’s work.",
+          "Source: NMA Ogun Photobook 2026–2028, working edition, selected pages from the August–October engagement sequence. Full captions and source-page links accompany the photographs."
+        ],
+        "author": "NMA Ogun State Secretariat",
+        "date": "2026-10-28",
+        "venue": "",
+        "office": "",
+        "term": "",
+        "group": "current",
+        "mediaIds": [],
+        "sortOrder": 2
+      }
+    },
+    {
+      "id": "a79c66f5-b119-5835-ba5e-01cc0f626746",
+      "kind": "article",
+      "revision": 1,
+      "publishedAt": "2026-10-28T12:00:00.000Z",
+      "content": {
+        "slug": "world-mental-health-day-kuto-outreach-2026",
+        "title": "World Mental Health Day: NMA Ogun’s outreach at Kuto Garage",
+        "summary": "A photograph from the working photobook documents the outreach at Kuto Garage on 10 October 2026.",
+        "paragraphs": [
+          "A photograph in the NMA Ogun photobook records a free outreach at Kuto Garage to mark World Mental Health Day on 10 October 2026. The image brings a community-facing activity into the administration’s wider visual record of meetings, visits and professional occasions.",
+          "The photograph shows members of the team at the outreach setting. Published with its caption and date, it gives visitors to the website a direct view of one of the activities documented in the working edition. It also provides an enduring reference for members who want to revisit the occasion after the original event notices have passed.",
+          "The website presents this image within a dedicated World Mental Health Day album and links it to the full photobook. This makes the outreach easier to find without requiring readers to download the entire publication or search through unrelated photographs.",
+          "The current source is a photographic record. Detailed information about the programme, participating services or a fuller activity report can be added when supplied by the organising team. Members with an approved report or additional captioned photographs can share them with the Secretariat for inclusion in the association’s public archive.",
+          "Source: NMA Ogun Photobook 2026–2028, working edition, page 51. The source caption identifies the occasion, venue and date."
+        ],
+        "author": "NMA Ogun State Secretariat",
+        "date": "2026-10-28",
+        "venue": "",
+        "office": "",
+        "term": "",
+        "group": "current",
+        "mediaIds": [],
+        "sortOrder": 3
+      }
+    },
+    {
+      "id": "519416d8-fe12-571d-8344-ce5e91522bfe",
+      "kind": "article",
+      "revision": 1,
+      "publishedAt": "2026-10-28T12:00:00.000Z",
+      "content": {
+        "slug": "physicians-week-press-conference-2026",
+        "title": "Physicians’ Week 2026: the press conference in pictures",
+        "summary": "The photobook records NMA Ogun’s Physicians’ Week press conference on 19 October 2026.",
+        "paragraphs": [
+          "The NMA Ogun photobook includes a photograph captioned as the Physicians’ Week press conference on 19 October 2026. It forms part of a sequence that also documents the thanksgiving service and the “Saving the Savers” outreach.",
+          "The conference photograph records participants seated together beneath NMA signage. It gives the website’s Physicians’ Week archive a visual reference for the press engagement, alongside the published programme for the week. The activity date follows the caption supplied in the photobook.",
+          "The surrounding sequence begins with photographs of the thanksgiving service on 18 October and continues with outreach images dated 20 October. Bringing these occasions together helps members navigate the week as a connected programme while keeping the individual activities identifiable.",
+          "This photo report accompanies the visual archive. Readers seeking the association’s detailed statements should consult the corresponding published news reports or official communications. Additional approved conference photographs and a formal event report can be incorporated into the same archive as they become available.",
+          "Source: NMA Ogun Photobook 2026–2028, working edition, page 58. Explore the Physicians’ Week album for the related thanksgiving and outreach photographs."
+        ],
+        "author": "NMA Ogun State Secretariat",
+        "date": "2026-10-28",
+        "venue": "",
+        "office": "",
+        "term": "",
+        "group": "current",
+        "mediaIds": [],
+        "sortOrder": 4
+      }
+    },
+    {
+      "id": "33b28c0a-042d-5e83-8d29-18adf0de68dc",
+      "kind": "article",
+      "revision": 1,
+      "publishedAt": "2026-10-28T12:00:00.000Z",
+      "content": {
+        "slug": "saving-the-savers-medical-outreach-2026",
+        "title": "“Saving the Savers”: moments from the Physicians’ Week outreach",
+        "summary": "Team photographs and a presentation document the “Saving the Savers” medical outreach on 20 October 2026.",
+        "paragraphs": [
+          "The closing sequence of the supplied NMA Ogun working photobook documents the “Saving the Savers” medical outreach on 20 October 2026. Three photographs record the outreach team and a presentation during the activity.",
+          "Two group photographs show the team gathered at the outreach setting, while the third captures a presentation. Their captions give the activity a name and date, allowing the images to be presented as a distinct part of the Physicians’ Week archive.",
+          "The photographs follow the thanksgiving service and press conference in the photobook’s October sequence. On the website, readers can move between those related activities, view the images at a larger size and consult the original publication through the source-page links.",
+          "This visual account preserves the team’s place in the association’s record of the week. It can be expanded with an approved narrative report from the organisers, including further programme details and documented outcomes. The current captions provide the basis for the information published here.",
+          "The wider photobook brings community activity, stakeholder visits and internal association meetings into one collection. The online albums make that collection easier to explore while retaining the original working edition as a reference.",
+          "Source: NMA Ogun Photobook 2026–2028, working edition, pages 59–61. The activity is dated 20 October 2026 in the source captions."
+        ],
+        "author": "NMA Ogun State Secretariat",
+        "date": "2026-10-28",
+        "venue": "",
+        "office": "",
+        "term": "",
+        "group": "current",
+        "mediaIds": [],
+        "sortOrder": 5
+      }
+    }
+  ],
+  "media": [
+    {
+      "id": "0e66982b-bb8b-4834-8da8-3325b277071b",
+      "mime": "image/webp",
+      "alt": "Portrait of Dr Enimola Sunday",
+      "filename": "enimola-sunday.webp",
+      "bytes": 14016
+    },
+    {
+      "id": "33beebc2-1b01-4a8d-8d54-fe7f253eaf5f",
+      "mime": "image/webp",
+      "alt": "Portrait of Dr Bajomo Olutope Grace",
+      "filename": "bajomo-olutope-grace.webp",
+      "bytes": 20784
+    },
+    {
+      "id": "23b28849-ce13-4b64-b683-8e7dda7ddd66",
+      "mime": "image/webp",
+      "alt": "Portrait of Dr Oluseye Abiodun Olufunso",
+      "filename": "oluseye-abiodun-olufunso.webp",
+      "bytes": 15890
+    },
+    {
+      "id": "cabcbcfe-144e-47fd-9335-3c31873c3972",
+      "mime": "image/webp",
+      "alt": "Portrait of Dr Ayokunle Oluwaseun Adeleye",
+      "filename": "ayokunle-oluwaseun-adeleye.webp",
+      "bytes": 17168
+    },
+    {
+      "id": "a3013870-bdc1-46c5-ac41-6fa866692623",
+      "mime": "image/webp",
+      "alt": "Portrait of Dr Bitto Msoo Immanuel",
+      "filename": "bitto-msoo-immanuel.webp",
+      "bytes": 17466
+    },
+    {
+      "id": "05ca82b7-2fb0-493e-8a8f-af71cd3799c5",
+      "mime": "image/webp",
+      "alt": "Portrait of Dr Fagbenro Olugbenga Alabi",
+      "filename": "fagbenro-olugbenga-alabi.webp",
+      "bytes": 9950
+    },
+    {
+      "id": "83eda0b5-70e2-49ae-8477-316b3b2589cb",
+      "mime": "image/webp",
+      "alt": "Portrait of Dr Damilola Jeremiah Ayowole",
+      "filename": "damilola-jeremiah-ayowole.webp",
+      "bytes": 12812
+    },
+    {
+      "id": "87f5d97d-17e6-49d5-be24-279079b0a6f0",
+      "mime": "image/webp",
+      "alt": "Portrait of Dr Soneye Islamiat",
+      "filename": "soneye-islamiat.webp",
+      "bytes": 8200
+    },
+    {
+      "id": "4e775c5f-e89b-49f2-8ff9-3ccafc9a6da2",
+      "mime": "image/webp",
+      "alt": "Portrait of Dr Akintunde Rotimi Richard",
+      "filename": "akintunde-rotimi-richard.webp",
+      "bytes": 13882
+    },
+    {
+      "id": "e6a9769a-5550-448f-9dab-e8d0abf35a84",
+      "mime": "image/webp",
+      "alt": "Portrait of Dr Kareem Yesiru A.",
+      "filename": "kareem-yesiru.webp",
+      "bytes": 16956
+    },
+    {
+      "id": "f2e522e7-37fb-4c9d-add4-12793109d0b4",
+      "mime": "image/webp",
+      "alt": "Portrait of Dr Luqman Ogunjimi",
+      "filename": "luqman-ogunjimi.webp",
+      "bytes": 14368
+    },
+    {
+      "id": "0c80e08c-ec96-49a5-9d0d-edc9dd4319e2",
+      "mime": "image/webp",
+      "alt": "Portrait of Dr Osikoya Oludotun Jonathan",
+      "filename": "osikoya-oludotun-jonathan.webp",
+      "bytes": 15238
+    },
+    {
+      "id": "bb14b087-f7f7-4063-8910-a92943b9bfae",
+      "mime": "application/pdf",
+      "alt": "NMA Ogun Newsletter — Third Edition, 2026. Biannual web edition; 52 pages.",
+      "filename": "nma-ogun-newsletter-third-edition-2026.pdf",
+      "bytes": 7609623
+    },
+    {
+      "id": "d8decb80-5886-4f00-b50a-35e8dbf01d95",
+      "mime": "image/webp",
+      "alt": "NMA Ogun courtesy visit to the Acting Provost, Neuropsychiatric Hospital Aro · NMA Ogun Newsletter, Third Edition, 2026.",
+      "filename": "aro-courtesy.webp",
+      "bytes": 61844
+    },
+    {
+      "id": "f22769f4-8d00-44f6-823e-9494553c63a2",
+      "mime": "image/webp",
+      "alt": "NMA Ogun courtesy visit to the Medical Director, FMC Abeokuta · NMA Ogun Newsletter, Third Edition, 2026.",
+      "filename": "fmc-courtesy.webp",
+      "bytes": 35182
+    },
+    {
+      "id": "b3158580-a7d8-4904-8700-8c6c0666fb92",
+      "mime": "image/webp",
+      "alt": "NMA Ogun courtesy visit to the Commissioner of Police, Ogun State · NMA Ogun Newsletter, Third Edition, 2026.",
+      "filename": "police-courtesy.webp",
+      "bytes": 82026
+    },
+    {
+      "id": "d787ffe1-d85d-4c42-962a-055357beeac0",
+      "mime": "image/webp",
+      "alt": "NMA Ogun State Executive Council meeting, October 2026 · NMA Ogun Newsletter, Third Edition, 2026.",
+      "filename": "sec-meeting.webp",
+      "bytes": 46752
+    },
+    {
+      "id": "343f07ee-2f91-44b7-af22-b2b91c63ce5c",
+      "mime": "image/webp",
+      "alt": "MDCAN NPH Aro members in a meeting · NMA Ogun Newsletter, Third Edition, 2026.",
+      "filename": "aro-consultants.webp",
+      "bytes": 22500
+    },
+    {
+      "id": "5f53834b-8ce7-4451-b10d-1a25c1a23831",
+      "mime": "image/webp",
+      "alt": "ARD OOUTH meeting featured in the 2026 newsletter · NMA Ogun Newsletter, Third Edition, 2026.",
+      "filename": "oouth-meeting.webp",
+      "bytes": 79346
+    },
+    {
+      "id": "c04939ba-f63b-4ef9-ae7f-391eb8df5843",
+      "mime": "image/webp",
+      "alt": "MWAN Ogun advocacy activities featured in the 2026 newsletter · NMA Ogun Newsletter, Third Edition, 2026.",
+      "filename": "mwan-advocacy.webp",
+      "bytes": 41296
+    },
+    {
+      "id": "e4842710-4b9c-496f-b1a4-cc198d9e7640",
+      "mime": "image/webp",
+      "alt": "ARD FMC Abeokuta executives during a visit to the State House of Assembly · NMA Ogun Newsletter, Third Edition, 2026.",
+      "filename": "fmc-ard-assembly.webp",
+      "bytes": 111876
+    },
+    {
+      "id": "214b330a-4ddd-43c3-b72e-2ae962a16c80",
+      "mime": "image/webp",
+      "alt": "ARD BUTH 2026 scientific conference featured in the newsletter · NMA Ogun Newsletter, Third Edition, 2026.",
+      "filename": "buth-conference.webp",
+      "bytes": 47484
+    },
+    {
+      "id": "29df3657-d43d-482e-988e-feec3da89192",
+      "mime": "image/webp",
+      "alt": "Selected MDCAN HMB–MOH activities, as presented in the newsletter · NMA Ogun Newsletter, Third Edition, 2026.",
+      "filename": "hmb-activities.webp",
+      "bytes": 55260
+    },
+    {
+      "id": "a5b897b0-52e1-4c5e-92bb-e2e26d016664",
+      "mime": "image/webp",
+      "alt": "Sacred Heart Hospital anniversary photographs featured in the newsletter · NMA Ogun Newsletter, Third Edition, 2026.",
+      "filename": "sacred-heart-community.webp",
+      "bytes": 58988
+    },
+    {
+      "id": "8cc90a07-5a9f-4614-a6c1-050266579a1d",
+      "mime": "image/webp",
+      "alt": "The newsletter interview at Sacred Heart Hospital, Lantoro, Abeokuta · NMA Ogun Newsletter, Third Edition, 2026.",
+      "filename": "sacred-heart-interview.webp",
+      "bytes": 60244
+    }
+  ]
 }

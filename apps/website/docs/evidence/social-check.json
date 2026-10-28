@@ -1,0 +1,70 @@
+{
+  "dnsSource": "public DNS (1.1.1.1 / 8.8.8.8), TLS verified normally",
+  "checkedAt": "2026-10-16T07:48:50.848Z",
+  "origin": "https://nmaogun.com.ng",
+  "userAgent": "facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)",
+  "pages": [
+    {
+      "path": "/",
+      "status": 200,
+      "title": "NMA Ogun — Nigerian Medical Association, Ogun State Branch",
+      "image": "https://nmaogun.com.ng/social/nma-ogun-share.png"
+    },
+    {
+      "path": "/about",
+      "status": 200,
+      "title": "About NMA Ogun — Our purpose &amp; values",
+      "image": "https://nmaogun.com.ng/social/nma-ogun-share.png"
+    },
+    {
+      "path": "/membership",
+      "status": 200,
+      "title": "Membership — NMA Ogun",
+      "image": "https://nmaogun.com.ng/social/nma-ogun-share.png"
+    },
+    {
+      "path": "/programmes",
+      "status": 200,
+      "title": "Programmes &amp; professional learning — NMA Ogun",
+      "image": "https://nmaogun.com.ng/social/nma-ogun-share.png"
+    },
+    {
+      "path": "/gallery",
+      "status": 200,
+      "title": "Gallery — NMA Ogun",
+      "image": "https://nmaogun.com.ng/social/nma-ogun-share.png"
+    },
+    {
+      "path": "/gallery/meeting-life",
+      "status": 200,
+      "title": "Meeting life — Gallery — NMA Ogun",
+      "image": "https://nmaogun.com.ng/social/nma-ogun-share.png"
+    },
+    {
+      "path": "/gallery/doctors-house",
+      "status": 200,
+      "title": "Doctors’ House — Gallery — NMA Ogun",
+      "image": "https://nmaogun.com.ng/social/nma-ogun-share.png"
+    },
+    {
+      "path": "/privacy",
+      "status": 200,
+      "title": "Privacy — NMA Ogun",
+      "image": "https://nmaogun.com.ng/social/nma-ogun-share.png"
+    },
+    {
+      "path": "/accessibility",
+      "status": 200,
+      "title": "Accessibility — NMA Ogun",
+      "image": "https://nmaogun.com.ng/social/nma-ogun-share.png"
+    }
+  ],
+  "image": {
+    "status": 200,
+    "width": 1200,
+    "height": 630,
+    "bytes": 471352
+  },
+  "robots": "allowed",
+  "facebookDebugger": "Separate authenticated Meta debugger result required; this is a crawler/metadata check only."
+}

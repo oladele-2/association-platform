@@ -477,10 +477,13 @@ a.gallery-item {
   max-width: 540px;
 }
 .site-header nav {
-  gap: 21px;
+  gap: 18px;
 }
+.visually-hidden { position:absolute; width:1px; height:1px; margin:-1px; padding:0; border:0; clip-path:inset(50%); overflow:hidden; white-space:nowrap; }
+.footer-email { overflow-wrap:anywhere; }
+input:focus-visible { outline:3px solid var(--gold); outline-offset:3px; }
 /* A useful mobile navigation remains available without JavaScript. */
-@media (max-width: 1100px) {
+@media (max-width: 1200px) {
   .header-inner {
     flex-wrap: wrap;
     min-height: 90px;

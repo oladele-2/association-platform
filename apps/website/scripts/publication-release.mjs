@@ -2,7 +2,7 @@ import { readFile, writeFile, mkdir, rename, cp, rm, stat } from 'node:fs/promis
 import { resolve, join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { randomUUID } from 'node:crypto';
-import { validateSnapshot } from '../../../packages/website-content/index.ts';
+import { validateSnapshot } from '../vendor/website-content/index.ts';
 
 const app = resolve(import.meta.dirname, '..');
 export async function readRelease(directory) {
@@ -73,6 +73,15 @@ export async function assembleRelease(
   await mkdir(output, { recursive: true });
   for (const media of snapshot.media)
     await cp(join(source, 'media', media.id), join(output, media.id));
+  await writeFile(join(output, 'snapshot.json'), JSON.stringify(snapshot) + '\n');
+  let origin = { portalGeneration: null, sourceSha: null };
+  try { origin = JSON.parse(await readFile(join(source, 'source.json'), 'utf8')); } catch (error) { if (error.code !== 'ENOENT') throw error; }
+  if (origin.portalGeneration !== null && origin.portalGeneration !== snapshot.generation)
+    throw new Error('Publication source generation does not match the packaged snapshot.');
+  await writeFile(join(dist, 'publication-status.json'), JSON.stringify({
+    schemaVersion: 1, tenant: 'nmaogun', portalGeneration: origin.portalGeneration, sourceSha: origin.sourceSha,
+    builtAt: new Date().toISOString(), entries: snapshot.entries.map(entry => ({ id: entry.id, revision: entry.revision })),
+  }) + '\n');
   return snapshot;
 }
 

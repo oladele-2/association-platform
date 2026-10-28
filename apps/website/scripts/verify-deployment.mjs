@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+import { checkedFetch } from './check-fetch.mjs';
+const expected = JSON.parse(await readFile(new URL('../dist/publication-status.json', import.meta.url), 'utf8'));
+const response = await checkedFetch('https://nmaogun.com.ng/publication-status.json', { cache: 'no-store' });
+assert.equal(response.status, 200);
+const actual = await response.json();
+assert.deepEqual(actual, expected, 'The live manifest must match the exact verified deployment artifact.');
+assert.equal(actual.portalGeneration, process.argv[2]);
+assert.equal(actual.sourceSha, process.argv[3]);
+const hidden = await checkedFetch('https://nmaogun.com.ng/_publication/snapshot.json');
+assert.equal(hidden.status, 404, 'The raw snapshot stays inaccessible.');
+await hidden.body?.cancel();
+console.log('Verified the live publication generation, source commit, approved revision list and snapshot protection.');

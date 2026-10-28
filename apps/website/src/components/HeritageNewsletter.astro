@@ -1,0 +1,12 @@
+---
+import { Image } from 'astro:assets';
+import cover from '../assets/newsletter/third-edition-2026-cover.png';
+import { newsletterEdition, issuePath } from '../data/newsletter';
+import '../styles/newsletter.css';
+import { pastLeadership, selectNewsletterEditions } from '../data/resource-features.mjs';
+import { publication, secretariatEmail } from '../data/home';
+const history = ['1979–1980', '2014–2016', '2024–2026'].map(term => pastLeadership.find(item => item.term === term)!);
+const edition = selectNewsletterEditions(publication)[0];
+const featuredEdition = newsletterEdition(publication);
+---
+<section class="container home-section heritage-newsletter" aria-label="Leadership history and newsletters"><article class="heritage-panel"><p class="eyebrow">Those who served</p><h2>Leadership<br /><em>through the years.</em></h2><p>Discover the chairmen and secretaries recorded in NMA Ogun’s historical leadership list.</p><ol class="heritage-preview">{history.map(item => <li><time>{item.term}</time><strong>{item.chairman}</strong><span>Chairman</span></li>)}</ol><a class="text-link" href="/history">Explore the leadership archive ↗</a></article><article class="newsletter-panel"><p class="eyebrow">From the newsletter desk</p><h2>Our stories.<br /><em>Our shared voice.</em></h2><p>Affiliate news, professional reflections and members’ milestones bring the association’s story to life.</p>{edition ? <div class="newsletter-edition-preview">{featuredEdition && <a class="newsletter-mini-cover" href={issuePath}><Image src={cover} width={230} format="webp" alt="Cover of NMA Ogun Newsletter, Third Edition, 2026" loading="lazy" /></a>}<span class="programme-status">Biannual · Published edition</span><h3><a href={featuredEdition ? issuePath : `/media/${edition.content.mediaIds[0]}`}>{edition.content.title}</a></h3><p>{edition.content.summary}</p><a class="text-link" href={`/media/${edition.content.mediaIds[0]}`}>Read the newsletter PDF ↗</a></div> : <p class="home-note">Published newsletter editions will appear here when available. For information about future editions, contact the Secretariat.</p>}<div class="home-link-row"><a class="button" href="/newsletter">Visit the newsletter desk ↗</a><a class="text-link" href={`mailto:${secretariatEmail}?subject=Newsletter%20enquiry`}>Newsletter enquiries ↗</a></div></article></section>

@@ -1,12 +1,13 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHero from '../../components/PageHero.astro';
+import PhotobookGallery from '../../components/PhotobookGallery.astro';
 import Gallery from '../../components/Gallery.astro';
 import { albums } from '../../data/media';
 export function getStaticPaths() { return albums.map(album => ({ params: { slug: album.slug }, props: { album } })); }
 const { album } = Astro.props;
 ---
 <BaseLayout title={`${album.title} — Gallery — NMA Ogun`} description={album.description}>
-  <PageHero eyebrow={album.title} title={album.title} description={album.description} parent={{ label: 'Gallery', href: '/gallery' }} />
-  <section class="container page-section album-detail" aria-label={`${album.title} photographs`}><Gallery names={album.photos} /><a class="text-link section-link" href="/gallery">Back to all albums <span aria-hidden="true">↗</span></a></section>
+  <PageHero eyebrow={album.title} title={album.title} description={album.description} parent={{ label: 'Gallery', href: '/gallery' }} photograph={album.coverPage} />
+  <section class="container page-section album-detail" aria-label={`${album.title} photographs`}>{album.bookPages ? <><PhotobookGallery pages={album.bookPages} /><p class="book-note">Photographs and captions from the NMA Ogun Photobook 2026–2028 working edition. Provisional and unconfirmed dates remain identified.</p><a class="text-link" href="/photobook">Explore the photobook ↗</a></> : <Gallery names={album.photos} />}<a class="text-link section-link" href="/gallery">Back to all albums <span aria-hidden="true">↗</span></a></section>
 </BaseLayout>

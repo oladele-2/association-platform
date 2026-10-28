@@ -1,0 +1,34 @@
+---
+import { Image } from 'astro:assets';
+import one from '../assets/home/slide1.jpeg';
+import two from '../assets/home/slide2.jpeg';
+import three from '../assets/home/slide3.jpg';
+import four from '../assets/church/thanksgiving-congregation.jpeg';
+import five from '../assets/church/thanksgiving-front-row.jpeg';
+import six from '../assets/church/thanksgiving-fellowship.jpeg';
+import seven from '../assets/church/thanksgiving-community.jpeg';
+import advocacy from '../assets/photobook/slide-53.webp';
+import outreach from '../assets/photobook/slide-59.webp';
+const slides = [
+  { image: one, title: 'Shared purpose. Collective progress.', caption: 'A place for conversation, collaboration and the work of our profession.', alt: 'Participants gathered around a meeting table at Doctors’ House', label: 'Our professional community' },
+  { image: two, title: 'A home for the profession.', caption: 'Doctors’ House connects our people, our ideas and our association.', alt: 'Front courtyard and two wings of Doctors’ House', label: 'Doctors’ House' },
+  { image: three, title: 'Rooted in Ogun. Connected by care.', caption: 'Strengthening the connections that support medical and dental practitioners.', alt: 'Exterior of Doctors’ House with green walls and an upper balcony', label: 'A shared place' },
+  { image: four, title: 'Together in thanksgiving.', caption: 'Doctors gathered for the church service opening Physicians’ Week, 18 October 2026.', alt: 'Doctors and fellow worshippers seated at the Physicians’ Week thanksgiving church service', label: 'Physicians’ Week 2026' },
+  { image: five, title: 'One profession. A shared spirit.', caption: 'A moment of fellowship as NMA Ogun begins a week of connection and service.', alt: 'Four attendees seated in the front row at the thanksgiving service', label: 'Thanksgiving service · 18 October' },
+  { image: six, title: 'Our community, coming together.', caption: 'Faces from the Physicians’ Week thanksgiving service in Ogun State.', alt: 'Attendees seated across rows of chairs during the church service', label: 'The people behind the profession' },
+  { image: seven, title: 'A week begins with gratitude.', caption: 'Celebrating the bonds that connect our professional community.', alt: 'A wide view of doctors and fellow worshippers at the thanksgiving service', label: 'Physicians’ Week · 18–24 October 2026' },
+  { image: advocacy, title: 'Engaging for our profession.', caption: 'NMA Ogun’s team with the Commissioner for Health, 16 October 2026.', alt: 'NMA Ogun delegation with the Ogun State Commissioner for Health', label: 'Advocacy & engagement' },
+  { image: outreach, title: 'A shared commitment to service.', caption: 'The “Saving the Savers” outreach team during Physicians’ Week, 20 October 2026.', alt: 'The outreach team gathered in green shirts during Physicians’ Week', label: 'NMA Ogun at work' },
+];
+---
+<section class="home-hero" aria-labelledby="home-title">
+  <div class="home-hero-copy"><p class="eyebrow">The profession. The people. The purpose.</p><h1 id="home-title">A stronger medical community.<br /><em>A healthier Ogun.</em></h1><p>Supporting medical and dental practitioners through professional learning, advocacy and a shared commitment to quality healthcare in Ogun State.</p><div class="home-hero-actions"><a class="button button-cream" href="https://portal.nmaogun.com.ng/login">Member portal <span aria-hidden="true">↗</span></a><a class="text-link light-link" href="/membership">Join our community <span aria-hidden="true">↗</span></a></div></div>
+  <div class="home-slideshow" data-slideshow role="region" aria-roledescription="carousel" aria-label="NMA Ogun in pictures">
+    {slides.map((slide, index) => <figure class="home-slide" data-slide hidden={index !== 0} role="group" aria-roledescription="slide" aria-label={`${index + 1} of ${slides.length}`}>
+      <Image src={slide.image} widths={[480, 800, 1200, 1440]} sizes="(max-width: 900px) 100vw, 58vw" width={1440} format="webp" quality={83} alt={slide.alt} loading={index === 0 ? 'eager' : 'lazy'} fetchpriority={index === 0 ? 'high' : 'auto'} />
+      <figcaption><span class="slide-label">{slide.label}</span><p class="slide-title">{slide.title}</p><p>{slide.caption}</p></figcaption>
+    </figure>)}
+    <div class="slideshow-controls" data-slide-controls hidden><button type="button" data-slide-prev aria-label="Previous slide">←</button><div class="slide-dots">{slides.map((slide, index) => <button type="button" data-slide-index={index} aria-label={`Show slide ${index + 1}: ${slide.title}`} aria-current={index === 0 ? 'true' : undefined}><span aria-hidden="true">{String(index + 1).padStart(2, '0')}</span></button>)}</div><button type="button" data-slide-next aria-label="Next slide">→</button><button type="button" data-slide-pause aria-label="Pause slideshow">Pause</button></div>
+    <p class="visually-hidden" data-slide-status aria-live="polite" aria-atomic="true"></p>
+  </div>
+</section>

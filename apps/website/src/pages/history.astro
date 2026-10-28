@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PhotobookImage from '../components/PhotobookImage.astro';
+import PageHero from '../components/PageHero.astro';
+import { pastLeadership } from '../data/resource-features.mjs';
+import { secretariatEmail } from '../data/home';
+import '../styles/home.css';
+import '../styles/resource-features.css';
+---
+<BaseLayout title="Past leadership — NMA Ogun" description="Explore the chairmen and secretaries recorded in NMA Ogun’s historical leadership archive.">
+  <PageHero eyebrow="Our leadership archive" title="Remembering those who served." description="A record of chairmen and secretaries whose service forms part of the Nigerian Medical Association, Ogun State Branch story." />
+  <section class="container page-section"><div class="archive-introduction"><h2>Names. Terms.<br /><em>A record of service.</em></h2><p>This selection follows the names and terms recorded in the association’s historical list. Some periods and secretary entries are not recorded here, and names are retained as supplied. The earliest listed term does not establish the branch’s founding date.</p></div><div class="history-table-wrap" role="region" aria-label="Past chairmen and secretaries" tabindex="0"><table class="history-table"><caption>Recorded leadership terms</caption><thead><tr><th scope="col">Term</th><th scope="col">Chairman</th><th scope="col">Secretary</th></tr></thead><tbody>{pastLeadership.map(item => <tr><th scope="row">{item.term}</th><td>{item.chairman}</td><td>{item.secretary ?? 'Not recorded in this selection'}</td></tr>)}</tbody></table></div><div class="archive-follow-up"><p>Help us keep this record accurate. Please send documented corrections or additional historical information to the Secretariat.</p><a class="text-link" href={`mailto:${secretariatEmail}?subject=Leadership%20archive%20correction`}>Send an archive correction ↗</a><a class="text-link" href="/executives">Meet the current executive team ↗</a></div></section>
+  <section class="container page-section book-banner"><PhotobookImage page={10} /><div><p class="eyebrow">Recognition &amp; service</p><h2>Preserving the occasions behind the names.</h2><p>The 2026 photobook includes the award ceremony for the immediate past Chairman on 13 August 2026, alongside other moments of association life.</p><a class="text-link" href="/gallery/recognition-and-awards-2026">Explore the recognition album ↗</a></div></section>
+</BaseLayout>

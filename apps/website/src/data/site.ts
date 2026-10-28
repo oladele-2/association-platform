@@ -7,7 +7,7 @@ export const site = {
 } as const;
 
 // Review is a build-time choice. A query string cannot enable it.
-export const reviewMode = import.meta.env.MODE === 'review';
+export const reviewMode = false;
 export const portalLinks = {
   login: `${site.portal}/login`,
   register: `${site.portal}/register`,
@@ -16,11 +16,13 @@ export const portalLinks = {
 
 export const mainLinks = [
   { href: '/about', label: 'About us' },
+  { href: '/news', label: 'News & articles' },
   { href: '/executives', label: 'Executives' },
   { href: '/programmes', label: 'Programmes' },
+  { href: '/affiliates', label: 'Our affiliates' },
   { href: '/gallery', label: 'Gallery' },
   { href: '/membership', label: 'Membership' },
-  ...(reviewMode ? [{ href: '/contact', label: 'Contact' }] : []),
+  { href: '/contact', label: 'Contact' },
 ];
 
 export const coreRoutes = [
@@ -28,8 +30,19 @@ export const coreRoutes = [
   '/about',
   '/executives',
   '/committees',
+  '/affiliates',
   '/programmes',
+  '/programmes/year-ahead',
+  '/physicians-week-2026',
+  '/history',
+  '/newsletter',
+  '/newsletter/2026-third-edition',
+  '/research',
+  '/facilities',
+  '/contact',
   '/gallery',
+  '/photobook',
+  '/gallery/physicians-week-thanksgiving-2026',
   '/gallery/meeting-life',
   '/gallery/doctors-house',
   '/membership',

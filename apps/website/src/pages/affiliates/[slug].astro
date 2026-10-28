@@ -1,0 +1,17 @@
+---
+import { renderNewsletterAffiliate } from '../../data/newsletter-affiliate.mjs';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { affiliateSeeds } from '../../../vendor/website-content/affiliates.ts';
+import { renderAffiliatePage } from '../../../vendor/website-content/render.ts';
+import { validateSnapshot } from '../../../vendor/website-content/index.ts';
+import release from '../../../content/release/snapshot.json';
+export function getStaticPaths() {
+  const snapshot = validateSnapshot(release);
+  const slugs = new Set([...affiliateSeeds.map(item => item.slug), ...snapshot.entries.filter(item => item.kind === 'affiliate').map(item => item.content.slug)]);
+  return [...slugs].map(slug => ({ params: { slug } }));
+}
+const page = renderAffiliatePage(`/affiliates/${Astro.params.slug}`, validateSnapshot(release))!;
+---
+<BaseLayout title={`${page.title} — NMA Ogun`} description={page.description}>
+  <Fragment set:html={page.html + renderNewsletterAffiliate(`/affiliates/${Astro.params.slug}`, validateSnapshot(release))} />
+</BaseLayout>

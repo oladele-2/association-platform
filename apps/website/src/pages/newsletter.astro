@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import NewsletterEdition from '../components/NewsletterEdition.astro';
+import PageHero from '../components/PageHero.astro';
+import { publication, secretariatEmail } from '../data/home';
+import { selectNewsletterEditions } from '../data/resource-features.mjs';
+import { longDate } from '../data/editorial';
+import '../styles/home.css';
+import '../styles/resource-features.css';
+const editions = selectNewsletterEditions(publication);
+---
+<BaseLayout title="Newsletter desk — NMA Ogun" description="Association stories, affiliate updates and newsletter editions from NMA Ogun, with information about the newsletter’s editorial themes.">
+  <PageHero eyebrow="The newsletter desk" title="Our stories. Our shared voice." description="A place for affiliate news, professional reflections, photographs and the milestones that connect the NMA Ogun community." />
+  <NewsletterEdition />
+  <section class="container page-section" aria-labelledby="newsletter-editions-title"><div class="home-section-heading"><div><p class="eyebrow">Read &amp; discover</p><h2 id="newsletter-editions-title">Published <em>editions.</em></h2></div></div>{editions.length ? <div class="home-news-grid">{editions.map(entry => <article class="home-news-card">{entry.content.date && <time datetime={entry.content.date}>{longDate(entry.content.date)}</time>}<h3>{entry.content.title}</h3><p>{entry.content.summary}</p><a class="text-link" href={`/media/${entry.content.mediaIds[0]}`}>Read newsletter PDF ↗</a></article>)}</div> : <div class="newsletter-empty"><p>Published newsletter editions will appear here when available.</p><p>To enquire about an edition or a future contribution, contact NMA Ogun State Secretariat.</p><a class="button" href={`mailto:${secretariatEmail}?subject=Newsletter%20enquiry`}>Newsletter enquiries ↗</a></div>}</section>
+  <section class="container page-section newsletter-archive" aria-labelledby="newsletter-archive-title"><span class="programme-status">Archived call · Closed</span><p class="eyebrow">Physicians’ Week newsletter</p><h2 id="newsletter-archive-title">A record of<br /><em>the September call.</em></h2><p>The supplied call invited contributions from members, affiliates and institutional branches for the Physicians’ Week newsletter edition. Its submission window was <strong>4–30 September 2026</strong> and is closed.</p><div class="newsletter-themes"><div><h3>Editorial themes</h3><ul><li>Affiliate news and updates</li><li>Special reports and feature articles</li><li>Event highlights and photographs</li><li>Essays, poems and professional opinion</li><li>Members’ milestones and honours</li></ul></div><div><h3>Guidance in the archived call</h3><ul><li>A maximum of 500 words per article</li><li>Editable Word documents</li><li>High-resolution photographs with captions</li><li>Author name, designation and institution or affiliate</li></ul><p class="home-note">These were the requirements for the closed September call. Future editions may have different deadlines and requirements.</p></div></div><a class="text-link" href={`mailto:${secretariatEmail}?subject=Future%20newsletter%20edition`}>Ask about future editions ↗</a></section>
+</BaseLayout>

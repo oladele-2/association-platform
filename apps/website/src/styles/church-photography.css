@@ -1,0 +1,10 @@
+/* Real event photography, kept separate from page titles for readable long headings. */
+body { --chapter-photo: url('../assets/church/thanksgiving-congregation.jpeg'); }
+body[data-page-family="news"], body[data-page-family="newsletter"], body[data-page-family="history"] { --chapter-photo: url('../assets/church/thanksgiving-community.jpeg'); }
+body[data-page-family="executives"], body[data-page-family="committees"], body[data-page-family="affiliates"], body[data-page-family="membership"] { --chapter-photo: url('../assets/church/thanksgiving-front-row.jpeg'); }
+body[data-page-family="programmes"], body[data-page-family="events"], body[data-page-family="physicians-week-2026"], body[data-page-family="contact"] { --chapter-photo: url('../assets/church/thanksgiving-fellowship.jpeg'); }
+.page-hero::after, .people-hero::after, .affiliate-profile-hero::after { content: ''; display: block; height: clamp(210px, 27vw, 340px); margin-top: 32px; background: var(--chapter-photo) center 42% / cover no-repeat; border-bottom: 5px solid #cbb27a; }
+.page-hero-grid, .people-intro, .affiliate-profile-heading { min-width: 0; }
+.page-hero h1, .people-intro h1 { overflow-wrap: anywhere; }
+.church-intro { max-width: 650px; margin-block: 20px 28px; }
+@media(max-width:600px) { .page-hero::after, .people-hero::after, .affiliate-profile-hero::after { height: 230px; background-position: center 40%; margin-top: 24px; } .slide-dots { gap: 2px; flex-wrap: wrap; } .slideshow-controls { flex-wrap: wrap; } .slideshow-controls button { min-width: 28px; } .home-slide figcaption { bottom: 125px; } }

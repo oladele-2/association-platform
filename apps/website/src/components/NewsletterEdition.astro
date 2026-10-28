@@ -1,0 +1,9 @@
+---
+import { Image } from 'astro:assets';
+import cover from '../assets/newsletter/third-edition-2026-cover.png';
+import { publication } from '../data/home';
+import { newsletterEdition, issuePath } from '../data/newsletter';
+import '../styles/newsletter.css';
+const edition = newsletterEdition(publication);
+---
+{edition && <section class="newsletter-feature container" aria-labelledby="edition-feature-title"><a href={issuePath} class="newsletter-cover"><Image src={cover} width={360} widths={[240,360,540]} sizes="(max-width:600px) 230px, 300px" format="webp" alt="Cover of NMA Ogun Newsletter, Third Edition, 2026" loading="eager" /></a><div><p class="eyebrow">The biannual newsletter · Third Edition, 2026</p><h2 id="edition-feature-title">A profession in conversation.<br /><em>A community in focus.</em></h2><p>Explore 52 pages of professional perspectives, leadership, association photonews and affiliate life. Read selected features on the website or open the complete edition.</p><ul><li>Securing the future of medicine in Nigeria</li><li>Doctors’ wellbeing and responsible digital innovation</li><li>An interview with Dr Gregory Arifalo of Sacred Heart Hospital</li></ul><div class="home-link-row"><a class="button" href={issuePath}>Explore this edition ↗</a><a class="text-link" href={edition.href} target="_blank" rel="noopener noreferrer">Read PDF · {edition.megabytes} MB ↗</a></div><p class="newsletter-note">Biannual · 52 pages · Optimised PDF with bookmarks. Web features retain contributor credits and link to the original articles.</p></div></section>}

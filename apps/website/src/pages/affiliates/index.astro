@@ -1,0 +1,10 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { renderAffiliatePage } from '../../../vendor/website-content/render.ts';
+import snapshot from '../../../content/release/snapshot.json';
+import { validateSnapshot } from '../../../vendor/website-content/index.ts';
+const page = renderAffiliatePage('/affiliates', validateSnapshot(snapshot))!;
+---
+<BaseLayout title={`${page.title} — NMA Ogun`} description={page.description}>
+  <Fragment set:html={page.html} />
+</BaseLayout>

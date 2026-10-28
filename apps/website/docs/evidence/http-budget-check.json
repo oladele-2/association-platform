@@ -1,0 +1,91 @@
+{
+  "checkedAt": "2026-10-16T07:35:38.684Z",
+  "origin": "http://127.0.0.1:4330",
+  "routes": [
+    {
+      "path": "/",
+      "status": 200,
+      "gzipBytes": 11513
+    },
+    {
+      "path": "/about",
+      "status": 200,
+      "gzipBytes": 10939
+    },
+    {
+      "path": "/membership",
+      "status": 200,
+      "gzipBytes": 10484
+    },
+    {
+      "path": "/programmes",
+      "status": 200,
+      "gzipBytes": 10245
+    },
+    {
+      "path": "/gallery",
+      "status": 200,
+      "gzipBytes": 10256
+    },
+    {
+      "path": "/gallery/meeting-life",
+      "status": 200,
+      "gzipBytes": 10062
+    },
+    {
+      "path": "/gallery/doctors-house",
+      "status": 200,
+      "gzipBytes": 10081
+    },
+    {
+      "path": "/privacy",
+      "status": 200,
+      "gzipBytes": 10381
+    },
+    {
+      "path": "/accessibility",
+      "status": 200,
+      "gzipBytes": 10188
+    },
+    {
+      "path": "/missing-page-audit",
+      "status": 404,
+      "gzipBytes": 9653
+    },
+    {
+      "path": "/leadership",
+      "status": 404,
+      "gzipBytes": 68
+    },
+    {
+      "path": "/news",
+      "status": 404,
+      "gzipBytes": 68
+    },
+    {
+      "path": "/resources",
+      "status": 404,
+      "gzipBytes": 68
+    },
+    {
+      "path": "/review",
+      "status": 404,
+      "gzipBytes": 9653
+    },
+    {
+      "path": "/publication-shell",
+      "status": 404,
+      "gzipBytes": 35
+    },
+    {
+      "path": "/_publication/blocked",
+      "status": 404,
+      "gzipBytes": 35
+    }
+  ],
+  "redirects": "passed",
+  "cacheHeaders": "passed",
+  "fontBytes": 68808,
+  "scriptBytes": 2076,
+  "htmlGzipBudget": 24576
+}

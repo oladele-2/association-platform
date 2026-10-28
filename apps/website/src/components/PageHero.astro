@@ -1,8 +1,9 @@
 ---
-interface Props { title: string; eyebrow: string; description: string; parent?: { label: string; href: string } }
-const { title, eyebrow, description, parent } = Astro.props;
+import { bookPhoto } from '../data/photobook-content.mjs';
+interface Props { title: string; eyebrow: string; description: string; parent?: { label: string; href: string }; photograph?: number | false }
+const { title, eyebrow, description, parent, photograph } = Astro.props;
 ---
-<section class="page-hero container">
+<section class:list={["page-hero", "container", {"page-hero-no-photo": photograph === false}]} style={typeof photograph === "number" ? `--chapter-photo: url('${bookPhoto(photograph).src}')` : undefined}>
   <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span>{parent && <><a href={parent.href}>{parent.label}</a><span aria-hidden="true">/</span></>}<span aria-current="page">{eyebrow}</span></nav>
   <div class="page-hero-grid"><div><p class="eyebrow">{eyebrow}</p><h1>{title}</h1></div><p>{description}</p></div>
 </section>

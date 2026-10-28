@@ -10,6 +10,8 @@ if (!['localhost', '127.0.0.1'].includes(new URL(origin).hostname))
 const routes = [
   '/',
   '/about',
+  '/executives',
+  '/committees',
   '/membership',
   '/programmes',
   '/gallery',
@@ -22,7 +24,6 @@ const results = [];
 for (const path of [
   ...routes,
   '/missing-page-audit',
-  '/leadership',
   '/news',
   '/resources',
   '/review',
@@ -92,7 +93,7 @@ const report = {
   scriptBytes,
   htmlGzipBudget: 24 * 1024,
 };
-const output = resolve(app, '../../tmp/website-phase5');
+const output = resolve(app, 'tmp/website-launch');
 await mkdir(output, { recursive: true });
 await writeFile(join(output, 'http-budget-check.json'), JSON.stringify(report, null, 2) + '\n');
 console.log(JSON.stringify(report, null, 2));

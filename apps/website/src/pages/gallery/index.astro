@@ -1,12 +1,14 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHero from '../../components/PageHero.astro';
+import PhotobookImage from '../../components/PhotobookImage.astro';
 import Photo from '../../components/Photo.astro';
 import Membership from '../../components/Membership.astro';
 import { albums } from '../../data/media';
 ---
-<BaseLayout title="Gallery — NMA Ogun" description="Explore photographs of NMA Ogun’s spaces and meeting life.">
-  <PageHero eyebrow="In pictures" title="Our community, in pictures." description="A view of the association’s spaces and meeting life, through the photographs supplied by NMA Ogun." />
-  <section class="container page-section album-grid" aria-label="Photo albums">{albums.map(album => <a class="album-link" href={`/gallery/${album.slug}`}><div class="album-image"><Photo name={album.cover} /></div><h2>{album.title}</h2><p>{album.description}</p><span class="text-link">Explore {album.photos.length} photographs <span aria-hidden="true">↗</span></span></a>)}</section>
+<BaseLayout title="Gallery — NMA Ogun" description="Explore NMA Ogun’s leadership, advocacy, community outreach, Physicians’ Week and association life in photographs.">
+  <PageHero eyebrow="In pictures" title="Our community, in pictures." description="Leadership, advocacy, outreach and community: explore the association’s activities through photographs supplied by NMA Ogun." photograph={53} />
+  <section class="container page-section album-grid" aria-label="Photo albums">{albums.map(album => <a class="album-link" href={`/gallery/${album.slug}`}><div class="album-image">{album.coverPage ? <PhotobookImage page={album.coverPage} /> : <Photo name={album.cover} />}</div><h2>{album.title}</h2><p>{album.description}</p><span class="text-link">Explore {album.bookPages?.length ?? album.photos.length} photographs <span aria-hidden="true">↗</span></span></a>)}</section>
+  <section class="container page-section book-panel"><h2>A fuller photographic record.</h2><p>Browse the 2026–2028 administration’s working photobook, search captions and explore the original 61-page edition.</p><a class="text-link" href="/photobook">Explore the photobook ↗</a></section>
   <Membership />
 </BaseLayout>

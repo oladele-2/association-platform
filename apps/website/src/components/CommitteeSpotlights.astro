@@ -1,0 +1,9 @@
+---
+import { committees } from '../data/leadership';
+const selected = [
+  { name: 'Training & CME', id: 'training-cme' },
+  { name: 'Health Policy & Doctors Welfare', id: 'health-policy-doctors-welfare' },
+  { name: 'Research and Publications', id: 'research-and-publications' },
+].map(item => ({ ...item, committee: committees.find(committee => committee.name === item.name)! }));
+---
+<section class="container home-section" aria-labelledby="committee-feature-title"><div class="home-section-heading"><div><p class="eyebrow">Committees in focus</p><h2 id="committee-feature-title">People who give<br /><em>our work direction.</em></h2></div><a class="text-link" href="/committees">Meet all committee chairmen ↗</a></div><div class="home-impact-grid">{selected.map(item => <article class="committee-spotlight"><h3>{item.committee.name}</h3><p>{item.committee.focus}</p><p class="committee-spotlight-chair"><span>Chairman</span><strong>{item.committee.chairman}</strong></p><a class="text-link" href={`/committees#${item.id}`}>Meet the committee chairman ↗</a></article>)}</div></section>

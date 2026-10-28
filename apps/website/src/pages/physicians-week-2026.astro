@@ -1,0 +1,23 @@
+---
+import { Image, getImage } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PhotobookGallery from '../components/PhotobookGallery.astro';
+import Gallery from '../components/Gallery.astro';
+import PageHero from '../components/PageHero.astro';
+import poster from '../assets/home/physicians-week-2026.jpeg';
+import { physiciansWeek, physiciansWeekState } from '../data/resource-features.mjs';
+import { secretariatEmail } from '../data/home';
+import { longDate } from '../data/editorial';
+import '../styles/home.css';
+import '../styles/resource-features.css';
+const state = physiciansWeekState();
+const fullPoster = await getImage({ src: poster, width: 688, format: 'webp', quality: 85 });
+const weekday = (day: string) => new Intl.DateTimeFormat('en-NG', { weekday: 'long', timeZone: 'Africa/Lagos' }).format(new Date(day + 'T12:00:00Z'));
+---
+<BaseLayout title="Physicians’ Week 2026: 18–24 October — NMA Ogun" description="The seven-day NMA Ogun Physicians’ Week 2026 programme: thanksgiving, professional exchange, medical outreach and breast cancer awareness.">
+  <PageHero eyebrow={state === 'past' ? 'Programme archive' : 'Physicians’ Week 2026'} title="A week of shared purpose." description="18–24 October 2026. Explore the NMA Ogun programme of professional exchange, service and community connection." />
+  <section class="container page-section event-detail-layout"><figure class="event-detail-poster"><a href={fullPoster.src} data-photo={fullPoster.src} data-caption="NMA Ogun Physicians’ Week 2026 programme"><Image src={poster} width={688} widths={[320,480,688]} sizes="(max-width:800px) 90vw, 400px" format="webp" quality={85} alt="Physicians’ Week 2026 poster; the full programme is transcribed alongside" loading="eager" /></a><figcaption>Physicians’ Week 2026 · Supplied association programme.</figcaption></figure><div><span class="programme-status">{state === 'past' ? 'Programme archive · 18–24 October 2026' : '18–24 October 2026'}</span><h2>Seven days.<br /><em>One professional community.</em></h2><ol class="week-agenda">{physiciansWeek.agenda.map(item => <li><time datetime={item.date}><span>{weekday(item.date)}</span><strong>{longDate(item.date)}</strong></time><h3>{item.title}</h3></li>)}</ol><div class="event-enquiry"><h3>Programme enquiries</h3><p>{state === 'past' ? 'For reports, photographs or enquiries about this programme, contact the Secretariat.' : 'For activity times, venues and participation arrangements, contact NMA Ogun State Secretariat before attending.'}</p><a class="button" href={`mailto:${secretariatEmail}?subject=Physicians%20Week%202026%20enquiry`}>Ask the Secretariat ↗</a></div><p class="home-note">Programme transcribed from the supplied Physicians’ Week poster. Any subsequent changes should be confirmed with the Secretariat.</p></div></section>
+  <section class="container page-section"><p class="eyebrow">18 October 2026 · Thanksgiving service</p><h2>Physicians’ Week begins in fellowship.</h2><p class="church-intro">Doctors gathered for the opening church service. These photographs, supplied by NMA Ogun, capture moments from the thanksgiving gathering.</p><Gallery names={['thanksgiving-congregation','thanksgiving-front-row','thanksgiving-fellowship']} /><a class="text-link" href="/gallery/physicians-week-thanksgiving-2026">See the thanksgiving album ↗</a></section>
+  <section class="container page-section book-section"><p class="eyebrow">19 October 2026 · Press conference</p><h2>A moment from the press engagement.</h2><PhotobookGallery pages={[58]} /><a class="text-link" href="/news/physicians-week-press-conference-2026">Read the photo report ↗</a></section>
+  <section class="container page-section book-section"><p class="eyebrow">20 October 2026 · Medical outreach</p><h2>“Saving the Savers.”</h2><p>Team photographs and a presentation from the outreach, as recorded in the working photobook.</p><PhotobookGallery pages={[59,60,61]} /><div class="book-actions"><a class="text-link" href="/news/saving-the-savers-medical-outreach-2026">Read the outreach photo report ↗</a><a class="text-link" href="/gallery/physicians-week-2026">Explore the Physicians’ Week album ↗</a></div></section>
+</BaseLayout>

@@ -2,11 +2,16 @@
 import { Image, getImage } from 'astro:assets';
 import logo from '../assets/nma-ogun-logo.png';
 import { site, mainLinks, portalLinks, reviewMode } from '../data/site';
-import { articles } from '../data/editorial';
+import { homeArticles as articles, secretariatEmail } from '../data/home';
 import PhotoViewer from '../components/PhotoViewer.astro';
 import '../styles/base.css';
 import '../styles/pages.css';
+import '../styles/newsletter.css';
+import '../styles/church-photography.css';
 import '../styles/publication.css';
+import '../styles/photobook.css';
+import '../styles/affiliates.css';
+import '../styles/leadership.css';
 interface Props { title: string; description: string; reviewNote?: string; article?: boolean }
 const { title, description, reviewNote, article = false } = Astro.props;
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
@@ -35,17 +40,17 @@ const active = (href: string) => path === href || (href !== '/' && path.startsWi
   <link rel="preload" href="/fonts/NotoSans-Regular.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="/fonts/NotoSans-Bold.woff2" as="font" type="font/woff2" crossorigin />
   {path === '/' && <script type="application/ld+json" set:html={JSON.stringify(organisation).replaceAll('<', '\\u003c')} />}
-</head><body>
+</head><body data-page-family={path.split("/")[1] || "home"}>
   <a class="skip-link" href="#main">Skip to content</a>
   <div class="utility"><div class="container"><span>Nigerian Medical Association <span class="utility-separator">/</span> Ogun State Branch</span><a href={portalLinks.register}>Become a member <span aria-hidden="true">↗</span></a></div></div>
   <header class="site-header"><div class="container header-inner">
     <a class="brand" href="/" aria-label="NMA Ogun home"><Image src={logo} width={410} widths={[205,410]} sizes="(max-width: 600px) 165px, 205px" format="webp" alt="NMA Ogun State — Nigerian Medical Association" loading="eager" /></a>
     <button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="site-navigation"><span>Menu</span><span class="menu-lines" aria-hidden="true"></span></button>
-    <nav id="site-navigation" aria-label="Main navigation">{mainLinks.map(link => <a href={link.href} aria-current={active(link.href) ? 'page' : undefined}>{link.label}</a>)}<a class="button button-small" href={portalLinks.login}>Member portal <span aria-hidden="true">↗</span></a></nav>
+    <nav id="site-navigation" aria-label="Main navigation">{mainLinks.filter(link => link.href !== '/news' || articles.length > 0).map(link => <a href={link.href} aria-current={active(link.href) ? 'page' : undefined}>{link.label}</a>)}<a class="button button-small" href={portalLinks.login}>Member portal <span aria-hidden="true">↗</span></a></nav>
   </div></header>
   {reviewMode && <aside class="preview-bar"><div class="container"><span>{reviewNote ?? 'Website preview · Content and photography awaiting final approval.'}</span><a href="/review">Review all pages <span aria-hidden="true">↗</span></a></div></aside>}
   <main id="main" tabindex="-1"><slot /></main>
-  <footer class="site-footer"><div class="container"><div class="footer-main"><div><a class="brand footer-brand" href="/" aria-label="NMA Ogun home"><Image src={logo} width={410} format="webp" alt="NMA Ogun State" loading="lazy" /></a><p>Professional purpose.<br />A shared commitment to better healthcare.</p></div><div class="footer-links"><h2>Explore</h2><a href="/about">About NMA Ogun</a><a href="/executives">Our executives</a><a href="/committees">Committee chairmen</a><a href="/programmes">Programmes</a><a href="/gallery">In pictures</a>{articles.length > 0 && <a href="/news">News &amp; media</a>}{reviewMode && <><a href="/leadership">Leadership</a><a href="/committees">Committees</a><a href="/affiliates">Affiliates</a><a href="/resources">Resources</a><a href="/contact">Contact</a></>}</div><div class="footer-links"><h2>For members</h2><a href="/membership">Membership guidance</a><a href={portalLinks.login}>Member portal ↗</a><a href={portalLinks.register}>Start registration ↗</a><a href={portalLinks.recovery}>Recover access ↗</a><a href="/privacy">Privacy</a><a href="/accessibility">Accessibility</a></div></div><div class="footer-bottom"><p>Nigerian Medical Association · Ogun State Branch</p><a href="#main">Back to top <span aria-hidden="true">↑</span></a></div></div></footer>
+  <footer class="site-footer"><div class="container"><div class="footer-main"><div><a class="brand footer-brand" href="/" aria-label="NMA Ogun home"><Image src={logo} width={410} format="webp" alt="NMA Ogun State" loading="lazy" /></a><p>Professional purpose.<br />A shared commitment to better healthcare.</p></div><div class="footer-links"><h2>Explore</h2><a href="/about">About NMA Ogun</a><a href="/executives">Our executives</a><a href="/history">Past leadership</a><a href="/committees">Committee chairmen</a><a href="/programmes">Programmes</a><a href="/programmes/year-ahead">The year ahead</a><a href="/affiliates">Our affiliates</a><a href="/gallery">In pictures</a><a href="/photobook">NMA Ogun photobook</a>{articles.length > 0 && <a href="/news">News &amp; articles</a>}<a href="/newsletter">Newsletter desk</a><a href="/research">Research &amp; journal</a><a href="/facilities">Facilities &amp; services</a><a href="/contact">Contact the Secretariat</a><a class="footer-email" href={`mailto:${secretariatEmail}`}>{secretariatEmail}</a>{reviewMode && <><a href="/leadership">Leadership</a><a href="/committees">Committees</a><a href="/affiliates">Affiliates</a><a href="/resources">Resources</a><a href="/contact">Contact</a></>}</div><div class="footer-links"><h2>For members</h2><a href="/membership">Membership guidance</a><a href={portalLinks.login}>Member portal ↗</a><a href={portalLinks.register}>Start registration ↗</a><a href={portalLinks.recovery}>Recover access ↗</a><a href="/privacy">Privacy</a><a href="/accessibility">Accessibility</a></div></div><div class="footer-bottom"><p>Nigerian Medical Association · Ogun State Branch</p><a href="#main">Back to top <span aria-hidden="true">↑</span></a></div><p class="developer-credit">Website developed by <a href="https://ajirdiipo.com/associations/" rel="sponsored">Ajirdiipo Limited</a></p></div></footer>
   <PhotoViewer />
   <script src="../scripts/site.ts"></script>
 </body></html>

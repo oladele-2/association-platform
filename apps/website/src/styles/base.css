@@ -1679,3 +1679,7 @@ dialog figcaption {
     animation: none !important;
   }
 }
+
+.developer-credit { margin: 0; padding-bottom: 24px; font-size: 12px; line-height: 1.6; }
+.developer-credit a { text-decoration: underline; text-underline-offset: 3px; }
+.developer-credit a:hover { text-decoration-thickness: 2px; }

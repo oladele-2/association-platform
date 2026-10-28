@@ -1,5 +1,45 @@
 .published-detail {
   max-width: 900px;
+  overflow-wrap: anywhere;
+}
+.article-search {
+  max-width: 760px;
+  margin-bottom: 40px;
+}
+.article-search label {
+  display: block;
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+.article-search-controls {
+  display: flex;
+  gap: 12px;
+}
+.article-search input {
+  min-width: 0;
+  flex: 1;
+  padding: 14px 16px;
+  border: 1px solid #59665d;
+  border-radius: 4px;
+  background: #fff;
+  color: #143e31;
+  font: inherit;
+}
+.article-search button {
+  padding: 12px 18px;
+  border: 1px solid #143e31;
+  border-radius: 4px;
+  background: #143e31;
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+}
+.article-search p {
+  margin-top: 12px;
+  font-size: 14px;
+}
+.published-card[hidden] {
+  display: none;
 }
 .published-detail figure {
   margin: 0 0 30px;

@@ -1,0 +1,6 @@
+---
+import { bookPhoto, book, bookAlbums } from '../data/photobook-content.mjs';
+interface Props { pages: number[]; searchable?: boolean; id?: string; }
+const { pages, searchable = false, id } = Astro.props;
+---
+<div class="book-grid" id={id}>{pages.map(page => { const photo = bookPhoto(page); return <figure class="book-photo" data-search-text={searchable ? photo.search : undefined} data-category={searchable ? bookAlbums.find(album => album.pages.includes(page))?.slug : undefined}><a href={photo.src} data-photo={photo.src} data-caption={photo.caption}><img src={photo.thumbnail} width={photo.width} height={photo.height} alt={photo.alt} loading="lazy" decoding="async" /><span class="book-photo-open">View photograph ↗</span></a><figcaption>{photo.caption} <a href={`${book.pdf}#page=${page}`}>Photobook p. {page}</a></figcaption></figure> })}</div>

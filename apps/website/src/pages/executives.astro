@@ -1,16 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { executives, executiveTerm } from '../data/leadership';
+import { validateSnapshot } from '../../vendor/website-content/index.ts';
+import { renderExecutivePage } from '../../vendor/website-content/render.ts';
+import snapshot from '../../content/release/snapshot.json';
 import '../styles/leadership.css';
+const page = renderExecutivePage(validateSnapshot(snapshot));
 ---
-<BaseLayout title="NMA Ogun Executives — State Officers 2026–2028" description="Meet the NMA Ogun State Officers’ Committee for 2026–2028, including the chairman, secretariat and executive team.">
-  <section class="people-hero container">
-    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><span aria-current="page">Executives</span></nav>
-    <div class="people-intro"><div><p class="eyebrow">State Officers’ Committee · {executiveTerm}</p><h1>Leadership in<br /><em>service.</em></h1></div><div><p>Meet the doctors serving the Nigerian Medical Association, Ogun State Branch. Together, the executive team supports professional representation, members’ welfare and the work of the association.</p><a class="text-link" href="/committees">Meet our committee chairmen <span aria-hidden="true">↗</span></a></div></div>
-    <div class="people-summary"><span><strong>{executives.length}</strong> serving officers</span><span>One shared commitment to a stronger profession.</span></div>
-  </section>
-  <section class="container people-section" aria-labelledby="executive-team"><div class="people-heading"><p class="eyebrow">The people who represent you</p><h2 id="executive-team">Your executive team</h2></div>
-    <div class="executive-grid">{executives.map((person, index) => <article class="executive-card"><div class="executive-photo"><img src={`/images/executives/${person.file}.webp`} width="480" height="480" alt={`Portrait of ${person.name}`} loading={index < 3 ? 'eager' : 'lazy'} decoding="async" /></div><div class="executive-copy"><p class="eyebrow">{person.office}</p><h3>{person.name}</h3><p>{person.focus}</p></div></article>)}</div>
-  </section>
-  <section class="people-callout container"><div><p class="eyebrow">The work behind the mission</p><h2>Shared purpose.<br /><em>Dedicated committees.</em></h2><p>Our committee chairmen coordinate focused areas of the association’s work, from continuing medical education to doctors’ welfare.</p></div><a class="button" href="/committees">Explore our committees <span aria-hidden="true">↗</span></a></section>
+<BaseLayout title={page.title + ' — State Officers'} description={page.description}>
+  <Fragment set:html={page.html} />
 </BaseLayout>

@@ -1,0 +1,7 @@
+---
+import { Image } from 'astro:assets';
+import poster from '../assets/home/physicians-week-2026.jpeg';
+import { physiciansWeekState } from '../data/resource-features.mjs';
+const state = physiciansWeekState();
+---
+{state !== 'past' && <section class="container resource-event" aria-labelledby="physicians-feature-title"><a class="resource-event-poster" href="/physicians-week-2026" aria-label="View Physicians’ Week 2026 programme"><Image src={poster} width={480} widths={[320,480,688]} sizes="(max-width:600px) 80vw, 280px" format="webp" alt="NMA Ogun Physicians’ Week poster, 18–24 October 2026" loading="lazy" /></a><div><p class="eyebrow">{state === 'current' ? 'This week at NMA Ogun' : 'Coming together this October'}</p><h2 id="physicians-feature-title">Physicians’ Week.<br /><em>A week of shared purpose.</em></h2><p class="resource-event-dates"><time datetime="2026-10-18">18</time>–<time datetime="2026-10-24">24 October 2026</time></p><p>From thanksgiving and professional exchange to medical outreach and breast cancer awareness, explore the programme bringing our community together.</p><ul class="event-highlights"><li><strong>21 Oct</strong><span>Medical outreach</span></li><li><strong>22 Oct</strong><span>Scientific conference / OGM</span></li><li><strong>24 Oct</strong><span>Run and Rhythm</span></li></ul><a class="button" href="/physicians-week-2026">View the seven-day programme <span aria-hidden="true">↗</span></a><p class="home-note">Contact the Secretariat for times, venues and participation details.</p></div></section>}

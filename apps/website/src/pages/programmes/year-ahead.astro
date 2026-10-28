@@ -1,0 +1,13 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import { programme, homeArticles, secretariatEmail } from '../../data/home';
+import '../../styles/home.css';
+---
+<BaseLayout title="The year ahead: October 2026–September 2027 — NMA Ogun" description="Explore the proposed NMA Ogun monthly programme covering clinical practice, research, doctors’ wellbeing and practice leadership.">
+  <PageHero eyebrow="The year ahead" title="Topics worth making time for." description="A proposed monthly programme for October 2026 to September 2027: twelve opportunities to connect professional learning with everyday practice." />
+  <section class="container page-section" aria-label="Proposed monthly programme"><div class="programme-intro-panel"><span class="programme-status">Proposed programme</span><p>These themes and formats are proposed. Exact dates, speakers, venues, fees, accreditation and registration arrangements will be shared through official announcements when confirmed.</p><p>Looking for registration? Email the Secretariat about the topic that interests you. The articles linked below introduce the themes; they are not booking confirmations.</p><a class="text-link" href={`mailto:${secretariatEmail}?subject=Year%20ahead%20programme%20enquiry`}>Ask the Secretariat ↗</a></div><ol class="programme-calendar">{programme.map((item, index) => {
+    const article = homeArticles.find(entry => entry.content.slug === item.slug);
+    return <li><span class="programme-month">{item.month} {item.year}</span><p class="eyebrow">{String(index + 1).padStart(2, '0')} / {item.category}</p><h2>{item.title}</h2><p>{item.format}</p>{article && <a class="text-link" href={`/news/${article.content.slug}`}>Read about this topic ↗</a>}</li>;
+  })}</ol><a class="text-link section-link" href="/programmes">Back to programmes ↗</a></section>
+</BaseLayout>

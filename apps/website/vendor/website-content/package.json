@@ -1,0 +1,12 @@
+{
+  "name": "@association/website-content",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    ".": "./index.ts",
+    "./render": "./render.ts",
+    "./affiliates": "./affiliates.ts",
+    "./affiliate-logos": "./affiliate-logos.ts"
+  }
+}

@@ -2,7 +2,7 @@ import { mkdir, writeFile, cp, rm } from 'node:fs/promises';
 import { resolve, join } from 'node:path';
 import { randomUUID } from 'node:crypto';
 import { pathToFileURL } from 'node:url';
-import { validateSnapshot } from '../../../packages/website-content/index.ts';
+import { validateSnapshot } from '../vendor/website-content/index.ts';
 import { readRelease } from './publication-release.mjs';
 
 // Run only in an operator's shell or CI. No credential is needed by the website.

@@ -1,6 +1,6 @@
 # NMA Ogun photobook
 
-The public feature at `/photobook` uses the supplied **NMA PHOTOBOOK ....WORK IN PROGRESS 16.10.26, SATURDAY.pdf**. Although the filename names 16 October, the 61-page document includes activities through 20 October 2026. It records the opening months of the 2026–2028 administration, not the complete tenure. The working-edition label and provisional/unconfirmed dates must remain visible.
+The public feature at `/photobook` uses the supplied **NMA PHOTOBOOK ....WORK IN PROGRESS 16.10.26, SATURDAY.pdf**. Although the filename names 16 October, the 61-page document includes activities through 20 October 2026. It records the opening months of the 2026–2028 administration, not the complete tenure. Public captions describe the occasion without date-status notes. Omit dates that are not established; never invent a replacement date.
 
 ## Published material
 
@@ -18,3 +18,5 @@ Run `python scripts/prepare-photobook.py "path/to/approved.pdf"` from the websit
 Render representative PDF pages for visual review, run the website and standalone publication checks, then deploy through the existing GitHub workflow. The PDF opens directly or downloads, rather than embedding an iframe. Photograph files and the PDF are static website assets; browsing them does not query Neon. Deployment remains manual/on-push, with no scheduled publication polling added.
 
 The deployed repository is `oladele-2/nma-ogun-website`; the website source is also mirrored into `association-platform/apps/website`. Publish from the deployed repository to avoid two competing deployment sources.
+
+On 29 October 2026 the Secretariat requested removal of date-status annotations from public captions, album notes, reports and the downloadable PDF. The handover caption has no event date. The source resource remains unchanged; affected public PDF caption/footer text is typeset again while all 61 pages and photographs are retained. `clean-photobook-captions.py` applies this policy after preparation.

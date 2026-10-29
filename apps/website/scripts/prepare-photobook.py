@@ -39,3 +39,7 @@ if len(PdfReader(pdf).pages)!=61 or pdf.stat().st_size>24*1024*1024:raise Runtim
 metadata={'title':'NMA Ogun in pictures','edition':'2026–2028 administration · July–October 2026 working edition','pdf':'/photobook/nma-ogun-photobook-2026-working-edition.pdf','pdfBytes':pdf.stat().st_size,'pageCount':61,'sourceSha256':hashlib.sha256(src.read_bytes()).hexdigest(),'photos':photos}
 Path('src/data/photobook.json').write_text(json.dumps(metadata,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 print(json.dumps({'photographs':len(photos),'pdfPages':61,'pdfMegabytes':round(pdf.stat().st_size/1024/1024,2),'originalUnchanged':True}))
+
+# Apply approved public-caption style after preparing the source edition.
+import runpy
+runpy.run_path("scripts/clean-photobook-captions.py")

@@ -18,7 +18,7 @@
     "dev:connected": "wrangler dev --config wrangler.connected.jsonc --port 4324",
     "publication:import": "node --experimental-strip-types scripts/publication-release.mjs import",
     "publication:export": "node --experimental-strip-types scripts/export-publication.mjs",
-    "test:release": "node --experimental-strip-types --test scripts/publication-release.test.mjs scripts/automatic-publication.test.mjs",
+    "test:release": "node --experimental-strip-types --test scripts/publication-release.test.mjs scripts/automatic-publication.test.mjs scripts/pagination.test.mjs",
     "test:standalone": "pnpm build && wrangler deploy --dry-run --outdir tmp/website-worker-bundle && node scripts/test-standalone.mjs",
     "deploy": "pnpm build && wrangler deploy",
     "package:standalone": "pnpm build && wrangler deploy --dry-run --outdir .standalone && node scripts/package-standalone.mjs",

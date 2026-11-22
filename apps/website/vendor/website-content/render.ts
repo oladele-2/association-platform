@@ -66,6 +66,7 @@ export function entryPath(entry: PublicEntry) {
 export function renderPublicationPage(
   path: string,
   snapshot: PublicationSnapshot,
+  params = new URLSearchParams(),
 ): { title: string; description: string; html: string } | null {
   const esc = escapeHtml;
   if (path === '/executives') return renderExecutivePage(snapshot);
@@ -121,17 +122,38 @@ export function renderPublicationPage(
               : null;
   if (!listing) return null;
   const entries = snapshot.entries.filter((entry) => entry.kind === listing.kind);
-  if (listing.kind === 'article')
-    entries.sort((a, b) => a.content.sortOrder - b.content.sortOrder);
   if (!entries.length) return null;
-  const search = listing.kind === 'article'
-    ? `<form class="article-search" data-directory-search="article-results" data-result-label="article" role="search" aria-label="Search articles"><label for="article-search">Search articles</label><div class="article-search-controls"><input id="article-search" type="search" placeholder="Search by title, topic or author" aria-controls="article-results" aria-describedby="article-search-help"><button type="button" data-clear-search>Clear</button></div><p id="article-search-help">Search published titles, introductions, authors and article text.</p><p data-result-count role="status" aria-live="polite">${entries.length} ${entries.length === 1 ? 'article' : 'articles'}</p><noscript><p>Use your browser’s Find feature to search titles and introductions below.</p></noscript></form>`
+  const isArticle = listing.kind === 'article';
+  const query = isArticle ? (params.get('q') ?? '').trim() : '';
+  const words = query.toLocaleLowerCase().split(/\s+/).filter(Boolean);
+  const matches = isArticle
+    ? entries.sort((a, b) => b.content.date.localeCompare(a.content.date) || a.content.slug.localeCompare(b.content.slug)).filter(entry => {
+        const text = [entry.content.title, entry.content.summary, entry.content.author, ...entry.content.paragraphs].join(' ').toLocaleLowerCase();
+        return words.every(word => text.includes(word));
+      })
+    : entries;
+  const totalPages = Math.max(1, Math.ceil(matches.length / 9));
+  const requestedPage = Number(params.get('page') ?? 1);
+  const currentPage = Number.isSafeInteger(requestedPage) && requestedPage > 0 ? Math.min(requestedPage, totalPages) : 1;
+  const visibleEntries = isArticle ? matches.slice((currentPage - 1) * 9, currentPage * 9) : entries;
+  const pageUrl = (page: number) => {
+    const search = new URLSearchParams();
+    if (query) search.set('q', query);
+    if (page > 1) search.set('page', String(page));
+    return '/news' + (search.size ? '?' + search.toString() : '');
+  };
+  const pageLink = (page: number, label: string, rel = '') => `<a href="${esc(pageUrl(page))}"${rel ? ` rel="${rel}"` : ''}>${label}</a>`;
+  const pagination = isArticle && totalPages > 1
+    ? `<nav class="article-pagination" aria-label="Article pagination">${currentPage > 1 ? pageLink(currentPage - 1, 'Previous', 'prev') : '<span aria-disabled="true">Previous</span>'}${Array.from({ length: totalPages }, (_, index) => index + 1).filter(page => page === 1 || page === totalPages || Math.abs(page - currentPage) <= 2).map((page, index, pages) => `${index && page - pages[index - 1] > 1 ? '<span aria-hidden="true">…</span>' : ''}${page === currentPage ? `<span aria-current="page" aria-label="Page ${page}">${page}</span>` : pageLink(page, String(page))}`).join('')}${currentPage < totalPages ? pageLink(currentPage + 1, 'Next', 'next') : '<span aria-disabled="true">Next</span>'}</nav>`
+    : '';
+  const search = isArticle
+    ? `<form class="article-search" action="/news" method="get" role="search" aria-label="Search articles"><label for="article-search">Search articles</label><div class="article-search-controls"><input id="article-search" name="q" value="${esc(query)}" type="search" placeholder="Search by title, topic or author" aria-controls="article-results" aria-describedby="article-search-help"><button type="submit">Search</button><a class="text-link" href="/news">Clear</a></div><p id="article-search-help">Search published titles, introductions, authors and article text.</p><p role="status">${matches.length} ${matches.length === 1 ? 'article' : 'articles'}${matches.length ? ` · Showing ${(currentPage - 1) * 9 + 1}–${Math.min(currentPage * 9, matches.length)}` : ''}</p></form>`
     : '';
   const groups = listing.kind === 'officer' ? ['current', 'past'] : ['all'];
   const body = groups
     .map((group) => {
       const selected =
-        group === 'all' ? entries : entries.filter((entry) => entry.content.group === group);
+        group === 'all' ? visibleEntries : entries.filter((entry) => entry.content.group === group);
       if (!selected.length) return '';
       return `${group === 'past' ? '<h2>Past leadership</h2>' : ''}<div class="${listing.kind === 'officer' ? 'published-officers' : 'published-list'}"${listing.kind === 'article' ? ' id="article-results"' : ''}>${selected
         .map((entry) => {
@@ -153,7 +175,7 @@ export function renderPublicationPage(
     html: hero(
       listing.title,
       listing.summary,
-      `<section class="container page-section">${search}${body}${listing.kind === 'article' ? '<p data-directory-empty hidden>No articles match your search. Try another title, topic or author.</p>' : ''}${path === '/gallery' ? '<a class="text-link section-link" href="/gallery/meeting-life">Explore meeting life ↗</a>' : ''}</section>`,
+      `<section class="container page-section">${search}${body}${isArticle && !matches.length ? '<p>No articles match your search. Try another title, topic or author.</p>' : ''}${pagination}${path === '/gallery' ? '<a class="text-link section-link" href="/gallery/meeting-life">Explore meeting life ↗</a>' : ''}</section>`,
     ),
   };
 }

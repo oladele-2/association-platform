@@ -13,7 +13,7 @@ The repository also needs `WEBSITE_EXPORT_SECRET`, matching the portal Worker's 
 
 ## Release flow
 
-Publish or withdraw in the portal, then open GitHub Actions → Website checks and deployment → Run workflow on main. This fetches the latest approved feed, builds and deploys the website. No content commit or push is required. Code pushes to main also release the current approved feed. There are no scheduled publication checks. Pull requests run checks without secrets or deployment.
+Publish, withdraw or delete a public article in the portal. The portal immediately dispatches GitHub Actions → Website checks and deployment on `main`; the workflow fetches the latest approved feed, runs the checks and deploys it. No content commit or push is required. Publishers can manually run this workflow from GitHub if they need to retry a failed dispatch. Code pushes to `main` also release the current approved feed. There are no scheduled publication checks. Pull requests run checks without secrets or deployment.
 
 The workflow reports Deploying to the portal, exports a consistent approved snapshot, applies the media policy, tests and builds it, and deploys the exact verified Worker bundle and asset artifact. Public page checks, social checks and an exact live-manifest comparison run before the Live callback. Failed checks/deployments report Failed; manually rerun the workflow to retry. Runs are serialized, and callback ordering prevents stale runs from overwriting newer results. The portal checks the website manifest as the authority for what is actually live and refreshes its status every twenty seconds.
 

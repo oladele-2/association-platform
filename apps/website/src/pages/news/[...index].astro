@@ -1,10 +1,14 @@
 ---
+import type { GetStaticPaths, Page } from 'astro';
+import type { Story } from '../../data/editorial';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHero from '../../components/PageHero.astro';
 import { articles, longDate } from '../../data/editorial';
-export function getStaticPaths() { return articles.length ? [{ params: { index: undefined } }] : []; }
+export const getStaticPaths = (({ paginate }) => paginate([...articles].sort((a, b) => (b.publishedAt ?? '').localeCompare(a.publishedAt ?? '')), { pageSize: 9 })) satisfies GetStaticPaths;
+interface Props { page: Page<Story> }
+const { page } = Astro.props;
 ---
 <BaseLayout title="News & media — NMA Ogun" description="Official updates, statements and stories from NMA Ogun." reviewNote={articles.every(article => article.reviewOnly) ? 'News layout preview · No official article has been approved for publication.' : undefined}>
   <PageHero eyebrow="News & media" title="Stories from our community." description="Official updates, statements and stories from NMA Ogun." />
-  <section class="container page-section" aria-label="Articles"><ul class="story-list">{articles.map(article => <li><a class="story-row" href={`/news/${article.slug}`}><span class="story-date">{article.publishedAt ? longDate(article.publishedAt) : 'Layout specimen'}</span><div>{article.reviewOnly && <span class="review-tag">Editorial review · Not an issued article</span>}<h2>{article.title}</h2><p>{article.summary}</p></div><span class="story-arrow" aria-hidden="true">↗</span></a></li>)}</ul><a class="text-link section-link" href="/gallery">Explore the photo gallery <span aria-hidden="true">↗</span></a></section>
+  <section class="container page-section" aria-label="Articles"><ul class="story-list">{page.data.map(article => <li><a class="story-row" href={`/news/${article.slug}`}><span class="story-date">{article.publishedAt ? longDate(article.publishedAt) : 'Layout specimen'}</span><div>{article.reviewOnly && <span class="review-tag">Editorial review · Not an issued article</span>}<h2>{article.title}</h2><p>{article.summary}</p></div><span class="story-arrow" aria-hidden="true">↗</span></a></li>)}</ul>{page.lastPage > 1 && <nav class="article-pagination" aria-label="Article pagination">{page.url.prev ? <a href={page.url.prev} rel="prev">Previous</a> : <span aria-disabled="true">Previous</span>}{Array.from({ length: page.lastPage }, (_, index) => index + 1).map(number => number === page.currentPage ? <span aria-current="page">{number}</span> : <a href={number === 1 ? '/news' : `/news/${number}`}>{number}</a>)}{page.url.next ? <a href={page.url.next} rel="next">Next</a> : <span aria-disabled="true">Next</span>}</nav>}<a class="text-link section-link" href="/gallery">Explore the photo gallery <span aria-hidden="true">↗</span></a></section>
 </BaseLayout>

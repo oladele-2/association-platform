@@ -299,7 +299,7 @@ async function routeWebsiteRequest(
       },
     );
   }
-  const page = renderPublicationPage(path, snapshot);
+  const page = renderPublicationPage(path, snapshot, url.searchParams);
   if (path === '/news/preparing-ogun-hospitals-for-digital-practice' && snapshot.entries.some(entry => entry.kind === 'article' && entry.content.slug === digitalPractice.slug)) {
     const destination = new URL(url);
     destination.pathname = '/news/' + digitalPractice.slug;
@@ -374,12 +374,12 @@ async function routeWebsiteRequest(
       })
       .on('link[rel="canonical"]', {
         element(element) {
-          element.setAttribute("href", "https://nmaogun.com.ng" + path);
+          element.setAttribute("href", "https://nmaogun.com.ng" + path + (path === "/news" ? url.search : ""));
         },
       })
       .on('meta[property="og:url"]', {
         element(element) {
-          element.setAttribute("content", "https://nmaogun.com.ng" + path);
+          element.setAttribute("content", "https://nmaogun.com.ng" + path + (path === "/news" ? url.search : ""));
         },
       })
       .on("[data-publication-content]", {

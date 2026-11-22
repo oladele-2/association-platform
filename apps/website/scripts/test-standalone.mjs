@@ -321,14 +321,20 @@ for (const mode of ["bundle", "published", "withdrawn", "invalid"]) {
       const listingHtml = await listing.text();
       if (bundledArticles.length) {
         assert.ok(listingHtml.includes('role="search"'), "Article search landmark");
-        assert.ok(listingHtml.includes('data-directory-search="article-results"'), "Search targets the article list");
-        assert.ok(listingHtml.includes('data-clear-search'), "Readers can clear a search");
-        assert.ok(listingHtml.includes('data-directory-empty hidden'), "No-results message starts hidden");
+        assert.ok(listingHtml.includes('method="get" action="/news"'), "Search submits to the article archive");
+        assert.ok(listingHtml.includes('name="q"'), "Search query is submitted to the server");
+        assert.ok(listingHtml.includes('id="article-results"'), "Search controls the article list");
+        if (bundledArticles.length > 9) {
+          assert.ok(listingHtml.includes('class="article-pagination"'), "Large archives show pagination");
+          assert.ok(listingHtml.includes('href="/news?page=2"'), "First archive page links forward");
+        }
+        const searchable = bundledArticles.at(-1);
+        const searchResponse = await get(`/news?q=${encodeURIComponent(searchable.content.title)}`);
+        assert.equal(searchResponse.status, 200, "Article search returns results");
+        assert.ok((await searchResponse.text()).includes(`href="/news/${searchable.content.slug}"`), "Search finds articles beyond the first page");
       }
       for (const entry of bundledArticles) {
         const path = "/news/" + entry.content.slug;
-        assert.ok(listingHtml.includes(`href="${path}"`), path + ": listed");
-        assert.ok(listingHtml.includes(`data-search-text="${escaped([entry.content.title, entry.content.summary, entry.content.author, ...entry.content.paragraphs].join(' '))}"`), path + ": searchable public content is escaped");
         const article = await get(path);
         assert.equal(article.status, 200, path);
         const html = await article.text();

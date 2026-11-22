@@ -321,7 +321,7 @@ for (const mode of ["bundle", "published", "withdrawn", "invalid"]) {
       const listingHtml = await listing.text();
       if (bundledArticles.length) {
         assert.ok(listingHtml.includes('role="search"'), "Article search landmark");
-        assert.ok(listingHtml.includes('method="get" action="/news"'), "Search submits to the article archive");
+        assert.ok(listingHtml.includes('action="/news"') && listingHtml.includes('method="get"'), "Search submits to the article archive");
         assert.ok(listingHtml.includes('name="q"'), "Search query is submitted to the server");
         assert.ok(listingHtml.includes('id="article-results"'), "Search controls the article list");
         if (bundledArticles.length > 9) {

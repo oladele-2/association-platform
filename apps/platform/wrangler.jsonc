@@ -1,0 +1,32 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "association-platform-console",
+  "main": "worker.ts",
+  "compatibility_date": "2026-11-23",
+  "workers_dev": true,
+  "routes": [
+    { "pattern": "admin.ajirdiipo.com", "custom_domain": true }
+  ],
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "association-platform-prod-final",
+      "database_id": "303beeee-be04-4bd2-a1f1-bd72dd3ff423"
+    }
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "LOGIN_LIMITS",
+      "id": "cbe33cf7a26e43148f9e0df0ae49aecc"
+    }
+  ],
+  "observability": {
+    "enabled": true,
+    "logs": { "enabled": true, "head_sampling_rate": 1 }
+  }
+}

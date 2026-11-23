@@ -7,7 +7,7 @@ export default defineConfig({
     port: 5174,
     proxy: {
       '/v1': {
-        target: 'http://localhost:3000',
+        target: 'http://127.0.0.1:8787',
         changeOrigin: true,
       },
     },

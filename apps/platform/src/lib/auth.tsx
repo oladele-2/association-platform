@@ -67,8 +67,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const logout = useCallback(() => {
+    if (accessToken) {
+      void apiFetch('/v1/platform/auth/logout', {
+        method: 'POST',
+        accessToken,
+      }).catch(() => undefined);
+    }
     clearSession();
-  }, [clearSession]);
+  }, [accessToken, clearSession]);
 
   useEffect(() => {
     setOnUnauthorized(() => {
